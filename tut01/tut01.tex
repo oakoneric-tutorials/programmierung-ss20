@@ -1,0 +1,265 @@
+\documentclass{beamer}
+\usepackage{../tut-slides}
+\usepackage{../mathoperatorsAuD}
+
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+\newcommand{\labelitemi}{\raisebox{1pt}{\scalebox{.9}{$\blacktriangleright$}}}
+\newcommand{\labelitemii}{$\vartriangleright$}
+\newcommand{\labelitemiii}{--}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tabu}
+\newcommand*\head{\rowfont{\bfseries}}
+\newcommand*{\tw}{\rowfont{\ttfamily}}
+
+\renewcommand{\tabularxcolumn}[1]{>{\hspace{0pt}}m{#1}}
+
+\usepackage{listings}
+\lstset{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\itshape,    	     % comment style
+	deletekeywords={...},            % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,	                   % adds a frame around the code
+	keepspaces=false,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\bfseries,       % keyword style
+	language=Haskell,                 % the language of the code
+	morekeywords={*,...},            % if you want to add more keywords to the set
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+%	stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+%	stringstyle=\color{cddarkblue},     % string literal style
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\begin{document}	
+	\title{Programmierung}
+	\subtitle{Übung 1: Einleitung}
+	\author{Eric Kunze}
+	\email{eric.kunze@mailbox.tu-dresden.de}
+	\city{TU Dresden}
+%	\institute{Lehrstuhl für Grundlagen der Programmierung}
+	\titlegraphic{\includegraphics[width=2cm]{../TUD-white.pdf}}
+
+	\maketitle
+	
+	\begin{frame} \frametitle{Für die vergesslichen}
+		\begin{minipage}{\dimexpr0.75\linewidth-\fboxrule-\fboxsep}
+			\textbf{Wer bin ich?}
+			\begin{itemize}
+				\item Eric [Kunze]
+				\item \url{eric.kunze@mailbox.tu-dresden.de}
+				\item Fragen, Wünsche, Vorschläge, \dots \\ gern jederzeit wie auch immer
+			\end{itemize}
+		\end{minipage}
+		\begin{minipage}{\dimexpr0.25\linewidth-\fboxrule-\fboxsep}
+			\includegraphics[width=3cm]{./tut01_pic.jpg}
+		\end{minipage}
+	\end{frame}
+
+	\begin{frame} \frametitle{Das etwas andere Semester}
+		\footnotesize
+		\textbf{offizielles Angebot}
+		\begin{itemize}
+			\item Vorlesungen
+			\begin{itemize}
+				\item Lehrveranstaltungswebsite: \\ \url{www.orchid.inf.tu-dresden.de/teaching/2020ss/prog/}
+				\item OPAL-Kurs: Link siehe LV-Website
+			\end{itemize}
+			\item Übungen
+			\begin{itemize}
+				\item selbstständige Bearbeitung der Übungen
+				\item Abgabe via OPAL an (zufällig) zugewiesenen Tutor
+				\item Rückgabe der korrigierten Arbeiten via OPAL
+			\end{itemize} 
+		\end{itemize}
+		\textbf{mein (privates) Angebot}
+		\begin{itemize}
+			\item Übernahme der Korrekturen
+			\item Vidcasting bzw. Live-Übungen
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame} \frametitle{Lösungen}
+		\textbf{Slides werden mit Sourcecode auf Github zur Verfügung stehen.}
+		\begin{itemize}[leftmargin=*]
+			\item \url{https://github.com/oakoneric/programmierung-ss20}
+			\item \url{github.com} $\to$ oakoneric $\to$ programmierung-ss20
+			\item evtl. zusätzliche Materialien (nach Bedarf)
+			\item \alert{\textbf{kein Anspruch auf Vollständigkeit \& Korrektheit}}
+			\item gefundene Fehler melden - am besten per Request
+		\end{itemize}
+	\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Einführung in Haskell}
+
+    \begin{frame}[fragile] \frametitle{Haskell \& funktionale Programmierung}
+    	\footnotesize
+        \fbox{Haskell $=$ funktionale Programmiersprache}
+        
+        Wir programmieren nicht \textit{wie} berechnet wird, sondern \textit{was} berechnet wird.
+    	
+    	\pause
+        \medskip
+        \textbf{Mathe:} Die Addition $n + m$ können wir auch als Funktion  
+        \begin{equation*}
+            + \colon \mathbb{N} \times \mathbb{N} \to \mathbb{N} \qquad
+            n+m = 
+            \begin{cases}
+            n & m=0 \\
+            1 + \Big( n + (m-1) \Big) &\text{sonst} \\
+            \end{cases}
+        \end{equation*}
+        definieren. \\
+       
+        \medskip \pause
+        
+        \textbf{Informatik:} Wir können eine Funktion \lstinline{add :: Int -> Int -> Int} spezifizieren, die genau die Addition durchführt:
+        \begin{lstlisting}[language=Haskell]
+add :: Int -> Int -> Int
+add n 0 = n
+add n m = 1 + add n (m-1)
+        \end{lstlisting}
+    \end{frame}
+
+\begin{frame}\frametitle{Das Prinzip der Rekursion}
+	\footnotesize
+	\begin{theorem}
+		Sei $B$ eine Menge, $b \in B$ und $F \colon B \times \mathbb{N} \to B$ eine Abbildung. Dann liefert die Vorschrift
+		\begin{subequations}
+			\begin{align}
+			f(0) &:= b \\
+			f(n+1) &:= F(f(n),n) \quad \forall n \in \mathbb{N} \label{eq: rekursionsschritt}
+			\end{align}
+		\end{subequations}
+		genau eine Abbildung $f : \mathbb{N} \to B$.
+	\end{theorem}
+	\pause
+	
+	\emph{Beweis.} \qquad vollständige Induktion:
+	\begin{description}
+		\item[(IA)] Für $n=0$ ist $f(0) = b$ eindeutig definiert.
+		\item[(IS)] Angenommen $f(n)$ sei eindeutig definiert. Wegen (\ref{eq: rekursionsschritt}) ist dann auch $f(n+1)$ eindeutig definiert.
+	\end{description}
+	
+	\bigskip
+	
+	Man kann dieses Prinzip der Rekursion auf weitere Mengen (unabhängig von den natürlichen Zahlen) erweitern ($\nearrow$ Formale Systeme).
+\end{frame}
+
+\begin{frame}\frametitle{Haskell installieren und compilieren}
+	\textbf{Glasgow Haskell Compiler} (ghc(i)) :  \url{https://www.haskell.org/ghc/}
+	
+	\begin{itemize}
+		\item \textbf{Terminal:} \texttt{ghci <modulname>}
+		\item \textbf{Module laden: } \texttt{:load <modulname>} oder \texttt{:l}
+		\item \textbf{Module neu laden: } \texttt{:reload} oder \texttt{:r}
+		\item \textbf{Hilfe: } \texttt{:?} oder \texttt{:help}
+		\item \textbf{Interpreter verlassen: } \texttt{:quit} oder \texttt{:q}
+		
+		\bigskip
+		
+ 		\item \texttt{:type <exp>} --- Typ des Ausdrucks \texttt{<exp>} bestimmen
+		\item \texttt{:info <fkt>} --- kurze Dokumentation für \texttt{<fkt>}
+		\item \texttt{:browse} --- alle geladenen Funktionen anzeigen
+	\end{itemize}
+\end{frame}
+%
+\begin{frame}[fragile] \frametitle{Haskell \& Listen}
+	\begin{description}
+		\item[Listen] Wenn \texttt{a} ein Typ ist, dann bezeichnet \texttt{[a]} den Typ ``Liste mit Elementen vom Typ \texttt{a}'', insbesondere
+		haben alle Elemente einer Liste den gleichen Typ
+		\pause
+		\item[cons-Operator `` \texttt{:} '']  Trennung von head und tail einer Liste \\
+		\lstinline{[ x1 , x2 , x3 , x4 , x5] = x1 : [x2 , x3 , x4 , x5]}
+		\bigskip \pause
+		\item[Verkettungsoperator `` \texttt{++} ''] Verkettung zweier Listen gleichen Typs \\
+		\lstinline{[x1 , x2 ] ++ [x3 , x4 , x5] = [x1 , x2 , x3 , x4 , x5]}
+	\end{description}
+\end{frame}
+%
+
+\section{Übungsblatt 1}
+
+\begin{frame}\frametitle{Aufgabe 2 -- Fakultätsfunktion}
+	Fakultät
+	\begin{equation*}
+		n! = \prod_{i=1}^n i
+	\end{equation*}
+	
+	\medskip
+	\pause
+	
+	Daraus bilden wir nun eine Rekursionsvorschrift:
+	\begin{equation*}
+		n! = \boldsymbol{n} * \prod_{i=1}^{\boldsymbol{n-1}} i= n * (n-1)!
+	\end{equation*}
+	
+	\medskip
+	\pause
+	
+	Um die Rekursion vollständig zu definieren, benötigen wir einen (oder i.a. mehrere) \emph{Basisfall}. Wann können wir also die Rekursion der Fakultät abbrechen?
+	\begin{equation}
+	0 ! = 1 \qquad 1 ! = 1 \qquad 2! = 2 \qquad \cdots
+	\end{equation}
+	$\Rightarrow$ Welcher Basisfall ist sinnvoll? \qquad $0! = 1$
+\end{frame}
+
+\begin{frame}\frametitle{Aufgabe 3 -- Fibonacci-Zahlen}
+	\scriptsize
+	\begin{equation*}
+	f_n := \begin{cases}
+	\enskip 1 & \text{falls } n = 0 \\
+	\enskip 1 & \text{falls } n = 1 \\
+	\enskip f_{n-1} + f_{n-2} & \text{sonst}
+	\end{cases}
+	\end{equation*}
+	
+	\medskip
+	\pause
+	
+	$\Rightarrow$ Rekursionsvorschrift schon gegeben. \\
+	
+	\bigskip 
+	\begin{minipage}{\dimexpr0.5\linewidth-\fboxrule-\fboxsep}
+		\textbf{Verfahren ohne Rekursion.} \\
+		
+		\begin{tikzpicture}[]%
+		\pgfmathsetseed{1237}%
+		\node (n1) [draw=cdindigo, fill=cdindigo!10,thick,align=justify, , inner ysep=2mm, inner xsep=2mm, rectangle] at (0,0) {$f_{i-2}$};%
+		\node (n2) [draw=cdindigo, fill=cdindigo!10,thick,align=justify, , inner ysep=2mm, inner xsep=2mm, rectangle] at (1.5,0) {$f_{i-1}$};%
+		\node (n3) [draw=cdindigo, fill=cdindigo!10,thick,align=justify, , inner ysep=2mm, inner xsep=2mm, rectangle] at (3,0) {$n$};%
+		\node (n4) [draw=cdindigo, fill=cdindigo!10,thick,align=justify, , inner ysep=2mm, inner xsep=2mm, rectangle] at (0,-1) {$f_{i-1}$};%
+		\node (n5) [draw=cdindigo, fill=cdindigo!10,thick,align=justify, , inner ysep=2mm, inner xsep=2mm, rectangle] at (1.5,-1) {$f_{i-2} + f_{i-1}$};%
+		\node (n6) [draw=cdindigo, fill=cdindigo!10,thick,align=justify, , inner ysep=2mm, inner xsep=2mm, rectangle] at (3,-1) {$n-1$};%
+		\path[->] (n2) edge [bend left=0] (n4);
+		\end{tikzpicture}%
+	\end{minipage}
+	\pause
+	\begin{minipage}{\dimexpr0.5\linewidth-\fboxrule-\fboxsep}
+		\textbf{Explizite Formel.}
+		\begin{equation*}
+			f_n = \frac{\Phi^n - \left(-\frac{1}{\Phi} \right)^n}{\sqrt{5}}
+		\end{equation*}
+		mit $\Phi = \frac{1 + \sqrt{5}}{2}$
+	\end{minipage}
+\end{frame}
+
+\end{document}
