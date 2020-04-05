@@ -36,7 +36,4 @@ Insbesondere sind beide Operatoren _rechtsassoziativ_, d.h. `a : b : c = a : (b 
 ## Laufzeit der Fibonacci-Funktion
 Bei der rekursiven Implementierung `fib` der Fibonacci-Zahlen sind ab `n > 30` deutliche Laufzeitdefizite zu bemerken. Man beachte dabei die exponentielle Laufzeitzunahme. Deswegen kann man die Fibonacci-Zahlen auch nicht-rekursiv implementieren (vgl. `fib'`).
 
-Ein Laufzeittest lohnt sich vor allem in Zusammenhang mit der Funktion aus der ersten Zusatzaufgabe (`01_04Z_solution.hs`). Dort kann man sich mit `take <anzahl> fibs` eine Liste mit `<anzahl>` vielen Fibonacci-Zahlen generieren lassen.
-Es sind bereits beide Varianten fertig implementiert, d.h. `fibs` sollte deutlich langsamer sein als `fibs'`.
-
 Um die exakten Laufzeiten zu erhalten, kann man vor dem Ausführen der Funktion mit dem Befehl `:set +s` die Laufzeitmessung in `ghci` aktivieren.
