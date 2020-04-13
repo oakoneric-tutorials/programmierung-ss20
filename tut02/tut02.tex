@@ -1,0 +1,418 @@
+\documentclass{beamer}
+\usepackage{../tut-slides}
+\usepackage{../mathoperatorsAuD}
+
+\usepackage{csquotes}
+\usepackage{cancel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+\newcommand{\labelitemi}{\raisebox{1pt}{\scalebox{.9}{$\blacktriangleright$}}}
+\newcommand{\labelitemii}{$\vartriangleright$}
+\newcommand{\labelitemiii}{--}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tabu}
+\newcommand*\head{\rowfont{\bfseries}}
+\newcommand*{\tw}{\rowfont{\ttfamily}}
+
+\renewcommand{\tabularxcolumn}[1]{>{\hspace{0pt}}m{#1}}
+
+\usepackage{listings}
+\lstset{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Haskell,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+\begin{document}	
+	\title{Programmierung}
+	\subtitle{Übung 2: Listen, Zeichenketten \& Bäume}
+	\author{Eric Kunze}
+	\email{eric.kunze@mailbox.tu-dresden.de}
+%	\city{TU Dresden}
+	\date{}
+%	\institute{Lehrstuhl für Grundlagen der Programmierung}
+%	\titlegraphic{\includegraphics[width=2cm]{../TUD-white.pdf}}
+	
+	\maketitle
+	
+	
+
+	\begin{frame} \frametitle{Hinweise}
+		
+		\begin{itemize}
+			\item Übungsaufgaben können \textit{freiwillig} abgegeben werden
+			\item keine Bonuspunkte
+			\item Abgaben in möglichst einer Datei und (solange es geht) nur Quelltexte
+			
+			\bigskip
+			
+			\item Hinweise meinerseits nur noch auf meiner Website \url{oakoneric.github.io}
+			\item Fragen und Anmerkungen jederzeit
+			\item einfache Fragen (Orga oder kleine Inhalte) gern schnell und unkompliziert über Telegram
+		\end{itemize}
+		\centering \fbox{\textbf{Probleme aus der vergangenen Woche?}}
+	\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Listen \& Zeichenketten in Haskell}
+	%
+	\begin{frame}[fragile] \frametitle{Listen}
+		\begin{description}
+			\item[Listen] Wenn \texttt{a} ein Typ ist, dann bezeichnet \texttt{[a]} den Typ ``Liste mit Elementen vom Typ \texttt{a}'', insbesondere
+			haben alle Elemente einer Liste den gleichen Typ
+			\pause
+			\item[cons-Operator `` \texttt{:} '']  Trennung von \textit{head} und \textit{tail} einer Liste \\
+			\lstinline{[ x1 , x2 , x3 , x4 , x5] = x1 : [x2 , x3 , x4 , x5]}
+			\bigskip \pause
+			\item[Verkettungsoperator `` \texttt{++} ''] Verkettung zweier Listen gleichen Typs \\
+			\lstinline{[x1 , x2 ] ++ [x3 , x4 , x5] = [x1 , x2 , x3 , x4 , x5]}
+		\end{description}
+	\end{frame}
+
+	\begin{frame}[fragile] \frametitle{Zeichen \& Zeichenketten}
+		\textbf{Zeichen}
+		\begin{itemize}
+			\item Datentyp \texttt{Char}
+			\item Eingabe in einfachen Anführungszeichen
+			\item z.B. \texttt{'a'}, \texttt{'e'}, \texttt{'3'}
+		\end{itemize}
+		\pause
+		\textbf{Zeichenketten}
+		\begin{itemize}
+			\item Datentyp \texttt{String = [Char]}
+			\item Eingabe in doppelten Anführungszeichen
+			\item z.B. \texttt{"hallo"}, \texttt{"welt"}
+			\item Konkatenation von Zeichenketten: 
+			\begin{lstlisting}[basicstyle=\ttfamily, numbers=none, frame=none, showstringspaces=false]
+"hallo " ++ "welt" = "hallo welt"
+			\end{lstlisting}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame} \frametitle{Übung: Datentypen}
+		Bestimme den Datentyp:
+		\begin{itemize}
+			\item \texttt{"prog"}
+			\item \texttt{5}
+			\item \texttt{'3'}
+			\item \texttt{mod} (gemeint ist die Modulo-Funktion)
+			\item \texttt{[2,4,6,8]}
+			\item \texttt{[[" \!\!\! e", "r", "\!\!\! i", "c"], ["k", "\!\!\! u", "n", " \!\!\! z", "\!\!\! e"]]}
+		\end{itemize}
+	\end{frame}
+
+
+\section{Übungsblatt 2 \\ \textit{\normalsize Aufgabe 1}}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (a)}
+	\textbf{Multiplikation einer Liste}
+	
+	\texttt{prod :: [Int] -> Int}
+	
+	\pause \bigskip
+	
+	\begin{lstlisting}
+-- (a) Produkt der Listenelemente
+prod :: [Int] -> Int
+prod []     = 1
+prod (x:xs) = x * prod xs
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (b)}
+	\textbf{Umkehrung einer Liste}
+	
+	\texttt{rev :: [Int] -> [Int]}
+	
+	\pause \bigskip
+	
+	\begin{lstlisting}
+rev :: [Int] -> [Int]
+rev []     = []
+rev (x:xs) = rev xs ++ [x]
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (c)}
+	\textbf{Elemente einer Liste löschen}
+	
+	\texttt{excl :: Int -> [Int] -> [Int]}
+	
+	\pause \bigskip
+	
+	\begin{lstlisting}
+excl :: Int -> [Int] -> [Int]
+excl _ [] = []
+excl n (x:xs)
+	| x /= n    = x : excl n xs
+	| otherwise = excl n xs
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (d)}
+	\textbf{Sortierung einer Liste prüfen}
+	
+	\texttt{isOrd :: [Int] -> Bool}
+	
+	\pause \bigskip
+	\begin{lstlisting}
+isOrd :: [Int] -> Bool
+isOrd []  = True
+isOrd [x] = True
+isOrd (x:y:xs)
+	| x <= y    = isOrd (y:xs)
+	| otherwise = False
+	\end{lstlisting}
+	\pause
+	\begin{lstlisting}
+isOrd' :: [Int] -> Bool
+isOrd' []       = True
+isOrd' [x]      = True
+isOrd' (x:y:xs) = x <= y && isOrd' (y:xs)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (e)}
+	\textbf{sortiertes Zusammenfügen zweier (sortierten) Listen}
+	
+	\texttt{merge :: [Int] -> [Int] -> [Int]}
+	
+	\pause \bigskip
+	\begin{lstlisting}
+merge :: [Int] -> [Int] -> [Int]
+merge [] ys = ys
+merge xs [] = xs
+merge (x:xs) (y:ys)
+	| x < y     = x : merge xs (y:ys)
+	| otherwise = y : merge (x:xs) ys
+	\end{lstlisting}
+	\pause
+	\begin{lstlisting}
+merge' :: [Int] -> [Int] -> [Int]
+merge' [] ys = ys
+merge' xs [] = xs
+merge' xxs@(x:xs) yys@(y:ys)
+	| x < y     = x : merge' xs yys
+	| otherwise = y : merge' xxs ys
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (f)}
+	\textbf{(unendliche) Liste der Fibonacci-Zahlen}
+	
+	\texttt{fibs :: [Int]}
+	
+	\pause \bigskip
+	\begin{lstlisting}
+fibs :: [Int]
+fibs = fibs' 0 1
+	where fibs' n m = n : fibs' m (n+m)
+	\end{lstlisting}
+	\pause
+	\begin{lstlisting}
+fib :: Int -> Int
+fib 0 = 1
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+	
+fibs :: [Int]
+fibs = fibAppend 0
+	where fibAppend x = fib x : fibAppend (x+1)
+	\end{lstlisting}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Übungsblatt 2 \\ \textit{\normalsize Aufgabe 2}}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 2 -- Teil (a)}
+	\textbf{Liste von Wörtern aneinanderfügen}
+	
+	\texttt{join :: [String] -> String}
+	
+	\pause \bigskip
+	
+	\begin{lstlisting}
+join :: [String] -> String
+join [] = ""
+join [x] = x
+join (x:xs) = x  ++ ' ' : join xs
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 2 -- Teil (a)}
+	\textbf{Trennung eines Strings in seine Wörter}
+	
+	\texttt{unjoin :: String -> [String]}
+	
+	\bigskip
+	
+	\begin{onlyenv}<2>
+		\begin{lstlisting}
+unjoin :: String -> [String]
+unjoin s = f [] s
+	where
+		f save [] = [save]
+		f save (c:cs)
+			| c == ' ' = save : f [] cs
+			| otherwise = f (save ++ [c]) cs
+		\end{lstlisting}
+	\end{onlyenv}
+	
+	\begin{onlyenv}<3>
+		\begin{lstlisting}
+unjoin'' :: String -> [String]
+unjoin''     [] = []
+unjoin''    [c] = if c == ' ' then [[], []] else [[c]]
+unjoin'' (c:cs)
+	| c == ' '  = [] : unjoin'' cs
+	| otherwise = let (s:ss) = unjoin'' cs
+			      in ((c:s):ss)
+		\end{lstlisting}
+	\end{onlyenv}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Übungsblatt 2 \\ \textit{\normalsize Aufgabe 3}}
+
+\begin{frame}[fragile] \frametitle{Algebraische Datentypen}
+	\begin{itemize}
+		\item Ziel: problemspezifische Datenkonstruktoren
+		\item z.B. in \textit{C}: Aufzählungstypen
+		\item funktionale Programmierung: algebraische Datentypen
+	\end{itemize}
+
+	\textbf{Aufbau:}
+	\begin{lstlisting}
+data Typename 
+	= Con1 t11 ... t1k1
+	| Con2 t21 ... t2k2
+	| ...
+	| Conr tr1 ... trkr
+	\end{lstlisting}
+	\begin{itemize}
+		\item \texttt{Typename} ist ein Name (Großbuchstabe)
+		\item \texttt{Con1, ... Conr} sind Datenkonstruktoren (Großbuchstabe)
+		\item \texttt{tij} sind Typnamen (Großbuchstaben)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Algebraische Datentypen -- Beispiele}
+	
+	\begin{lstlisting}
+data Typename 
+	= Con1 t11 ... t1k1
+	| Con2 t21 ... t2k2
+	| ...
+	| Conr tr1 ... trkr
+	\end{lstlisting}
+	
+	\begin{lstlisting}
+data Season = Spring | Summer | Autumn | Winter
+	\end{lstlisting}
+	
+	\begin{lstlisting}
+goSkiing :: Season -> Bool
+goSkiing Winter = True
+goSkiing _      = False
+	\end{lstlisting}
+	
+	\begin{lstlisting}
+data TriBool = TriTrue | TriMaybe | TriFalse
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 3}
+	\begin{lstlisting}
+data BinTree = Branch Int BinTree BinTree | Nil
+	\end{lstlisting}
+	\pause
+	\begin{lstlisting}[firstnumber=2, basicstyle=\ttfamily\scriptsize]
+tree1 :: BinTree -- Suchbaum  
+tree1 = Branch 5 
+		(   Branch 3 
+				(Branch 2 Nil Nil) 
+				(Branch 4 Nil Nil)
+		)(
+				Branch 8 
+					(   Branch 7 
+							(Branch 6 Nil Nil) 
+							(Nil)
+					)
+					(   Branch 10 
+							(Nil)
+							(Branch 13 Nil Nil)
+					)
+		)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 3 -- Teil (a)}
+	\textbf{Einfügen von Schlüsseln in einen Binärbaum}
+	
+	\begin{ttfamily}
+		data BinTree = Branch Int BinTree BinTree | Nil \\
+		insert :: BinTree -> [Int] -> BinTree
+	\end{ttfamily}
+	
+	\bigskip \pause
+	
+	\begin{lstlisting}
+insert :: BinTree -> [Int] -> BinTree
+insert t     [] = t
+insert t (x:xs) = insert t' xs
+	where
+		t' = insertSingle t x
+		insertSingle Nil            x = Branch x Nil Nil
+		insertSingle (Branch y l r) x
+			| x < y     = Branch y (insertSingle l x) r
+			| otherwise = Branch y l                  (insertSingle r x)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 3 -- Teil (b)}
+	\textbf{Test auf Baum-Gleichheit}
+	
+	\begin{ttfamily}
+		data BinTree = Branch Int BinTree BinTree | Nil \\
+		equal :: \only<2>{BinTree -> BinTree -> Bool}
+	\end{ttfamily}
+	
+	\bigskip \pause
+	
+	\begin{lstlisting}
+equal :: BinTree -> BinTree -> Bool
+equal Nil              Nil              = True
+equal Nil              (Branch y l2 r2) = False
+equal (Branch x l1 r1) Nil              = False
+equal (Branch x l1 r1) (Branch y l2 r2)
+	= (x == y) && (equal l1 l2) && (equal r1 r2)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} \frametitle{Ende}
+	\centering
+	\textbf{Fragen?}
+\end{frame}
+
+\end{document}
