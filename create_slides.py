@@ -40,6 +40,7 @@ tempFile.close()
 # compile .tex file >> .pdf
 shellHandout = '> texfot pdflatex -jobname=' + handoutFilename + " " + tempFilename + texExt
 os.system(shellHandout)
+os.system(shellHandout)
 
 # remove temporary files (especially .tex-file)
 vrbFile = open(handoutFilename + '.vrb',"w+")
@@ -64,6 +65,7 @@ tempFile.close()
 
 # compile .tex file >> .pdf
 shellSlides = '> texfot pdflatex -jobname=' + slidesFilename + " " + tempFilename + texExt
+os.system(shellSlides)
 os.system(shellSlides)
 
 # remove temporary files (especially .tex-file)
