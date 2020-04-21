@@ -1,0 +1,433 @@
+\documentclass{beamer}
+\usepackage{../tut-slides}
+\usepackage{../mathoperatorsAuD}
+
+\usepackage{csquotes}
+\usepackage{cancel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+\newcommand{\labelitemi}{\raisebox{1pt}{\scalebox{.9}{$\blacktriangleright$}}}
+\newcommand{\labelitemii}{$\vartriangleright$}
+\newcommand{\labelitemiii}{--}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tabu}
+\newcommand*\head{\rowfont{\bfseries}}
+\newcommand*{\tw}{\rowfont{\ttfamily}}
+
+\renewcommand{\tabularxcolumn}[1]{>{\hspace{0pt}}m{#1}}
+
+\usepackage{listings}
+\lstset{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Haskell,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+\begin{document}	
+	\title{Programmierung}
+	\subtitle{Übung 3: Bäume \& Funktionen höherer Ordnung}
+	\author{Eric Kunze}
+	\email{eric.kunze@mailbox.tu-dresden.de}
+%	\city{TU Dresden}
+	\date{}
+%	\institute{Lehrstuhl für Grundlagen der Programmierung}
+%	\titlegraphic{\includegraphics[width=2cm]{../TUD-white.pdf}}
+	
+	\maketitle
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Übungsblatt 2 \\ \textit{\normalsize Aufgabe 3}}
+
+\begin{frame}[fragile] \frametitle{Algebraische Datentypen}
+	\begin{itemize}
+		\item Ziel: problemspezifische Datenkonstruktoren
+		\item z.B. in \textit{C}: Aufzählungstypen
+		\item funktionale Programmierung: algebraische Datentypen
+	\end{itemize}
+	
+	\textbf{Aufbau:}
+	\begin{lstlisting}
+data Typename 
+	= Con1 t11 ... t1k1
+	| Con2 t21 ... t2k2
+	| ...
+	| Conr tr1 ... trkr
+	\end{lstlisting}
+	\begin{itemize}
+		\item \texttt{Typename} ist ein Name (Großbuchstabe)
+		\item \texttt{Con1, ... Conr} sind Datenkonstruktoren (Großbuchstabe)
+		\item \texttt{tij} sind Typnamen (Großbuchstaben)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Algebraische Datentypen -- Beispiele}
+	
+	\begin{lstlisting}
+data Typename 
+	= Con1 t11 ... t1k1
+	| Con2 t21 ... t2k2
+	| ...
+	| Conr tr1 ... trkr
+	\end{lstlisting}
+	
+	\begin{lstlisting}
+data Season = Spring | Summer | Autumn | Winter
+	\end{lstlisting}
+	
+	\begin{lstlisting}
+goSkiing :: Season -> Bool
+goSkiing Winter = True
+goSkiing _      = False
+	\end{lstlisting}
+	
+	\begin{lstlisting}
+data TriBool = TriTrue | TriMaybe | TriFalse
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 3}
+	\begin{lstlisting}
+data BinTree = Branch Int BinTree BinTree | Nil
+	\end{lstlisting}
+	\pause
+	\begin{lstlisting}[firstnumber=2, basicstyle=\ttfamily\scriptsize]
+tree1 :: BinTree -- Suchbaum  
+tree1 = Branch 5 
+		(  Branch 3 
+				(Branch 2 Nil Nil) 
+				(Branch 4 Nil Nil)
+		)( Branch 8 
+				(	Branch 7 
+						(Branch 6 Nil Nil) 
+						(Nil)
+				)
+				(	Branch 10 
+						(Nil)
+						(Branch 13 Nil Nil)
+				)
+		)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 3 -- Teil (a)}
+	\textbf{Einfügen von Schlüsseln in einen Binärbaum}
+	
+	\begin{ttfamily}
+		data BinTree = Branch Int BinTree BinTree | Nil \\
+		insert :: BinTree -> [Int] -> BinTree
+	\end{ttfamily}
+	
+	\bigskip \pause
+	
+	\begin{lstlisting}
+insert :: BinTree -> [Int] -> BinTree
+insert t     [] = t
+insert t (x:xs) = insert t' xs
+	where
+		t' = insertSingle t x
+		insertSingle Nil            x = Branch x Nil Nil
+		insertSingle (Branch y l r) x
+			| x < y     = Branch y (insertSingle l x) r
+			| otherwise = Branch y l                  (insertSingle r x)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 3 -- Teil (b)}
+	\textbf{Test auf Baum-Gleichheit}
+	
+	\begin{ttfamily}
+		data BinTree = Branch Int BinTree BinTree | Nil \\
+		equal :: \only<2>{BinTree -> BinTree -> Bool}
+	\end{ttfamily}
+	
+	\bigskip \pause
+	
+	\begin{lstlisting}
+equal :: BinTree -> BinTree -> Bool
+equal Nil              Nil              = True
+equal Nil              (Branch y l2 r2) = False
+equal (Branch x l1 r1) Nil              = False
+equal (Branch x l1 r1) (Branch y l2 r2)
+	= (x == y) && (equal l1 l2) && (equal r1 r2)
+	\end{lstlisting}
+\end{frame}
+
+
+
+
+
+
+
+\section{Übungsblatt 3 \\ \textit{\normalsize Aufgabe 1}}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (a)}
+	\textbf{Anzahl der Blätter}
+	
+	\begin{ttfamily}
+		data RoseTree = Node Int [RoseTree] \\
+		countLeaves :: RoseTree -> Int
+	\end{ttfamily}
+	
+	
+	\pause \bigskip
+	
+	\begin{lstlisting}
+-- (a) Blaetter zaehlen
+countLeaves :: RoseTree -> Int
+countLeaves (Node _ [] )    = 1
+countLeaves (Node _ [t])    = countLeaves t
+countLeaves (Node x (t:ts)) 
+	= countLeaves t + countLeaves (Node x ts)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (b)}
+	\textbf{gerade Anzahl an Kindern}
+	
+	\begin{ttfamily}
+		data RoseTree = Node Int [RoseTree] \\
+		evenNodes :: RoseTree -> Bool
+	\end{ttfamily}
+	
+	
+	\pause \bigskip
+	\begin{onlyenv}<2>
+		\begin{lstlisting}
+-- (b) gerade Anzahl an Kindern testen - Variante 1
+evenNodes :: RoseTree -> Bool
+evenNodes (Node _  []       ) = True
+evenNodes (Node x  [t]      ) = False
+evenNodes (Node x (t1:t2:ts)) 
+	= evenNodes (Node x ts) && evenNodes t1 && 
+	  evenNodes t2
+		\end{lstlisting}
+	\end{onlyenv}
+
+	\begin{onlyenv}<3>
+		\begin{lstlisting}
+-- (b) gerade Anzahl an Kindern testen - Variante 2
+evenNodes :: RoseTree -> Bool
+evenNodes' (Node _ []) = True
+evenNodes' (Node _ ts)
+	= mod (length ts) 2 == 0 && evenNodes'' ts
+	where
+		evenNodes'' :: [RoseTree] -> Bool
+		evenNodes'' []     = True
+		evenNodes'' (t:ts) 
+			= evenNodes' t && evenNodes'' ts
+		\end{lstlisting}
+	\end{onlyenv}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Funktionen advanced}
+
+
+\begin{frame}[fragile] \frametitle{Funktionen}
+	Wir kennen bereits einige Möglichkeiten Funktionen zu notieren. Hier seien einige weitere erwähnt.
+	\begin{description}
+		\item[anonyme Funktionen.] Funktionen ohne konkreten Namen \\
+		z.B. \lstinline[basicstyle=\ttfamily\normalsize]|(\x -> x+1)| ist die Addition mit \texttt{1} 
+		\begin{lstlisting}
+(\x -> x+1) 4 = 5
+		\end{lstlisting}
+		%
+		\pause
+		%
+		\item[Operator $\leftrightarrow$ Funktion] Aus Operatoren (wie z.B. \texttt{+}) kann man eine Funktion machen und vice versa.
+		\begin{itemize}
+			\item Operator $\to$ Funktion: Klammern drum herum
+			\begin{lstlisting}
+(+) :: Int -> Int -> Int
+(+) x y =  x + y
+			\end{lstlisting}
+			\item Funktion $\to$ Operator: Backticks \texttt{`...`}
+			\begin{lstlisting}
+5 `mod` 2 = 1
+			\end{lstlisting}
+		\end{itemize}
+	\end{description}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Funktionskomposition}
+	Analog zur mathematischen Notation $f = g \circ h$ für $f(x) = g(h(x))$ versteht auch Haskell das Kompositionsprinzip mit dem Operator \texttt{.} \\
+	z.B. 
+	\begin{lstlisting}
+sqAdd :: Int -> Int
+sqAdd = (^2) . (+ 5)
+	\end{lstlisting} 
+	statt \lstinline[basicstyle=\ttfamily\normalsize]|sqAdd x = (x + 5)^2| für das Quadrat des fünften Nachfolgers
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Partielle Applikation}
+	Funktionen müssen nicht immer mit allen Argumenten versorgt werden. Lässt man (hintere) Argumente weg, so spricht man von Unterversorgung.
+	Die Modulo Funktion hat eigentlich zwei Argumente. Lassen wir das zweite Argument weg, so liefert dies uns eine neue Funktion, die noch ein Argument entgegennimmt und sodann die Restberechnung ausführt.
+	\begin{lstlisting}
+mod :: Int -> Int -> Int
+mod m n = ...
+
+mod 10 :: Int -> Int
+(mod 10) n = mod 10 n
+
+(> 3) :: Int -> Bool
+(> 3) x = x > 3
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Funktionen höherer Ordnung --- map}
+	Funktionen können als Argumente von Funktionen auftreten. Wir lernen drei Basics kennen: \pause
+	
+	\textbf{Die Funktion map}
+	\begin{itemize}
+		\item \texttt{map} ermöglicht es eine Funktion \texttt{f} auf alle Elemente einer Liste anzuwenden \\ 
+		\begin{lstlisting}
+map :: (Int -> Int) -> [Int] -> [Int] 
+map f [] = [] 
+map f (x:xs) = f x : map f xs
+		\end{lstlisting}
+		\item \textit{Beispiel.} \\
+		\begin{lstlisting}
+map square [1,2,7,12,3,20] = [1,4,49,144,9,400]
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Funktionen höherer Ordnung --- filter}
+	\textbf{Die Funktion filter}
+	\begin{itemize}
+		\item \texttt{filter p xs} liefert eine Liste, die genau die Elemente von \texttt{xs} enthält, welche das Prädikat \texttt{p} erfüllen \\
+		\begin{lstlisting}
+filter :: (a -> Bool) -> [a] -> [a] 
+filter p xs = [ x | x <- xs, p x]
+		\end{lstlisting}
+		\item \textit{Beispiel.} \\
+		\begin{lstlisting}
+filter odd [1,2,7,12,3,20] = [1,7,3]
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Funktionen höherer Ordnung --- foldr}
+	\textbf{Die Funktion foldr}
+	\begin{itemize}
+		\item \texttt{foldr f z xs} faltet eine Liste \texttt{xs} und verknüpft jeweils durch die Funktion \texttt{f}; gestartet wird mit \texttt{z} und dem rechtesten Element 
+		\begin{lstlisting}
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f z []     = z 
+foldr f z (x:xs) = f x (foldr f z xs) 
+		\end{lstlisting}
+		\item \emph{Beispiel.} \\
+		\begin{lstlisting}
+foldr (+) 3 [1,2,3,4,5] = 18
+length xs = foldr (+) 0 (map (\x -> 1) xs)
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{Funktionen höherer Ordnung -- Übersicht}
+	\begin{itemize}
+		\item \texttt{map} wendet Funktion auf alle Listenelemente an
+		\begin{lstlisting}
+map :: (a -> b) -> [a] -> [b]
+map f [] = []
+map f (x:xs) = f x : map f xs
+		\end{lstlisting}
+		\item \texttt{filter} wählt Listenelemente anhand einer Funktion aus
+		\begin{lstlisting}
+filter :: (a -> Bool) -> [a] -> [a]
+filter p xs = [ x | x <- xs, p x]
+		\end{lstlisting}
+		\item \texttt{foldr} faltet eine Liste mit Verknüpfungsfunktion (von rechts beginnend)
+		\begin{lstlisting}
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f z []     = z
+foldr f z (x:xs) = f x (foldr f z xs) 
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\section{Übungsblatt 3 \\ \textit{\normalsize Aufgabe 2}}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 2}
+	\textbf{Produkt der Quadrate aller geraden Zahlen einer Liste} \\
+	\begin{ttfamily}
+		f :: [Int] -> Int
+	\end{ttfamily}
+	
+	\pause \bigskip
+	
+	\begin{lstlisting}
+f :: [Int] -> Int
+f xs 
+	= foldr (+) 0 (map (^2) (filter (`mod` 2) == 0) xs))
+	\end{lstlisting}
+	\pause
+	\begin{lstlisting}
+f' :: [Int] -> Int
+f' xs = foldr (*) 1 (map (^2) (filter even xs))
+	\end{lstlisting}
+	\pause
+	\begin{lstlisting}
+f'' :: [Int] -> Int
+f'' = foldr (*) 1 . map (^2) . filter even
+	\end{lstlisting}
+	\begin{lstlisting}
+f''' :: [Int] -> Int
+f''' = 
+	foldr (*) 1 . map (^2) . filter ((== 0) . (`mod` 2))
+	\end{lstlisting}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Übungsblatt 3 \\ \textit{\normalsize Aufgabe 2}}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 3}
+	\textbf{Faltung einer Liste von \textit{links}} \\
+	\begin{ttfamily} \small
+		foldleft ::  (Int -> Int -> Int) -> Int -> [Int] -> Int
+	\end{ttfamily}
+	
+	
+	\pause \bigskip
+	
+	\begin{lstlisting}
+foldleft :: (Int -> Int -> Int) -> Int -> [Int] -> Int
+foldleft f x []     = x
+foldleft f x (y:ys) = foldleft f (f x y) ys
+	\end{lstlisting}
+\end{frame}
+
+
+\begin{frame} \frametitle{Ende}
+	\centering
+	\textbf{Fragen?}
+\end{frame}
+
+\end{document}
+
