@@ -226,7 +226,7 @@ evenNodes (Node x (t1:t2:ts))
 	\begin{onlyenv}<3>
 		\begin{lstlisting}
 -- (b) gerade Anzahl an Kindern testen - Variante 2
-evenNodes :: RoseTree -> Bool
+evenNodes' :: RoseTree -> Bool
 evenNodes' (Node _ []) = True
 evenNodes' (Node _ ts)
 	= mod (length ts) 2 == 0 && evenNodes'' ts
