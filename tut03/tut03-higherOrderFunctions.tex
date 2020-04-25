@@ -1,0 +1,325 @@
+% This work is licensed under the Creative Commons
+% Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy
+% of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or
+% send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+% (c) Eric Kunze, 2019
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template for lecture notes and exercises at TU Dresden.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[ngerman, a4paper, 11pt]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage[onehalfspacing]{setspace} % increase row-space
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{lmodern}
+\usepackage{ulem} 
+
+\usepackage{fancyhdr} 	% customize header / footer
+
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+%\usepackage{blkarray}
+\usepackage{latexsym, marvosym, wasysym, stmaryrd}
+\usepackage{bbm} 		% unitary matrix
+
+
+% further support for different equation setting
+\usepackage{cancel}
+\usepackage{xfrac}		% sfrac -> fractions e.g. 3/4
+\usepackage{diagbox}
+
+\usepackage{../mathoperatorsAuD}
+
+\usepackage[table,dvipsnames]{tudscrcolor}
+\usepackage{tabularx} 	% tabularx-environment (explicitly set width of columns)
+\usepackage{multirow}
+\usepackage{booktabs}	% improved rules
+
+
+\newcommand{\begriff}[1]{\textbf{#1}}
+\newcommand{\person}[1]{\textsc{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             COUNTER                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{chngcntr}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+
+\pretocmd{\chapter}{\setcounter{section}{0}}{}{}
+\pretocmd{\chapter}{\setcounter{equation}{0}}{}{}
+
+\renewcommand{\labelitemi}{\raisebox{2pt}{\scalebox{.4}{$\blacksquare$}}}
+\renewcommand{\labelitemii}{$\vartriangleright$}
+\renewcommand{\labelitemiii}{--}
+% Variantionen des Dreiecks als Aufzählungszeichen $\blacktriangleright$ / $\vartriangleright$ / $\triangleright$
+
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\renewcommand{\labelenumii}{\alph{enumii}.}
+\renewcommand{\labelenumiii}{\roman{enumiii}.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}   % change title headings look
+\usepackage{chngcntr}   % modify counters
+\usepackage{relsize}    % relative font size (smaller[i], larger[i], ...)
+
+\titleformat{\section}[hang]{\bfseries\LARGE\centering}{\thesection}{8pt}{}
+%\titleformat*{\section}{\bfseries\titlefont\sectionsize}
+\titleformat*{\subsection}{\sffamily\itshape\large\centering}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{listings}
+\lstset{
+	basicstyle=\small\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style 
+	language=Haskell,                 % the language of the code
+	numbers=none,                    % where to put the line-numbers; possible: (none, left, right)
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+\lstdefinestyle{noframe}{
+	basicstyle=\normalsize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style 
+	language=Haskell,                 % the language of the code
+	numbers=none,                    % where to put the line-numbers; possible: (none, left, right)
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+\lstdefinestyle{frame}{
+	basicstyle=\normalsize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Haskell,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREM ENVIRONMENTS // MATH
+
+\usepackage{ntheorem}
+
+\DeclareMathSymbol{*}{\mathbin}{symbols}{"01}
+
+\counterwithin{equation}{section}
+\newcounter{themcount}
+\counterwithin{themcount}{section}
+
+\newcommand{\skiparound}{10pt}
+\theorempreskip{\skiparound}
+\theorempostskip{\skiparound}
+
+\theoremstyle{nonumberplain}
+\theoremseparator{.}
+\theorembodyfont{}
+
+\newtheorem{aufgabe}{Aufgabe}
+\theorembodyfont{\itshape}
+\newtheorem{bemerkung}[themcount]{Bemerkung}
+
+\usepackage[
+	type={CC},
+	modifier={by-nc-sa},
+	version={4.0},
+]{doclicense}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           REFERENCES                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[unicode,bookmarks=true]{hyperref}
+\hypersetup{
+	% pdfborder={0 0 0}			% no boxed around links
+	pdfborderstyle={/S/U/W 1},	% underlining insteas of boxes
+	linkbordercolor=cdblue,
+	urlbordercolor=cdblue
+}
+
+\usepackage{cleveref}
+\crefname{bemerkung}{Bemerkung}{Bemerkungen}
+
+\usepackage{bookmark}		% pdf-bookmarks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      ADDITIONAL COMMANDS                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*\ruleline[1]{\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-.8ex}{#1}\hspace{1ex}\hrulefill}}}
+
+\usepackage[edges]{forest}
+%\usepackage[default]{opensans}
+
+\begin{document}
+	\begin{center}
+		{\bfseries \sffamily \huge Funktionen höherer Ordnung} 
+		
+		\ruleline{\sffamily \Large Übungsblatt 3}
+		
+		{\scshape Eric Kunze --- \today}
+	\end{center}
+	\medskip
+	
+	{ \footnotesize \doclicenseThis }
+	
+	\begin{center}
+		\small \slshape Keine Garantie auf Vollständigkeit und/oder Korrektheit!
+	\end{center}
+	
+Funktionen höherer Ordnung sind Funktionen, die selbst wieder Funktionen als Argumente oder Ergebnisse besitzen.
+Steckt man ein wenig tiefer in der Mathematik, dann erkennt man Funktionale und Operatoren als \enquote{Funktionen höherer Ordnung}. Ein relativ einfaches Beispiel, das man auch als Normalsterblicher verstehen kann ist der Differentialoperator
+\begin{equation*}
+%	\bigabb{D}{C^1(\R)}{C^0(\R)}{f}{f'}
+	D: \quad C^1(\R) \to C^0(\R), \quad f \mapsto f'
+\end{equation*}
+der eine Funktion auf ihre Ableitungsfunktion abbildet. Das Argument ist eine Funktion und als Resultat erhält man wieder eine Funktion: $D$ ist eine Funktion höherer Ordnung. 
+
+Genug der Mathematik, schauen wir uns drei Funktionen höherer Ordnung an:
+\begin{enumerate}[leftmargin=*]
+	\item Wir wollen eine Funktion auf alle Elemente einer Liste anwenden. Dies geschieht durch die Funktion \texttt{map}, die wie folgt definiert ist:
+	\begin{lstlisting}[style=frame]
+	map :: (Int -> Int) -> [Int] -> [Int]
+	map f []     = []
+	map f (x:xs) = f x : map f xs
+	\end{lstlisting}
+	Schauen wir uns einmal den Typ der Funktion an:
+	\begin{equation*}
+		\texttt{map :: } \underbrace{\texttt{(Int -> Int)}}_{\text{Funktion \texttt{f}}} \texttt{ -> } \underbrace{\texttt{[Int]}}_{\text{Liste \texttt{(x:xs)}}} \texttt{ -> } \underbrace{\texttt{[Int]}}_{\text{Ergebnis}}
+	\end{equation*}
+	\texttt{f} ist also selbst eine Funktion \texttt{Int -> Int}, die ein Listenelement und dieses verändert. 
+	\item Wir wollen aus einer Liste nur bestimmte Elemente behalten. Dazu definieren wir uns ein sogenanntes Prädikat \texttt{p :: Int -> Bool}, welches entscheidet, ob ein Element behalten werden soll (\texttt{True}) oder nicht (\texttt{False}). Dieses Prädikat (das selbst ja eine Funktion ist) übergeben wir an die Funktion \texttt{filter} mitsamt der zu bearbeitenden Liste. \texttt{filter p  xs} ist dann also die Liste aller Elemente, die \texttt{p} erfüllen.
+	Schauen wir uns an, wie \texttt{filter} definiert werden kann:
+	\begin{lstlisting}[style=frame]
+	filter :: (Int -> Bool) -> [Int] -> [Int]
+	filter _ []     = []
+	filter p (x:xs) 
+		| p x       = x : filter p xs
+		| otherwise =     filter p xs
+	\end{lstlisting}
+	Erneut betrachten wir kurz den Datentyp der Funktion:
+	\begin{equation*}
+		\texttt{filter :: } \underbrace{\texttt{(Int -> Bool)}}_{\text{Prädikat \texttt{p}}} \texttt{ -> } \underbrace{\texttt{[Int]}}_{\text{Liste \texttt{(x:xs)}}} \texttt{ -> } \underbrace{\texttt{[Int]}}_{\text{Ergebnis}}
+	\end{equation*}
+	\item Die dritte Funktion im Bunde soll uns eine Liste falten, d.h. immer zwei Elemente miteinander verknüpfen. Wir betrachten hier die Faltung von rechts mit \texttt{foldr}. Es gibt auch die Faltung von links mit \texttt{foldl}; die betrachten wir unten in Aufgabe 3 näher. Die Faltung beginnen wir mit einem Startwert \texttt{a} und anschließend verknüpfen wir von rechts beginnend immer ein Element der Liste mit dem vorherigen Ergebnis unter Nutzung einer Verknüpfungsfunktion \texttt{f}. In Haskell sieht das wie folgt aus:
+	\begin{lstlisting}[style=frame]
+	foldr :: (Int -> Int -> Int) -> Int -> [Int] -> Int
+	foldr _ a []     = a
+	foldr f a (x:xs) = f a (foldr f a xs)
+	\end{lstlisting}
+	Betrachtung des Datentyps ergibt:
+	\begin{equation*}
+	\texttt{foldr :: } \underbrace{\texttt{(Int -> Int -> Int)}}_{\text{Verknüpfungsfunktion \texttt{f}}} \texttt{ -> } \underbrace{\texttt{Int}}_{\text{Startwert \texttt{a}}} \texttt{ -> } \underbrace{\texttt{[Int]}}_{\text{Liste \texttt{(x:xs)}}} \texttt{ -> } \underbrace{\texttt{Int}}_{\text{Ergebnis}}
+	\end{equation*}
+	Wir erhalten in der Auswertung also zunächst einen Rekursionsbaum, der nach rechts wächst. Anschließend werten wir dann die Funktionsaufrufe von hinten beginnen aus.
+\end{enumerate}
+
+\section*{Aufgabe 2}
+
+\begin{aufgabe}
+	In der Vorlesung wurden die Higher-Order-Funktionen
+	\begin{lstlisting}
+		map    :: (Int -> Int)  -> [Int] -> [Int]
+		filter :: (Int -> Bool) -> [Int] -> [Int]
+		foldr  :: (Int -> Int -> Int) -> Int -> [Int] -> Int
+	\end{lstlisting}
+	vorgestellt. Implementieren Sie eine Funktion \texttt{f :: [Int] -> Int} mithilfe von \texttt{map}, \texttt{filter} und \texttt{foldr}, die das Produkt der Quadrate der geraden Zahlen in der Eingabeliste berechnet. \\
+	\textit{Hinweis: In Haskell sind die Funktionen \texttt{map}, \texttt{filter} und \texttt{foldr} bereits implementiert, Sie können sie ohne eigene Definition verwenden.}
+\end{aufgabe}
+
+Wir überlegen uns wie wir die einzelnen Bestandteile der Aufgabe den Higher-order-functions) zuordnen:
+\begin{enumerate}
+	\item  Wir brauchen alle geraden Zahlen. Um auf Geradzahligkeit zu testen gibt es die vorimplementierte \texttt{even}-Funktion. Alle geraden Elemente einer Liste \texttt{xs} zu extrahieren deutet auf die \texttt{filter}-Funktion hin mit dem Prädikat \texttt{even}. Also erhalten wir die Liste gerader Zahlen als 
+	\begin{lstlisting}[style=noframe]
+		filter even xs
+	\end{lstlisting}
+	\item  Wir wollen diese (geraden) Elemente quadrieren. Dafür nehmen wir den Operator \lstinline{^2} und mache daraus eine Funktion, indem wir Klammern drumherum setzen. Alternativ können wir auch einen anonyme (namenslose) Funktion notieren mit \lstinline|\x -> x*x|. Eine Funktion auf alle Elemente einer Liste anwenden schreit nach \texttt{map}. Dementsprechend wenden wir \texttt{map} mit der Funktion \lstinline{(^2)} auf die erhaltene Liste aus dem ersten Schritt an, also auf \texttt{filter even xs} und erhalten als Quadrate aller gerade Elemente die Liste
+	\begin{lstlisting}[style=noframe]
+		map (^2) (filter even xs)
+	\end{lstlisting}
+	oder
+	\begin{lstlisting}[style=noframe]
+		map (\x -> x*x) (filter even xs)
+	\end{lstlisting}
+	\item  Nun wollen wir noch das Produkt dieser Elemente bilden. Dafür eignet sich \texttt{foldr}, weil wir alle Listenelemente zusammenfalten wollen. Dafür brauchen wir eine Verknüpfungsfunktion, wie wir die einzelnen Elemente verknüpfen wollen, das ist hier die Multiplikation und die Funktion dafür notieren wir mit Klammern drumherum als \texttt{(*)}. Zusätzlich brauchen wir einen Startwert, mit dem wir die Operation beginnen und weil wir nichts vorausgesetzt haben nehmen wir das neutrale Element, also die \texttt{1}. Und nun fehlt noch die zu faltende Liste: die erhalten wir aus Schritt 2 als \lstinline{map (^2) (filter even xs)}. Somit können wir das Produkt der Quadrate aller geraden Zahlen einer Liste \texttt{xs} schreiben als
+	\begin{lstlisting}[style=noframe]
+		foldr (*) 1 (map (^2) (filter even xs))
+	\end{lstlisting}
+	und weil das schon unsere Funktion \texttt{f} machen soll, gilt also
+	\begin{lstlisting}[style=frame]
+	f :: [Int] -> Int
+	f xs = foldr (*) 1 (map (^2) (filter even xs))
+	\end{lstlisting}
+\end{enumerate}
+
+\section*{Aufgabe 3}
+
+\begin{aufgabe}
+	Geben Sie eine Funktion \texttt{foldleft :: (Int -> Int -> Int) -> Int -> [Int] -> Int} an,
+	so dass für jedes \texttt{f :: Int -> Int -> Int} und $\texttt{a}_\texttt{0} \texttt{:: Int}$, $\texttt{b}_\texttt{1}\texttt{, }\dots\texttt{, b}_\texttt{k}\texttt{ :: Int}$, $\texttt{k} \in \N$ gilt, dass
+	\begin{equation*}
+		\texttt{foldleft f a}_\texttt{0} \texttt{ [b}_\texttt{1}\texttt{ , \dots , b}_\texttt{k}\texttt{ ] = f (f \dots (f a}_\texttt{0}\texttt{ b}_\texttt{1}\texttt{) \dots b}_{\texttt{k-1}}\texttt{) b}_\texttt{k}
+	\end{equation*}
+	also z.B.
+	\begin{equation*}
+		\texttt{foldleft (+) 5 [1, 4, 3] = (+) ((+) ((+) 5 1) 4) 3 = ((5 + 1) + 4) + 3}
+	\end{equation*}
+	Insbesondere soll \texttt{foldleft f a [] = a} gelten.
+\end{aufgabe}
+
+Hier sollen wir die Funktion \texttt{foldleft} uns ansehen, die eine Liste nun von links beginnend faltet (im Gegensatz zu foldr, wo von rechts gefaltet wird). \textit{Hinweis:} \texttt{foldleft} ist als \texttt{foldl} schon vorimplementiert, wir sollen uns hier also nochmal überlegen wie das ganze funktioniert.
+
+Dazu folgende Ausgangssituation: \texttt{foldleft} nimmt wieder eine (Verknüpfungs-)Funktion \texttt{f}, einen Startwert \texttt{a} und eine Liste als Argumente entgegen. Also erhalten wir den Funktionstyp
+\begin{equation*}
+	\texttt{foldleft :: } \underbrace{\texttt{(Int -> Int -> Int)}}_{\text{Funktion}} \texttt{ -> } \underbrace{\texttt{Int}}_{\text{Start}} \texttt{ -> } \underbrace{\texttt{[Int]}}_{\text{Liste}} \texttt{ -> } \underbrace{\texttt{Int}}_{\text{Ergebnis}}
+\end{equation*}
+Nehmen wir an, dass die Liste mindestens ein Element habe und daher die Struktur \texttt{(x:xs)}.
+Nun beginnen wir die Faltung von links und verknüpfen den Startwert mit dem ersten Element unserer Liste, also dem \texttt{x}. Wir erhalten als Ergebnis \texttt{f a x}. Dann müssen wir dieses Ergebnis weiter mit dem Rest \texttt{xs} verfalten. Dazu können wir doch einfach das gerade erhaltene Ergebnis \texttt{f a x} als neuen Startwert verwenden und rufen \texttt{foldleft} rekursiv auf der Restliste auf. Das sieht dann so aus:
+\begin{equation*}
+	\texttt{foldleft f a (x:xs) = foldleft } \underbrace{\texttt{f}}_{\text{Funktion}} \underbrace{\texttt{(f a x)}}_{\text{Start}} \underbrace{\texttt{xs}}_{\text{Restliste}}
+\end{equation*}
+Der zugehörige Basisfall ist nicht so einfach zu sehen und daher explizit angegeben mit 
+\begin{equation*}
+	\texttt{foldleft f a [] = a}
+\end{equation*}
+Das heißt also wir machen nichts und geben nur unseren Startwert zurück.
+Damit erhalten wir also die ganze Funktion als:
+
+\begin{lstlisting}[style=frame]
+	foldleft :: (Int -> Int -> Int) -> Int -> [Int] -> Int
+	foldleft f a []     = a
+	foldleft f a (x:xs) = foldleft f (f a x) xs
+\end{lstlisting}
+
+
+
+\end{document}
+
