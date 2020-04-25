@@ -1,0 +1,355 @@
+% This work is licensed under the Creative Commons
+% Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy
+% of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or
+% send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+% (c) Eric Kunze, 2019
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template for lecture notes and exercises at TU Dresden.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[ngerman, a4paper, 11pt]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage[onehalfspacing]{setspace} % increase row-space
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{lmodern}
+\usepackage{ulem} 
+
+\usepackage{fancyhdr} 	% customize header / footer
+
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+%\usepackage{blkarray}
+\usepackage{latexsym, marvosym, wasysym, stmaryrd}
+\usepackage{bbm} 		% unitary matrix
+
+
+% further support for different equation setting
+\usepackage{cancel}
+\usepackage{xfrac}		% sfrac -> fractions e.g. 3/4
+\usepackage{diagbox}
+
+\usepackage{../mathoperatorsAuD}
+
+\usepackage[table,dvipsnames]{tudscrcolor}
+\usepackage{tabularx} 	% tabularx-environment (explicitly set width of columns)
+\usepackage{multirow}
+\usepackage{booktabs}	% improved rules
+
+
+\newcommand{\begriff}[1]{\textbf{#1}}
+\newcommand{\person}[1]{\textsc{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             COUNTER                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{chngcntr}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+
+\pretocmd{\chapter}{\setcounter{section}{0}}{}{}
+\pretocmd{\chapter}{\setcounter{equation}{0}}{}{}
+
+\renewcommand{\labelitemi}{\raisebox{2pt}{\scalebox{.4}{$\blacksquare$}}}
+\renewcommand{\labelitemii}{$\vartriangleright$}
+\renewcommand{\labelitemiii}{--}
+% Variantionen des Dreiecks als Aufzählungszeichen $\blacktriangleright$ / $\vartriangleright$ / $\triangleright$
+
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\renewcommand{\labelenumii}{\alph{enumii}.}
+\renewcommand{\labelenumiii}{\roman{enumiii}.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}   % change title headings look
+\usepackage{chngcntr}   % modify counters
+\usepackage{relsize}    % relative font size (smaller[i], larger[i], ...)
+
+\titleformat{\section}[hang]{\bfseries\LARGE\centering}{\thesection}{8pt}{}
+%\titleformat*{\section}{\bfseries\titlefont\sectionsize}
+\titleformat*{\subsection}{\sffamily\itshape\large\centering}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{listings}
+\lstdefinestyle{noframe}{
+	basicstyle=\small\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style 
+	language=Haskell,                 % the language of the code
+	numbers=none,                    % where to put the line-numbers; possible: (none, left, right)
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+\lstdefinestyle{frame}{
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Haskell,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREM ENVIRONMENTS // MATH
+
+\usepackage{ntheorem}
+
+\DeclareMathSymbol{*}{\mathbin}{symbols}{"01}
+
+\counterwithin{equation}{section}
+\newcounter{themcount}
+\counterwithin{themcount}{section}
+
+\newcommand{\skiparound}{10pt}
+\theorempreskip{\skiparound}
+\theorempostskip{\skiparound}
+
+\theoremstyle{nonumberplain}
+\theoremseparator{.}
+\theorembodyfont{}
+
+\newtheorem{aufgabe}{Aufgabe}
+\theorembodyfont{\itshape}
+\newtheorem{bemerkung}[themcount]{Bemerkung}
+
+\usepackage[
+	type={CC},
+	modifier={by-nc-sa},
+	version={4.0},
+]{doclicense}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           REFERENCES                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[unicode,bookmarks=true]{hyperref}
+\hypersetup{
+	% pdfborder={0 0 0}			% no boxed around links
+	pdfborderstyle={/S/U/W 1},	% underlining insteas of boxes
+	linkbordercolor=cdblue,
+	urlbordercolor=cdblue
+}
+
+\usepackage{cleveref}
+\crefname{bemerkung}{Bemerkung}{Bemerkungen}
+
+\usepackage{bookmark}		% pdf-bookmarks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      ADDITIONAL COMMANDS                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*\ruleline[1]{\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-.8ex}{#1}\hspace{1ex}\hrulefill}}}
+
+\usepackage[edges]{forest}
+%\usepackage[default]{opensans}
+
+\begin{document}
+	\begin{center}
+		{\bfseries \sffamily \huge Algebraische Datentypen -- Binärbäume} 
+		
+		\ruleline{\sffamily \Large Übungsblatt 2}
+		
+		{\scshape Eric Kunze --- \today}
+	\end{center}
+	\medskip
+	
+	{ \footnotesize \doclicenseThis }
+	
+	\begin{center}
+		\small \slshape Keine Garantie auf Vollständigkeit und/oder Korrektheit!
+	\end{center}
+	
+\section*{Aufgabe 3}
+\subsection*{Teilaufgabe (a)}
+
+Wir betrachten den algebraischen Datentyp \texttt{BinTree} definiert durch
+\begin{lstlisting}[style=noframe]
+	data BinTree = Branch Int BinTree BinTree | Nil deriving Show
+\end{lstlisting}
+Wie versteht man nun diese Definition: entweder wir haben einen Knoten mit Beschriftung und zwei Kindern vorliegen oder der Baum ist leer bzw. als Nil kodiert.
+
+\begin{aufgabe}
+	Geben Sie eine Funktion \texttt{insert :: BinTree -> [Int] -> BinTree} an, die alle Werte einer Liste von Integer-Zahlen in einen bereits bestehenden Suchbaum des Typs \texttt{BinTree} so einfügt, dass die Suchbaumeigenschaft erhalten bleibt. In einem Suchbaum muss für jeden Knoten \texttt{x} gelten, dass seine Beschriftung größer oder gleich (bzw. kleiner oder gleich) allen
+	Beschriftungen im linken (bzw. rechten) Teilbaum von \texttt{x} ist.
+
+\end{aufgabe}
+
+Wir wollen die Rekursion über die Listenstruktur laufen lassen. Eine Liste ist entweder
+\begin{itemize}[nolistsep, topsep=-\parskip]
+	\item die leere Liste oder
+	\item sie hat mindestens ein (erstes) Element
+\end{itemize}
+
+Wenn wir die leere Liste einfügen wollen, dann musst man natürlich nichts machen außer den Baum wieder ausgeben. 
+So dann zum Rekursionsfall, d.h. wir haben wirklich Elemente in der Liste, die wir einfügen wollen. Dazu kann man sich erst einmal das etwas leichtere Problem ansehen, nämlich anstatt einer ganzen Liste nur ein einzelnes Element einzufügen. Dies erledigt die Funktion
+\begin{lstlisting}[style=noframe]
+	insertSingle :: BinTree -> Int -> BinTree
+\end{lstlisting}
+für uns. Der Basisfall dort ist wieder relativ einfach einzusehen, d.h. wenn wir in einen leeren Baum ein Element einfügen wollen, dann erstellen wir einen Knoten mit entsprechender Beschriftung und leeren Kindern:
+\begin{lstlisting}[style=noframe]
+	insertSingle :: BinTree -> Int -> BinTree
+	insertSingle Nil            x = Branch x Nil Nil
+\end{lstlisting}
+Betrachten wir den Rekursionsfall von \texttt{insertSingle}. Nehmen wir an, dass wir im Baum mindestens einen Knoten vorliegen haben; dieser trägt eine Beschriftung \texttt{y} und einen linkes Kind \texttt{l} sowie ein rechtes Kind \texttt{r}. Wollen wir nun dort ein Schlüssel (= Knotenbeschriftung) \texttt{x} korrekt einfügen. 
+\begin{lstlisting}[style=noframe]
+	insertSingle :: BinTree -> Int -> BinTree
+	insertSingle Nil            x = Branch x Nil Nil
+	insertSingle (Branch y l r) x = ...
+\end{lstlisting}
+Nun machen wir uns die Eigenschaft eines Suchbaums zu Nutze, dass in \texttt{l} alle Schlüssel kleiner sind als \texttt{y} und in \texttt{r} alle Schlüssel größer sind als \texttt{y}. Dementsprechend müssen wir an jedem Knoten entscheiden, ob wir in den linken oder rechten Teilbaum einfügen wollen. 
+\begin{itemize}
+	\item Ist das einzufügende Element \texttt{x} kleiner als \texttt{y}, dann gehört es per Definition des Suchbaums in den linken Teilbaum. Also gestalten wir uns einen \enquote{neuen} Knoten, der die gleiche Beschriftung \texttt{y} trägt und auch den gleichen rechten Teilbaum \texttt{r}, da wir dort ja nichts verändert haben. Den linken Teilbaum müssen wir aber verändern, nämlich so, dass dort \texttt{x} eingefügt wird -– das ist aber das bekannte Problem \enquote{Einfügen eines Schlüssels in einen Baum} und das macht uns die Funktion \texttt{insertSingle}. Daher kommt also die Zeile 
+	\begin{lstlisting}[style=noframe]
+		insertSingle :: BinTree -> Int -> BinTree
+		insertSingle Nil            x = Branch x Nil Nil
+		insertSingle (Branch y l r) x
+			| x < y     = Branch y (insertSingle l x) r
+	\end{lstlisting}
+	\item In dem Fall, dass der einzufügende Schlüssel x größer ist als y, dann gehen wir analog vor, verändern jedoch nicht den linken, sondern den rechten Teilbaum, also:
+	\begin{lstlisting}[style=noframe]
+		insertSingle :: BinTree -> Int -> BinTree
+		insertSingle Nil            x = Branch x Nil Nil
+		insertSingle (Branch y l r) x
+			| x < y     = Branch y (insertSingle l x) r
+			| otherwise = Branch y l (insertSingle r x)
+	\end{lstlisting}
+\end{itemize}
+
+Damit haben wir also das Problem \enquote{Einfügen eines Schlüssels in einen Baum} mithilfe von insertSingle gelöst. Dann müssen wir uns jetzt noch darum kümmern, dass wir von der Liste in \texttt{insert} zum einzelnen Element in \texttt{insertSingle} kommen. Das läuft aber relativ einfach als Rekursion über die Listenstruktur. Wir teilen die Liste also auf in \texttt{(x:xs)}, spalten also ein erstes Element ab. Nun wollen wir das \texttt{x} als einzelnes Element einfügen via \texttt{insertSingle t x} und bekommen dann aber schon einen neuen Baum, den wir \texttt{t'} nennen. Wenn wir die restlichen Elemente von \texttt{xs} einfügen wollen, dann müssen wir aufpassen und müssen diese in \texttt{t'} und nicht in \texttt{t} einfügen. Da entsteht dann der rekursive Aufruf \texttt{insert t' xs}. Die Auslagerung der Berechnung von \texttt{t'} ist einfach eine kleine Feinheit, die ich für bisschen verständlicher halte, man kann auch die rechte Seite von \texttt{t'} direkt in den rekursiven Aufruf packen wie in der Musterlösung.
+
+Damit erhalten wir also als Lösung der Aufgabe:
+\begin{lstlisting}[style=frame]
+insert :: BinTree -> [Int] -> BinTree
+insert t []     = t
+insert t (x:xs) = insert t' xs
+	where
+		t' = insertSingle t x
+		insertSingle :: BinTree -> Int -> BinTree
+		insertSingle            Nil x = Branch x Nil Nil
+		insertSingle (Branch y l r) x
+			|     x < y = Branch y (insertSingle l x)                  r
+			| otherwise = Branch y                  l (insertSingle r x)
+\end{lstlisting}
+
+Um das ganze zu testen, legen wir uns mal einen Beispielbaum an. Das funktioniert im Prinzip so, dass man die Typdefinition nimmt und dann für die Typen darin konkrete Werte einsetzt. Also:
+\begin{lstlisting}[style=noframe]
+	testTree :: BinTree
+	testTree = Branch 5 Nil Nil
+\end{lstlisting}
+steht zum Beispiel für den Baum, der nur eine \texttt{5} enthält. Den können wir nun immer weiter erweitern, indem wir die \texttt{Nil}'s ersetzen und dabei bisschen auf die Klammerung achten. 
+\begin{lstlisting}[style=noframe]
+	testTree = Branch 5 
+				(Branch 3 Nil Nil )
+				(Branch 8 Nil Nil )
+\end{lstlisting}
+Um das bisschen übersichtlich zu machen, schreibt man das dann so bisschen gestaffelt untereinander (es wird zwangsweise immer bisschen unübersichtlich). Dann kann man das immer weiter ausbauen und ich hab jetzt mal einen Suchbaum konstruiert, der etwas größer ist.
+\begin{lstlisting}[style=frame, firstnumber=12]
+testTree :: BinTree
+testTree = Branch 5
+			(Branch 3
+				(Branch 2 Nil Nil)
+				(Branch 4 Nil Nil)
+			)
+			(Branch 8
+				(Branch 7
+					(Branch 6 Nil Nil)
+					(Nil)
+				)
+				(Branch 10
+					(Nil)
+					(Branch 13 Nil Nil)
+				)
+			)
+\end{lstlisting}
+Schreibt man das in gewohnter Schreibweise, so erhält man den Baum:
+
+\begin{figure}[h]
+	\centering
+	\begin{forest}
+		for tree={ grow=south, circle, draw, minimum size=3ex, inner sep=1pt, s sep=7mm }
+		[ $5$ [ $3$ [ $2$ ] [ $4$ ] ] [ $8$ [ $7$ [ $6$ ] [,no edge, draw=none] ] [ $10$ [,no edge, draw=none] [ $13$ ] ] ] ]
+	\end{forest} 
+\end{figure}	
+
+Damit dann auch die Ausgabe klappt, wenn wir unsere Funktion mit \texttt{ghci} testen, müssen wir noch eine klein wenig die Typdefinition ändern:
+\begin{lstlisting}[style=noframe]
+	data BinTree = Branch Int BinTree BinTree | Nil deriving Show
+\end{lstlisting}
+Die Direktive \texttt{Show} sorgt einfach dafür, dass eine standardmäßige (trotzdem relativ hässliche) Ausgaberoutine bereitgestellt wird.
+Damit können wir jetzt in \texttt{ghci} testen, z.B. mit dem Aufruf \texttt{insert testTree [9,12]}
+
+\begin{bemerkung}[Suchbäume]
+	In der Regel betrachtet man Suchbäume ohne Dopplungen, d.h. jede Zahl sollte nur einmal vorkommen. Dementsprechend macht es wenig Sinn eine bereits bestehende Zahl einzufügen. 
+\end{bemerkung}
+
+\subsection*{Teilaufgabe (b)}
+
+\begin{aufgabe}
+	Geben Sie eine Haskell-Funktion einschließlich der Typ-Definition an, die testet, ob zwei Binärbäume des Typs \texttt{BinTree} identisch sind.
+\end{aufgabe}
+Man überlegt sich hier leicht, dass zwei Bäume genau dann gleich sind, wenn beide Wurzelknoten die gleiche Beschriftung tragen und die beiden Kinder jeweils übereinstimmen. Somit erhält man für den Fall, dass beide Bäume mindestens einen Knoten tragen, den folgenden Rekursionsfall
+\begin{lstlisting}[style=noframe]
+	equal :: BinTree -> BinTree -> Bool
+	equal (Branch x l1 r1) (Branch y l2 r2) = (x == y] && 
+	                                          (equal l1 l2) && 
+	                                          (equal r1 r2)
+\end{lstlisting}
+Als Basisfall würde man zunächst den offensichtlichen nehmen: beide Bäume sind leer und damit auch gleich:
+\begin{lstlisting}[style=noframe]
+	equal :: BinTree -> BinTree -> Bool
+	equal Nil              Nil              = True
+	equal (Branch x l1 r1) (Branch y l2 r2) = (x == y) && 
+	                                          (equal l1 l2) && 
+	                                          (equal r1 r2)
+\end{lstlisting}
+
+Aber hier gibt es eine kleine Gemeinheit. Die Funktion führt eine Rekursion über beide Bäume aus. Jetzt kann es aber auch passieren, dass beide Bäume unterschiedlich groß sind. Wenn wir nun immer wieder den Rekursionsfall anwenden, dann werden die Bäume zwar immer kleiner, aber aufgrund der unterschiedlichen Größe kann einer eher leer werden als der andere. Das ist dann in noch keinem Fall abgedeckt, weil der leere Baum dann nicht mehr die \texttt{Branch}-Struktur besitzt (Pattern Matching schlägt fehl), anderseits auch der Basisfall mit zwei leere Bäumen nicht passt, da ja einer von beiden noch nicht leer ist. Dementsprechend gibt es noch die beiden Fälle
+\begin{lstlisting}[style=noframe]
+	equal Nil              (Branch y l2 r2) = False
+	equal (Branch x l1 r1) Nil              = False
+\end{lstlisting}
+Ich denke, dass die Bäume dann nicht gleich sind, ist klar (leer und nichtleer kann halt nicht gleich sein). Entweder man schreibt nun die beiden Fälle noch als Basis dazu oder man sagt, dass alles, was durch die bereits bestehenden Fälle (leer-leer und voll-voll) noch nicht abgedeckt ist (und das sind genau die beiden Fälle leer-voll und voll-leer), das wird zu \texttt{False}. Genau diese Variante ist in der Musterlösung mit den Wildcards \lstinline[style=noframe]|_| angegeben. Wildcards sind dabei Platzhalter für beliebige Werte; man könnte auch stets Variablen \texttt{t1} und \texttt{t2} anstelle derer schreiben, jedoch werden diese auf der rechten Seite ohnehin nicht zu Berechnung benötigt.
+
+Man erhält somit eine der beiden folgenden Lösungen:
+\begin{lstlisting}[style=frame]
+equal :: BinTree -> BinTree -> Bool
+equal Nil              Nil              = True
+equal Nil              (Branch y l2 r2) = False
+equal (Branch x l1 r1) Nil              = False
+equal (Branch x l1 r1) (Branch y l2 r2) = (x == y) && 
+                                          (equal l1 l2) && 
+                                          (equal r1 r2)
+\end{lstlisting}
+oder
+\begin{lstlisting}[style=frame]
+equal :: BinTree -> BinTree -> Bool
+equal Nil              Nil              = True
+equal (Branch x l1 r1) (Branch y l2 r2) = (x == y) && 
+                                          (equal l1 l2) && 
+                                          (equal r1 r2)
+equal _                 _               = False
+\end{lstlisting}
+\end{document}
+
