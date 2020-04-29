@@ -1,0 +1,564 @@
+\documentclass{beamer}
+\usepackage{../tut-slides}
+\usepackage{../mathoperatorsAuD}
+
+\usepackage{csquotes}
+\usepackage{cancel}
+
+\usepackage{amsmath,amssymb}
+
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tabu}
+\newcommand*\head{\rowfont{\bfseries}}
+\newcommand*{\tw}{\rowfont{\ttfamily}}
+
+\renewcommand{\tabularxcolumn}[1]{>{\hspace{0pt}}m{#1}}
+
+\usepackage{listings}
+\lstset{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Haskell,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+\newcommand{\col}[1]{\textcolor{cdpurple}{#1}}
+
+
+\begin{document}	
+	\title{Programmierung}
+	\subtitle{Übung 4: Typpolymorphie \& Unifikation}
+	\author{Eric Kunze}
+	\email{eric.kunze@mailbox.tu-dresden.de}
+%	\city{TU Dresden}
+	\date{}
+%	\institute{Lehrstuhl für Grundlagen der Programmierung}
+%	\titlegraphic{\includegraphics[width=2cm]{../TUD-white.pdf}}
+	
+	\maketitle
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile] \frametitle{Inhalt}
+	\begin{enumerate}
+		\item Funktionale Programmierung
+		\begin{enumerate}
+			\item Einführung in Haskell: Listen
+			\item Algebraische Datentypen
+			\item Funktionen höherer Ordnung
+			\item \textbf{Typpolymorphie \& Unifikation}
+			\item Beweis von Programmeigenschaften
+			\item $\lambda$ -- Kalkül
+		\end{enumerate}
+		\item Logikprogrammierung
+		\item Implementierung einer imperativen Programmiersprache
+		\item Verifikation von Programmeigenschaften
+		\item H${}_\text{0}$ -- ein einfacher Kern von Haskell
+	\end{enumerate}
+\end{frame}
+
+\section{Typpolymorphie}
+
+\begin{frame}[fragile, t] \frametitle{Typpolymorphie}
+	\begin{itemize}
+		\item \textbf{bisher}: Funktionen mit konkreten Datentypen \\
+		z.B. \texttt{length :: [Int] -> Int}
+		\item \textbf{Problem}: Funktion würde auch auf anderen Datentypen funktionieren \\
+		z.B. \texttt{length :: [Bool] -> Int}
+		\item \textbf{Lösung}: Typvariablen und poylmorphe Funktionen \\
+		z.B. \texttt{length :: [a] -> Int}
+	\end{itemize}
+
+	Bei konkreter Instanziierung wird Typvariable an entsprechenden Typbezeichner gebunden (z.B. \texttt{a = Int} oder \texttt{a = Bool}).
+\end{frame}
+
+
+
+\section{Übungsblatt 4 \\ \textit{\normalsize Aufgabe 1}}
+
+\begin{frame}[fragile, t] \frametitle{Aufgabe 1 --- Teil (a)}
+	\textbf{Beispielbaum mit mindestens 5 Blättern} \\
+	\texttt{\small data BinTree a = Branch a (BinTree a) (BinTree a) | Leaf a}
+	\pause
+	\begin{lstlisting}
+testTree :: BinTree Int
+testTree = Branch 5
+             (Leaf 1)
+             (Branch 12
+                (Branch 4
+                   (Leaf 0)
+                   (Leaf 0))
+                (Branch 12
+                   (Leaf 0)
+                   (Leaf 1)))
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile, t] \frametitle{Aufgabe 1 --- Teil (b)}
+	\textbf{minimale Tiefe eines Baumes}
+	
+	\begin{ttfamily}
+		{\small data BinTree a = Branch a (BinTree a) (BinTree a) | Leaf a} \\
+		depth :: BinTree a -> Int
+	\end{ttfamily}
+	
+	\bigskip \pause
+	
+	\begin{lstlisting}
+-- Aufgabe 1 (b)
+depth :: BinTree a -> Int
+depth (Leaf   _    ) = 1
+depth (Branch _ l r) = min (depth l) (depth r)
+	\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile, t] \frametitle{Aufgabe 1 --- Teil (c)}
+	\textbf{Baum mit Beschriftungsfolge neu beschriften}
+	
+	\begin{ttfamily}
+		{\small data BinTree a = Branch a (BinTree a) (BinTree a) | Leaf a} \\
+		paths :: BinTree a -> BinTree [a]
+	\end{ttfamily}
+	
+	\bigskip \pause
+	
+	\begin{lstlisting}
+-- Aufgabe 1 (c)
+paths :: BinTree a -> BinTree [a]
+paths = go []
+where
+	go :: [a] -> BinTree a -> BinTree [a]
+	go prefix (Leaf   x    ) = Leaf   (prefix ++ [x])
+	go prefix (Branch x l r) 
+		= Branch (prefix ++ [x]) 
+			(go (prefix ++ [x]) l) 
+			(go (prefix ++ [x]) r)
+	\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile, t] \frametitle{Aufgabe 1 --- Teil (d)}
+	\textbf{Map für Bäume}
+	
+	\begin{ttfamily}
+		{\small data BinTree a = Branch a (BinTree a) (BinTree a) | Leaf a} \\
+		tmap :: (a -> b) -> BinTree a -> BinTree b
+	\end{ttfamily}
+	
+	\bigskip \pause
+	
+	\begin{lstlisting}
+-- Aufgabe 1 (d)
+tmap :: (a -> b) -> BinTree a -> BinTree b
+tmap f (Leaf   x    ) = Leaf   (f x)
+tmap f (Branch x l r) = Branch (f x) (tmap f l) (tmap f r)
+	\end{lstlisting}
+\end{frame}
+
+\section{Übungsblatt 4 \\ \textit{\normalsize Aufgabe 2}}
+
+\begin{frame}[fragile, t] \frametitle{Aufgabe 2 --- Teil (a)}
+	\textbf{Liste von Paaren $\to$ Paare von Listen}
+	
+	\begin{ttfamily}
+		unpairs :: [(a,b)] -> ([a], [b])
+	\end{ttfamily}
+	
+	\bigskip \pause
+	
+	\begin{lstlisting}
+-- Aufgabe 2 (a)
+unpairs :: [(a, b)] -> ([a], [b])
+unpairs []          = ([], [])
+unpairs ((a, b):xs) = let (as, bs) = unpairs xs
+                      in (a:as, b:bs)
+	\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile, t] \frametitle{Aufgabe 2 --- Teil (b)}
+	
+	\begin{lstlisting}
+map :: (a -> b) -> [a] -> [b]
+map _ []       = []
+map f (x : xs) = f x : map f xs
+
+uncurry :: (a -> b -> c) -> (a, b) -> c
+uncurry f (x, y) = f x y
+	\end{lstlisting}
+	
+	\footnotesize
+	\begin{ttfamily}
+		map (uncurry (+)) [(1,2), (3,4)] \\ \pause
+		= map (uncurry (+)) ((1,2):[(3,4)]) \\
+		= uncurry (+) (1,2) : map (uncurry (+)) [(3,4)] \\
+		= (1 + 2) : map (uncurry (+)) [(3,4)] \\
+		= 3 : map (uncurry (+)) [(3,4)] \\
+		= 3 : map (uncurry (+)) ((3,4);[]) \\
+		= 3 : uncurry (+) (3,4) : map (uncurry (+)) [] \\
+		= 3 : (3 + 4) : map (uncurry (+)) [] \\
+		= 3 : 7 : map (uncurry (+)) [] \\
+		= 3 : 7 : [] \\
+		= [3, 7]
+	\end{ttfamily}
+	
+	\bigskip \pause
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Unifikation \& Unifikationsalgorithmus}
+
+
+\begin{frame}[fragile] \frametitle{Unifikation}
+		\textbf{Motivation:} Typüberprüfung
+		 
+		\begin{lstlisting}
+f :: (t, Char) -> (t, [Char])
+f (...) = ... 
+
+g :: (Int, [u]) -> Int
+g (...) = ...
+
+h = g . f
+		\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Unifikation}
+	\textbf{Typausdrücke}
+	\begin{itemize}
+		\item \texttt{Int}, \texttt{Bool}, \texttt{Floar}, \texttt{Char}, \texttt{String}
+		\item Typvariablen
+		\item Listen, Tupel, Funktionen
+	\end{itemize}
+
+	\textbf{Typterme}
+	\begin{itemize}
+		\item Übersetzung \textit{trans}: Typausdruck $\to$ Typterm
+		\item z.B.
+		\begin{equation*}
+			\begin{aligned}
+				trans(\texttt{(t,[Char])}) &= ()^2(t, [](Char)) \\
+				trans(\texttt{(Int, [u])}) &= ()^2(Int, [](u))
+			\end{aligned}
+		\end{equation*}
+	\end{itemize}
+
+	\pause
+	
+	Beide Typausdrücke können in Übereinstimmung gebracht werden, wenn die Typterme $trans(\texttt{(t,[Char])})$ und $trans(\texttt{(Int, [u])})$ unifizierbar sind
+	\pause
+	$\to$ \texttt{t = Int} und \texttt{u = Char}
+\end{frame}
+
+\begin{frame}\frametitle{Unifikationsalgorithmus}
+	\begin{itemize}
+		\item \textbf{gegeben:} zwei Typ\textit{terme} $t_1$, $t_2$ 
+		\item \textbf{Ziel:} entscheide, ob $t_1$ und $t_2$ unifizierbar sind
+	\end{itemize}
+	
+	Wir notieren die beiden Typterme als Spalten:
+	\begin{equation*}
+		\begin{pmatrix}
+			t_1 \\ t_2
+		\end{pmatrix} 
+		\qquad \bzw \qquad 
+		\begin{pmatrix}
+			()^2(t, [](Char)) \\ ()^2(Int, [](u))
+		\end{pmatrix} 
+	\end{equation*}
+	
+	Unifikationsalgorithmus erstellt eine Folge von Mengen $M_i$, wobei die $M_{i+1}$ aus $M_i$ hervorgeht, indem eine der vier Regeln angewendet wird.
+	\begin{equation*}
+		M_1 \defeq \left\{ \begin{pmatrix}
+			t_1 \\ t_2
+		\end{pmatrix} \right\}
+		\qquad \bzw \qquad 
+		M_1 \defeq \left\{ \begin{pmatrix}
+			()^2(t, [](Char)) \\ ()^2(Int, [](u))
+		\end{pmatrix} \right\}
+	\end{equation*}
+\end{frame}
+
+\begin{frame}\frametitle{Unifikationsalgorithmus -- Regeln}
+	\small
+	\begin{itemize}
+		\item \textbf{Dekomposition.} Sei $\delta \in \Sigma$ ein $k$-stelliger Konstruktor, $s_1 , \dots , s_k , t_1 , \dots , t_k$ Terme über Konstruktoren und Variablen.
+		\begin{equation*}
+			\begin{pmatrix}
+				\delta(s_1, \dots , s_k) \\ \delta(t_1, \dots , t_k)
+			\end{pmatrix}
+			\quad \leadsto \quad
+			\begin{pmatrix} s_1 \\ t_1 \end{pmatrix} , \dots , \begin{pmatrix} s_k \\ t_k \end{pmatrix}
+		\end{equation*}
+		\item \textbf{Elimination.} Sei $x$ eine \textit{Variable} !
+		\begin{equation*}
+			\begin{pmatrix} x \\ x \end{pmatrix}
+			\quad \leadsto \quad
+			\emptyset
+		\end{equation*}
+		\item \textbf{Vertauschung.} Sei $t$ \textit{keine} Variable.
+		\begin{equation*}
+			\begin{pmatrix} t \\ x \end{pmatrix}
+			\quad \leadsto \quad 
+			\begin{pmatrix} x \\ t \end{pmatrix}
+		\end{equation*}
+		\item \textbf{Substitution.} Sei $x$ eine Variable, $t$ keine Variable und $x$ kommt nicht in $t$ vor (occur check). Dann ersetze in jedem anderen Term die Variable $x$ durch $t$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{Unifikationsalgorithmus}
+	\textbf{Ende:} keine Regel mehr anwendbar -- Entscheidung:
+	\begin{itemize}
+		\item \textbf{$t_1$, $t_2$ unifizierbar}: $M$ ist von der Form
+		\begin{equation*}
+			\menge{\binom{u_1}{t_1}, \binom{u_2}{t_2}, \dots, \binom{u_k}{t_k}} \qquad 
+			\begin{array}{c} 
+				\footnotesize \text{\textit{\enquote{Variablen}}} \\ 
+				\footnotesize \text{\textit{\enquote{Terme ohne Variablen}}}
+			\end{array}
+		\end{equation*}
+		wobei $u_1, u_2, \dots, u_k$ paarweise verschiedene Variablen sind und nicht in $t_1, t_2, \dots, t_k$ vorkommen.  \\
+		\textbf{allgemeinster Unifikator} $\phi$: 
+		\begin{equation*}
+			\begin{aligned}
+				\phi(u_i) &= t_i & (i = 1, \dots, k) \\
+				\phi(x) &= x     & \footnotesize \text{für alle nicht vorkommenden Variablen}
+			\end{aligned}
+		\end{equation*}
+		\item \textbf{$t_1$, $t_2$ sind nicht unfizierbar}: $M$ hat nicht diese Form und keine Regel ist anwendbar
+	\end{itemize}
+\end{frame}
+
+
+\section{Übungsblatt 4 \\ \textit{\normalsize Aufgabe 3}}
+
+
+\arraycolsep0pt
+
+\begin{frame}\frametitle{Aufgabe 3}
+	\footnotesize
+	\begin{align*}
+		&\left\{\left( \begin{array}{lrrlcl}
+		\col{\delta(} \alpha \col{,} & \sigma(x_1 , \alpha) \col{,} & \sigma(x_2,x_3) \col{)} \\
+		\col{\delta(} \alpha \col{,} & \sigma(x_1, x_2)     \col{,} & \ \sigma(x_2,\gamma(x_2)\col{)}
+		\end{array}\right)\right\}\\
+		%
+		\overset{\text{Dek.}}{\Longrightarrow}
+		%
+		&\left\{ 
+		\begin{pmatrix}
+			\col{\alpha} \\ \col{\alpha}
+		\end{pmatrix}, 
+		\begin{pmatrix}
+			\col{\sigma(} x_1 \col{,} \alpha \col{)} \\ \col{\sigma}(x_1 \col{,} x_2 \col{)}
+		\end{pmatrix}, 
+		\begin{pmatrix}
+			\col{\sigma(} x_2 \col{,} x_3 \col{)} \\ \col{\sigma(} x_2 \col{,} \gamma(x_2) \col{)}
+		\end{pmatrix}
+		\right\}\\
+		%
+		\overset{\text{Dek.}}{\Longrightarrow^3}
+		%
+		&\left\{ \begin{pmatrix}
+		\col{x_1} \\ \col{x_1}
+		\end{pmatrix}, \begin{pmatrix}
+		\alpha \\ x_2
+		\end{pmatrix}, \begin{pmatrix}
+		\col{x_2} \\ \col{x_2}
+		\end{pmatrix}, \begin{pmatrix}
+		x_3 \\ \gamma(x_2)
+		\end{pmatrix}
+		\right\}\\
+		%
+		\overset{\text{El.}}{\Longrightarrow^2}
+		%
+		&\left\{ \begin{pmatrix}
+		\col{\alpha} \\ \col{x_2}
+		\end{pmatrix}, \begin{pmatrix}
+		x_3 \\ \gamma(x_2)
+		\end{pmatrix}
+		\right\}\\
+		%
+		\overset{\text{Vert.}}{\Longrightarrow}
+		%
+		&\left\{ \begin{pmatrix}
+		\col{x_2} \\ \alpha
+		\end{pmatrix}, \begin{pmatrix}
+		x_3 \\ \gamma(\col{x_2})
+		\end{pmatrix}
+		\right\}\\	
+		%
+		\overset{\text{Subst.}}{\Longrightarrow}
+		%
+		&\left\{ \begin{pmatrix}
+		x_2 \\ \alpha
+		\end{pmatrix}, \begin{pmatrix}
+		x_3 \\ \gamma(\alpha)
+		\end{pmatrix}
+		\right\}\\	
+	\end{align*}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 3}
+	\textbf{allgemeinster Unifikator:}
+	\begin{align*}
+		x_1 \mapsto x_1 \qquad
+		x_2 \mapsto \alpha \qquad
+		x_3 \mapsto \gamma(\alpha)
+	\end{align*}
+	
+	\pause
+	
+	\textbf{Teilaufgabe (b)}
+	\begin{align*}
+		t_1 &= \texttt{(a , [a])} \\
+		t_2 &= \texttt{(Int , [Double])} \\
+		t_3 &= \texttt{(b , c)}
+	\end{align*}
+	
+	\pause
+	
+	\begin{itemize}
+		\item $t_1$ und $t_2$ sind \textit{nicht} unifizierbar
+		
+		\item $t_1$ und $t_3$ sind unifizierbar mit $\texttt{a} \mapsto \texttt{a} \qquad \texttt{b} \mapsto \texttt{a} \qquad \texttt{c} \mapsto \texttt{[a]}$
+		
+		\item $t_2$ und $t_3$ sind unifizierbar mit $\texttt{b} \mapsto \texttt{Int} \qquad \texttt{c} \mapsto \texttt{[Double]}$
+	\end{itemize}
+\end{frame}
+
+
+\section{Übungsblatt 4 \\ \textit{\normalsize Aufgabe 4}}
+
+
+\begin{frame} \frametitle{Aufgabe 4}
+	\footnotesize
+	\begin{align*}
+		&\left\{\left(\begin{array}{lcrlcl}
+		\col{\sigma(}\sigma(&x_1&,\alpha) \col{,} &\ \sigma(&\gamma(x_3) &, x_3)\col{)} \\
+		\col{\sigma(}\sigma( &\gamma(x_2)&,\alpha) \col{,} &\ \sigma(&x_2 &, x_3)\col{)}
+		\end{array}\right)\right\}\\
+		%
+		\overset{\text{Dek.}}{\Longrightarrow}
+		%
+		&\left\{\left(\begin{array}{lcr}
+			\col{\sigma(} & x_1         & \col{,} \alpha\col{)} \\
+			\col{\sigma(} & \gamma(x_2) & \col{,} \alpha\col{)}
+		\end{array}\right),
+		\left(\begin{array}{lcr}
+			\col{\sigma(}& \gamma(x_3)  & \col{,} x_3)\col{)} \\
+			\col{\sigma(}& x_2          & \col{,} x_3)\col{)}
+		\end{array}\right)\right\} \\
+		\overset{\text{Dek.}}{\Longrightarrow^2}
+		%
+		&\left\{ 
+		\begin{pmatrix}
+			x_1 \\ \gamma(x_2)
+		\end{pmatrix} , \begin{pmatrix}
+			\alpha \\ \alpha
+		\end{pmatrix} , \begin{pmatrix}
+			\gamma(x_3) \\ x_2
+		\end{pmatrix} , \col{\begin{pmatrix}
+			x_3 \\ x_3 
+		\end{pmatrix}} 
+		\right\} \\
+		\overset{\text{El.}}{\Longrightarrow}
+		%
+		&\left\{
+		\begin{pmatrix}
+			x_1 \\ \gamma(x_2)
+		\end{pmatrix} , 
+		\col{\begin{pmatrix}
+			\alpha \\ \alpha
+		\end{pmatrix}} , 
+		\begin{pmatrix}
+			\gamma(x_3) \\ x_2
+		\end{pmatrix}
+		\right\} \\
+		\overset{\text{Dek.}}{\Longrightarrow}
+		%
+		&\left\{
+		\begin{pmatrix}
+		x_1 \\ \gamma(x_2)
+		\end{pmatrix} , \col{\begin{pmatrix}
+			\gamma(x_3) \\ x_2
+			\end{pmatrix}}
+		\right\} \\
+		\overset{\text{Vert.}}{\Longrightarrow}
+		%
+		&\left\{
+		\begin{pmatrix}
+		x_1 \\ \gamma(\col{x_2})
+		\end{pmatrix} , \begin{pmatrix}
+		\col{x_2} \\ \gamma(x_3)
+		\end{pmatrix}
+		\right\} \quad {\textcolor{cdgray}{x_2 \text{ kommt nicht in } \gamma(x_3) \text{ vor}}}\\
+		%
+		\overset{\text{Subst.}}{\Longrightarrow}
+		&\left\{
+		\begin{pmatrix}
+		x_1 \\ \gamma(\gamma(x_3))
+		\end{pmatrix} , \begin{pmatrix}
+		x_2 \\ \gamma(x_3)
+		\end{pmatrix}
+		\right\}
+	\end{align*}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 4}
+	\textbf{allgemeinster Unifikator:}
+	\begin{align*}
+		\qquad x_1 \mapsto \gamma(\gamma(x_3)) \qquad
+		x_2 \mapsto \gamma(x_3) \qquad
+		x_3 \mapsto x_3
+	\end{align*}
+	
+	\pause
+	
+	\textbf{weitere Unifikatoren:} 
+	\begin{align*}
+		x_1 &\mapsto \gamma(\gamma(\alpha))
+		&x_2 &\mapsto \gamma(\alpha)
+		&x_3 &\mapsto \alpha \\
+		x_1 &\mapsto \gamma(\gamma(\gamma(\alpha)))
+		&x_2 &\mapsto \gamma(\gamma(\alpha))
+		&x_3 &\mapsto \gamma(\alpha)
+	\end{align*}
+	
+	\pause
+	
+	\textbf{Fehlschlag beim occur-check:}  \\ 
+	\textcolor{cdgray}{Alphabet: $\Sigma = \left\{\gamma^{(1)} \right\}$}
+	\begin{align*}
+		t_1 &= x_1 \\
+		t_2 &= \gamma(x_1)
+	\end{align*}
+\end{frame}
+
+
+\begin{frame} \frametitle{Ende}
+	\centering
+	\textbf{Fragen?}
+\end{frame}
+
+\end{document}
+
