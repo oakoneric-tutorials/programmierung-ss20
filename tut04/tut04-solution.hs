@@ -15,7 +15,7 @@ testTree = Branch 5
 -- Aufgabe 1 (b)
 depth :: BinTree a -> Int
 depth (Leaf   _    ) = 1
-depth (Branch _ l r) = min (depth l) (depth r)
+depth (Branch _ l r) = 1 + min (depth l) (depth r)
 -- Hinweis: Die Funktion min ist in der Haskell-Standardbibliothek vorhanden.
 
 -- Aufgabe 1 (c)
@@ -40,6 +40,12 @@ unpairs :: [(a, b)] -> ([a], [b])
 unpairs []          = ([], [])
 unpairs ((a, b):xs) = let (as, bs) = unpairs xs
                       in (a:as, b:bs)
+-- oder:
+unpairs' :: [(a, b)] -> ([a], [b])
+unpairs' []          = ([], [])
+unpairs' ((a,b):xs) = (a:as, b:bs)
+    where (as, bs)  = unpairs' xs
+    
 -- unpairs is als unzip in der Haskell-Standardbibliothek bereits vorhanden
 
 -- Aufgabe 2 (b)
