@@ -80,7 +80,7 @@
 		z.B. \texttt{length :: [Int] -> Int}
 		\item \textbf{Problem}: Funktion würde auch auf anderen Datentypen funktionieren \\
 		z.B. \texttt{length :: [Bool] -> Int}
-		\item \textbf{Lösung}: Typvariablen und poylmorphe Funktionen \\
+		\item \textbf{Lösung}: Typvariablen und polymorphe Funktionen \\
 		z.B. \texttt{length :: [a] -> Int}
 	\end{itemize}
 
@@ -123,7 +123,7 @@ testTree = Branch 5
 -- Aufgabe 1 (b)
 depth :: BinTree a -> Int
 depth (Leaf   _    ) = 1
-depth (Branch _ l r) = min (depth l) (depth r)
+depth (Branch _ l r) = 1 + min (depth l) (depth r)
 	\end{lstlisting}
 \end{frame}
 
@@ -142,13 +142,13 @@ depth (Branch _ l r) = min (depth l) (depth r)
 -- Aufgabe 1 (c)
 paths :: BinTree a -> BinTree [a]
 paths = go []
-where
-	go :: [a] -> BinTree a -> BinTree [a]
-	go prefix (Leaf   x    ) = Leaf   (prefix ++ [x])
-	go prefix (Branch x l r) 
-		= Branch (prefix ++ [x]) 
-			(go (prefix ++ [x]) l) 
-			(go (prefix ++ [x]) r)
+	where
+		go :: [a] -> BinTree a -> BinTree [a]
+		go prefix (Leaf   x    ) = Leaf   (prefix ++ [x])
+		go prefix (Branch x l r) 
+			= Branch (prefix ++ [x]) 
+				(go (prefix ++ [x]) l) 
+				(go (prefix ++ [x]) r)
 	\end{lstlisting}
 \end{frame}
 
