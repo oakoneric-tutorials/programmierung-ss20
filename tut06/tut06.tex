@@ -1,0 +1,372 @@
+\documentclass{beamer}
+\usepackage{../tut-slides}
+\usepackage{../mathoperatorsAuD}
+
+\usepackage{csquotes}
+\usepackage{cancel}
+
+\usepackage{amsmath,amssymb}
+
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tabu}
+\newcommand*\head{\rowfont{\bfseries}}
+\newcommand*{\tw}{\rowfont{\ttfamily}}
+
+\renewcommand{\tabularxcolumn}[1]{>{\hspace{0pt}}m{#1}}
+
+\usepackage{listings}
+\lstset{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Haskell,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+\usepackage{textgreek}
+
+\newcommand{\col}[1]{\textcolor{cdpurple}{#1}}
+
+\DeclareMathOperator{\GV}{GV}
+\DeclareMathOperator{\FV}{FV}
+
+\begin{document}	
+	\title{Programmierung}
+	\subtitle{Übung 6: $\lambda$-Kalkül (Teil 1)}
+	\author{Eric Kunze}
+	\email{eric.kunze@mailbox.tu-dresden.de}
+%	\city{TU Dresden}
+	\date{}
+%	\institute{Lehrstuhl für Grundlagen der Programmierung}
+%	\titlegraphic{\includegraphics[width=2cm]{../TUD-white.pdf}}
+	
+	\maketitle
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile] \frametitle{Inhalt}
+	\begin{enumerate}
+		\item Funktionale Programmierung
+		\begin{enumerate}
+			\item Einführung in Haskell: Listen
+			\item Algebraische Datentypen
+			\item Funktionen höherer Ordnung
+			\item Typpolymorphie \& Unifikation
+			\item Beweis von Programmeigenschaften
+			\item \textbf{$\lambda$ -- Kalkül}
+		\end{enumerate}
+		\item Logikprogrammierung
+		\item Implementierung einer imperativen Programmiersprache
+		\item Verifikation von Programmeigenschaften
+		\item H${}_\text{0}$ -- ein einfacher Kern von Haskell
+	\end{enumerate}
+\end{frame}
+
+\section{Der $\lambda$-Kalkül}
+
+\begin{frame} \frametitle{$\lambda$-Kalkül}
+	\begin{itemize}
+		\item weitere funktionale Programmiersprache
+		\item Programme = $\lambda$-Terme
+		\item Vorstellung: \textit{anonyme} Funktionen
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{Syntax}
+	Sei $X$ eine Menge mit Variablen, $\Sigma$ eine Menge mit Symbolen. Die gültigen $\lambda$-Terme sind \textit{induktiv} definiert:
+	\begin{enumerate}[<+->]
+		\item \textbf{Atome} (Variablen oder Symbole) sind gültige $\lambda$-Terme.
+		\item \textbf{Abstraktion}: Ist $t$ ein gültiger $\lambda$-Term und $x \in X$ eine Variable, dann ist auch $\lambda x . t$ ein gültiger $\lambda$-Term.
+		\item \textbf{Applikation}: Sind $t_1$ und $t_2$ gültige $\lambda$-Terme, dann ist auch $(t_1 \ t_2)$ ein gültiger $\lambda$-Term.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame} \frametitle{Beispiele (informell)}
+	Vorstellung: Jeder $\lambda$-Term beschreibt eine anonyme Funktion.
+	\begin{itemize}[<+->]
+		\item Abstraktion gibt das Argument an: 
+		\begin{equation*}
+		\lambda x . t \quad \leftrightarrow \quad f(x) = t
+		\end{equation*}
+		\item Applikation beschreibt Funktionsanwendung (Einsetzen): 
+		\begin{equation*}
+			((\lambda x . t) \ 2) \quad \leftrightarrow \quad f(2)
+		\end{equation*}
+	\end{itemize}
+
+	\pause
+	
+	\textbf{Beispiel:}
+	\begin{align*}
+		\text{quadriere } &= \lambda x . \ x*x \\
+		((\lambda x . x*x) \ 2) &= 2 * 2 = 4
+	\end{align*}
+\end{frame}
+
+\begin{frame} \frametitle{Verabredungen}
+	\begin{itemize}[<+->]
+		\item Applikation ist linksassoziativ:
+		\begin{equation*}
+			((t_1 \ t_2) \ t_3) = t_1 \ t_2 \ t_3 
+		\end{equation*}
+		\item mehrfache Abstraktion:
+		\begin{equation*}
+			(\lambda x_1 . (\lambda x_2 . (\lambda x_3 . t))) = \lambda x_1 x_2 x_3 . t 
+		\end{equation*}
+		\item Applikation vor Abstraktion:
+		\begin{align*}
+			(\lambda x . \ x \ y) &= (\lambda x . (x \ y)) \\
+			&\neq ((\lambda x . x) \ y)
+		\end{align*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{Gebundene und freie Vorkommen}
+	Mengen $\FV(t)$ und $\GV(t)$ geben frei bzw. gebunden \textit{vorkommende} Variablen von $t$ an --- induktive Definition
+	
+	\pause
+	
+	\begin{itemize}[<+->]
+		\item einzelne \textbf{Variablen} sind immer frei: \\
+		$x \in X \follows \FV(x) = \menge{x} , \GV(x) = \emptyset$
+		\item \textbf{Symbole} sind weder frei noch gebunden
+		\item \textbf{Applikation}: Sei $t = (t_1 \  t_2)$. Dann \\
+		$\follows 
+		\FV(t) = \FV(t_1) \cup \FV(t_2) , \enskip
+		\GV(t) = \GV(t_1) \cup \GV(t_2)$
+		\item \textbf{Abstraktion}: $t = \lambda x . t'$ \\
+		$\follows 
+		\FV(t) = \FV(t') \setminus \menge{x} , \enskip
+		\GV(t) = \GV(t') \cup \menge{x}$
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{$\beta$ -- Reduktion}
+	\begin{block}{\textbeta--Reduktion}
+		Seien $s,t \in \lambda(\Sigma)$ gültige $\lambda$-Terme und es gilt $\GV(\alert<2->{t}) \cap \FV(s) = \emptyset$. 
+		\begin{equation*}
+			(\lambda x . \alert<2->{t}) \ s \quad \longrightarrow_\beta \quad t[x / s]
+		\end{equation*}
+	\end{block}
+	
+	\pause
+	
+	\begin{itemize}
+		\item Bedeutung von $t[x / s]$: Ersetze jedes \textit{freie} Vorkommen von $x$ in $t$ durch $s$. 
+		\item Erinnerung: Vorstellung der Applikation als \enquote{Einsetzen} in Funktionen
+		\item beachte: Abstraktion $\lambda x$ entfällt
+	\end{itemize}
+
+	\pause
+	
+	\textbf{Bsp.:} Seien die Symbole gegeben durch $\Sigma = \menge{3,a}$.
+	\begin{equation*}
+		(\lambda x . \underbrace{+ x 3}_{\GV = \emptyset}) \ (\underbrace{\lambda z . a}_{\FV = \emptyset}) \quad \longrightarrow_\beta \quad + \ (\lambda z . a) 3
+	\end{equation*}
+\end{frame}
+
+\begin{frame} \frametitle{$\alpha$ -- Konversion }
+	
+	\begin{itemize}
+		\item Was machen wir, wenn Voraussetzung $\FV(t) \cap \GV(t) = \emptyset$ für \textbeta-Reduktion nicht erfüllt ist?
+		\item einfacher Ausweg: entsprechende Variablen umbenennen, sodass Bedingung erfüllt ist
+	\end{itemize}
+
+	\pause
+	
+	\begin{block}{\textalpha --Konversion}
+		Sei $t \in \lambda(\Sigma)$ und $z \notin \GV(t) \cup \FV(t)$.
+		\begin{equation*}
+			(\lambda x . t) \quad \longrightarrow_\alpha \quad \lambda z . t[x / z]
+		\end{equation*}
+	\end{block}
+
+	\pause
+	
+	\textbf{Bsp.:} Seien die Symbole gegeben durch $\Sigma = \menge{3,a}$.
+	\begin{equation*}
+		(\lambda x . (\underbrace{\lambda y . + x y}_{\GV = \menge{y}})) \ (\underbrace{y}_{\FV = \menge{y}}) 
+		\quad \longrightarrow_\alpha \quad 
+		(\lambda x . (\underbrace{\lambda z . + x z}_{\GV = \menge{z}})) \ (\underbrace{y}_{\FV = \menge{y}})
+	\end{equation*}
+\end{frame}
+
+\section{Übungsblatt 6 \\ \textit{\normalsize Aufgabe 1}}
+
+\begin{frame} \frametitle{Aufgabe 1 --- Teil (a)}
+	\begin{itemize}[<+->]
+		\item $t_1 = (\lambda x . x y) \ (\lambda y . y)$:
+			\begin{itemize}
+				\item $\FV(t_1) = \menge{y}$
+				 \item $\GV(t_1) = \menge{x,y}$
+			\end{itemize}
+		\item $t_2 = (\lambda x . (\lambda y . z (\lambda z . z (\lambda x . y))))$
+			\begin{itemize}
+				\item $\FV(t_2) = \menge{z}$
+				\item $\GV(t_2) = \menge{x,y,z}$
+			\end{itemize}
+		\item $t_3 = (\lambda x . (\lambda y . z (yz)))(\lambda x . y (\lambda y. y ))$
+			\begin{itemize}
+				\item $\FV(t_3) = \menge{y,z}$
+				\item $\GV(t_3) = \menge{x,y}$
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 2 --- Teil (b)}
+	% Term 1
+	\begin{align*}
+		&(\lambda x . (\underbrace{\lambda y . x \ z \ (y \ z))}_{\GV=\menge{y}}) \ \underbrace{(\lambda x . y \ (\lambda y . y))}_{\FV = \menge{y}}
+		\\
+		\Rightarrow_\alpha \quad
+		& (\lambda x . (\underbrace{\lambda y_1 . x \ z \ (y_1 \ z))}_{\GV=\menge{y}}) \ \underbrace{(\lambda x . y \ (\lambda y . y))}_{\FV = \menge{y}}
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda y_1 . (\lambda x . \underbrace{y \ (\lambda y . y)}_{\GV= \menge{y}}) \ \underbrace{z}_{\FV = \menge{z}} \ (y_1 \ z))
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda y_1 . (y \ (\lambda y . y)) \ (y_1 \ z))
+		\\
+		= \ & (\lambda y_1 . y \ (\lambda y . y) \ (y_1 \ z))
+	\end{align*}
+\end{frame}
+
+
+\begin{frame} \frametitle{Aufgabe 2 --- Teil (b)}
+	% Term 2
+	\begin{align*}
+		& (\lambda x . (\underbrace{\lambda y . (\lambda z . z)}_{\GV=\menge{y,z}})) \ \underbrace{x}_{\FV = \menge{x}} ( + \ y \ 1)
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda y . \underbrace{(\lambda z . z)}_{\GV=\menge{z}}) \ \underbrace{( + \ y \ 1)}_{\FV = \menge{y}}
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda z . z)
+	\end{align*}
+\end{frame}
+
+
+\begin{frame} \frametitle{Aufgabe 2 --- Teil (b)}
+	% Term 3
+	\begin{align*}
+		& (\lambda x . (\lambda y . x \ (\lambda z . y \ z))) \ (((\lambda x . \underbrace{(\lambda y . y )}_{\GV= \menge{y}}) \ \underbrace{8}_{\FV = \emptyset} ) \ (\lambda x . (\lambda y . y) \ x ))
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda x . (\lambda y . x \ (\lambda z . y \ z))) \ ((\lambda y . y )) \ (\lambda x . (\lambda y . y) \ x ))
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda x . (\lambda y . x \ (\lambda z . y \ z))) \ ((\lambda y . y ) \ (\lambda x . (\lambda y . \underbrace{y}_{\GV=\emptyset}) \ \underbrace{x}_{\menge{x}} ))
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda x . (\lambda y . x \ (\lambda z . y \ z))) \ ((\lambda y . \underbrace{y}_{\GV = \emptyset} ) \ \underbrace{(\lambda x . x)}_{\FV = \emptyset})
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda x . \underbrace{(\lambda y . x \ (\lambda z . y \ z))}_{\GV = \menge{y,z}}) \ \underbrace{(\lambda x . x)}_{\FV = \emptyset}
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda y . (\lambda x . \underbrace{x}_{\GV = \emptyset}) \ \underbrace{(\lambda z . y \ z)}_{\FV = \menge{y}})
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda y . (\lambda z . y \ z)) 
+		\quad = \quad
+		(\lambda yz . y \ z) 
+	\end{align*}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 2 --- Teil (b)}
+	% Term 4
+	\begin{align*}
+		& (\lambda h . (\lambda x . h \ (x \ x)) \ (\lambda x . h \ (x \ x))) ((\lambda x . \underbrace{x}_{\GV = \emptyset}) \ \underbrace{(+ \ 1 \ 5)}_{ \FV = \emptyset})
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda h . (\lambda x . \underbrace{h \ (x \ x)}_{\GV = \emptyset}) \ \underbrace{(\lambda x . h \ (x \ x))}_{\FV = \menge{h}}) (+ \ 1 \ 5)
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda h . h \ ((\lambda x . \underbrace{h \ (x \ x)}_{\GV = \emptyset}) \ \underbrace{(\lambda x . h \ (x \ x))}_{\FV= \menge{h}})) \ (+ \ 1 \ 5)
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda h . hh \ ((\lambda x . \underbrace{h \ (x \ x)}_{\GV = \emptyset}) \ \underbrace{(\lambda x . h \ (x \ x))}_{\FV= \menge{h}})) \ (+ \ 1 \ 5)
+		\\
+		\longrightarrow \quad
+		&\text{endlose Rekursion, bei der $h$ durch $(+ \ 1 \ 5 )$ noch} \\
+		&\text{reduziert werden könnte}
+		\\
+		\Rightarrow_\beta \quad
+		& (+ \ 1 \ 5) \ (+ \ 1 \ 5) \ ((\lambda x . h \ (x \ x)) \ (\lambda x . h \ (x \ x)))	
+	\end{align*}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 2 --- Teil (b)}
+	% Term 5
+	\begin{align*}
+		& (\lambda f . \underbrace{(\lambda a . (\lambda b . f \ a \ b))}_{\GV = \menge{a,b}}) \ \underbrace{(\lambda x . (\lambda y . x ))}_{\FV= \emptyset}) 
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda a . (\lambda b . (\lambda x . \underbrace{(\lambda y . x )}_{\GV = \menge{y}}) \ \underbrace{a}_{\FV = \menge{a}} \ b)) 
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda a . (\lambda b . (\lambda y . \underbrace{a}_{\GV = \emptyset}) \ \underbrace{b}_{\FV = \menge{b}})) 
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda a . (\lambda b . a)) 
+		\\
+		= \ & (\lambda ab . a)
+	\end{align*}
+\end{frame}
+
+
+\section{Übungsblatt 6 \\ \textit{\normalsize Aufgabe 2}}
+
+\begin{frame} \frametitle{Aufgabe 2}
+	\begin{tabbing}
+		\emph{(a)} $\quad$ \= $A$ mit $A \ t \ s \ u \Rightarrow^\ast s$:
+		\pause $\qquad$ \= $A = (\lambda xyz \ . \ y)$ \\[6pt]
+		\pause
+		\emph{(b)} \> $B$ mit $B \ t \ s \Rightarrow^\ast s \ t$: 
+		\pause \> $B = (\lambda xy \ . \ yx)$ \\[6pt]
+		\pause
+		\emph{(c)} \> $C$ mit $C \ C \Rightarrow^\ast C \ C$: 
+		\pause \> $C =( \lambda x \ . \ xx)$  \\
+		\pause \> denn: 
+		$(\lambda x . \underbrace{xx}_{GV=\emptyset}) \underbrace{(\lambda x.xx)}_{FV = \emptyset} \quad \Rightarrow^{\beta} \quad (\lambda x . xx) (\lambda x.xx)$ \\[6pt]
+		\pause
+		\emph{(d)} \> $D$ mit $D \Rightarrow^\ast D$: 
+		\pause \> $D = (C \ C)$ \\[6pt]
+		\pause	
+		\emph{(e)} \> $E$ mit $E \ E \ t \Rightarrow^\ast E \ t \ E$: 
+		\pause \> $E = (\lambda xy \ . \ xyx)$ \\ \pause
+		\> denn:
+	\end{tabbing}
+	\small
+	\begin{align*}
+		(\lambda x\underbrace{y \ . \ xyx}_{GV = \{y\}}) (\underbrace{\lambda xy \ . \ xyx}_{FV = \emptyset}) \ t 
+		\pause \enskip &\Rightarrow^{\beta} \enskip
+		(\lambda y \ . \ (\lambda xy \ . \ xyx) \ y \ (\lambda xy \ . \ xyx)) \ t 
+		\pause \\
+		&\Rightarrow^{\beta} \enskip 
+		(\underbrace{\lambda xy \ . \ xyx}_{ = E}) \ t \ (\underbrace{\lambda xy \ . \ xyx}_{=E})
+	\end{align*}
+\end{frame}
+
+
+\begin{frame} \frametitle{Ende}
+	\centering
+	\textbf{Fragen?}
+\end{frame}
+
+\end{document}
+
