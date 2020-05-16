@@ -1,0 +1,37 @@
+\begin{exercisePage}[Hilberträume][10.5/15]
+	Aufgabe 11
+
+Wir zeigen die Aussage via Ringschluss.
+\begin{description}
+	\item[($\mathbf{a \Rightarrow b}$)] Es gelte $\norm{u+v} = \norm{u} + \norm{v}$. Betrachte 
+	\begin{equation*}
+		\norm{u+v}^2 = \scal{u+v}{u+v} = \scal{u}{u} + \scal{u}{v} + \quer{\scal{u}{v}} + \scal{v}{v} = \norm{u}^2 + 2 \Re \scal{u}{v} + \norm{v}^2
+	\end{equation*}
+	Aus (a) folgt  $\norm{u+v}^2 = \brackets{\norm{u} + \norm{v}}^2 = \norm{u}^2 + 2 \norm{u} * \norm{v} + \norm{v}^2$. Somit ist $\Re \scal{u}{v} = \norm{u} * \norm{v}$. Unter Nutzung der Cauchy-Schwarz-Ungleichung folgt die Einschließung
+	\begin{equation*}
+		\norm{u} * \norm{v} = \Re \scal{u}{v} = \abs{\scal{u}{v}}
+	\end{equation*} 
+	Da $\Re \scal{u}{v} = \abs{\scal{u}{v}}$ gilt, ist $\Im \scal{u}{v} = 0$, d.h. $\scal{u}{v} \in \R$ und schließlich
+	\begin{equation*}
+		\scal{u}{v} = \Re \scal{u}{v} = \norm{u} * \norm{v}
+	\end{equation*}
+	%
+	\item[($\mathbf{a \Rightarrow b}$)] Es gelte $\scal{u}{v} = \norm{u} * \norm{v} \in \R$, d.h. $\scal{u}{v} \in \R$. Dann gilt
+	\begin{equation*}
+		\scal{u}{u} \scal{v}{v} = \norm{u}^2 * \norm{v}^2 = \brackets{\norm{u} * \norm{v}}^2 = \brackets{\scal{u}{v}}^2 = \brackets{\scal{v}{u}}^2
+	\end{equation*}
+	Da $\scal{.}{.}$ positiv definit ist, gilt $\scal{v}{v} > 0$ für alle $v \neq 0$. Für $v \neq 0$ liefert somit die Division durch $\scal{v}{v}$
+	\begin{equation*}
+		\scal{u}{u} = \frac{\brackets{\scal{u}{v}}^2}{\scal{v}{v}} = \frac{\brackets{\scal{v}{u}}^2}{\scal{v}{v}} \tag{$\star$} \label{eq: 11_star}
+	\end{equation*}
+	Setzten wir nun $\mu \defeq \frac{\scal{u}{v}}{\scal{v}{v}} = \frac{\scal{v}{u}}{\scal{v}{v}}$. Dann gilt wieder aufgrund der positiven Definitheit und $\scal{u}{v} = \scal{v}{u} = \norm{u} \norm{v}$, dass $\mu > 0$. Betrachten wir unter Nutzung von \eqref{eq: 11_star}
+	\begin{align*}
+		0 &= \scal{u}{u} - \frac{\brackets{\scal{v}{u}}^2}{\scal{v}{v}} - \frac{\brackets{\scal{u}{v}}^2}{\scal{v}{v}} + \frac{\brackets{\scal{u}{v}}^2}{\scal{v}{v}} \\
+		&= \scal{u}{u} - \mu \scal{v}{u} - \mu \scal{u}{v} + \abs{\mu}^2 \scal{v}{v} \\
+		&= \scal{u}{u} - \scal{\mu v}{u} - \scal{u}{\mu v} + \scal{\mu v}{\mu v} \\
+		&= \scal{u - \mu v}{u - \mu  v}
+	\end{align*}
+	Wegen positiver Definitheit von $\scal{.}{.}$ folgt daraus $0 = u - \mu  v$, d.h. $u = \mu v$ und es folgt (c) für $\alpha \defeq \mu$.
+	Ist $v = 0$, dann gilt $v = \alpha u$ für $\alpha = 0$. Mit vertauschten Rollen von $u$ und $v$ zeigt man auch das zweite Disjunkt.
+\end{description}
+\end{exercisePage}

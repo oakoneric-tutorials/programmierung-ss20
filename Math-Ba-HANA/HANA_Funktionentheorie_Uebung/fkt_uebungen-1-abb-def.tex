@@ -1,0 +1,109 @@
+\documentclass[margin=5mm]{standalone}
+\usepackage{tudscrcolor} 
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween} 
+\pgfplotsset{
+  compat=1.10,% mit writeLaTeX bisher noch nicht möglich
+  flaeche/.style={draw=none,fill=black,fill opacity=0.2},
+  every axis/.append style={
+  	axis x line=middle,    % put the x axis in the middle
+  	axis y line=middle,    % put the y axis in the middle
+  	axis line style={->}, % arrows on the axis
+  	xlabel={$\Re(z)$},          % default put x on x-axis
+  	ylabel={$\Im(z)$},          % default put y on y-axis
+  	enlargelimits=0.05,
+  	grid,
+  	domain=-5:5,
+  	ymin = -5,
+  	ymax = 5,
+  	xmin = -5,
+  	xmax = 5,
+  }
+}
+
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+
+
+
+\begin{document} 
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (d)
+
+\begin{tikzpicture} 
+\begin{axis}[%
+	xmin = -1.5,
+	xmax =  1.5,
+	ymin = -1.5,
+	ymax =  1.5,
+	axis equal
+]
+	\addplot [domain=0:360,samples=50, variable=\x]({cos(x)}, {sin(x)});
+	
+%	\node[label={0:{$z_0$}},circle,fill,inner sep=1.5pt, cddarkblue] at (axis cs:0:1cm) {};
+%	\node[data cs=polar,red, inner sep=1.5pt] at (axis xs: 1,{0});
+%	\node[label={0:{$z_2$}},circle,fill,inner sep=1.5pt, cdpurple] at (axis cs:2.5,2.5) {};
+	\addplot[cddarkblue,line width=1pt, mark=*] coordinates {(1.0, 0.0)
+		( 0.3090,  0.9510)
+		(-0.8090,  0.5877)
+		(-0.8090, -0.5877)
+		( 0.3090, -0.9510)
+		(1.0, 0.0)};
+	\node[label={-20:{$z_0$}}, draw=none] at (axis cs:1,0) {};
+	\node[label={ 20:{$z_1$}}, draw=none] at (axis cs:0.3090,  0.9510) {};
+	\node[label={160:{$z_2$}}, draw=none] at (axis cs:-0.8090,  0.5877) {};
+	\node[label={200:{$z_3$}}, draw=none] at (axis cs:-0.8090, -0.5877) {};
+	\node[label={270:{$z_4$}}, draw=none] at (axis cs:0.3090, -0.9510) {};
+\end{axis} 
+\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (d): $z^5 = 1$};
+\end{tikzpicture} 
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (e)
+
+\begin{tikzpicture} 
+\begin{axis}[%
+	xmin = -3,
+	xmax =  10,
+	ymin = -2,
+	ymax =  5,
+	axis equal
+]
+	
+	\addplot [domain=0:3.14, smooth,, samples=100, variable=\x, cddarkblue, line width=2pt]({3 + 5 * cos(deg(x)))}, {-1 + 5 * sin(deg(x)))});
+	
+\end{axis} 
+\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (e): $z = 3 - \mathrm{i} + 5e^{\mathrm{i}t} \enskip (0 \le t \le \pi)$};
+\end{tikzpicture} 
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (f)
+
+\begin{tikzpicture} 
+\begin{axis}[%
+	xmin = -30,
+	xmax =  30,
+	ymin = -30,
+	ymax =  30,
+	axis equal
+]
+\addplot [domain=0:25, smooth,, samples=100, variable=\x, cddarkblue, line width=2pt]({rad(deg(x) * cos(deg(x)))}, {rad(deg(x) * sin(deg(x)))});
+
+\end{axis} 
+\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (f): $z = t e^{\mathrm{i}t} \enskip (t \ge 0)$};
+\end{tikzpicture} 
+
+\end{document}

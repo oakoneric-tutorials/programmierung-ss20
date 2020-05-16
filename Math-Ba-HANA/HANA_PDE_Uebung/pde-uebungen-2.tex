@@ -1,0 +1,285 @@
+\begin{exercisePage}[Charakteristikenmethode]
+	
+	\begin{center} \itshape
+		Ich bitte um Entschuldigung, dass meine Lösung so lang geworden ist. Aber ich habe mich bemüht mein Vorgehen detailliert zu beschreiben. \smiley
+	\end{center}
+
+	\begin{task}
+		Finden Sie Lösungen $u\in C^1$ der folgenden linearen Randwertprobleme:
+		\begin{enumerate}
+			\item $-3u_x + 2u_y = 0$ mit $u(x,y) = y^2 + 1$ auf $\Gamma = \menge{(1,s) \in \R^2 ~|~ s \in \R}$
+			\item $u_x + u_y - u_z = x e^{y-z}$ mit $u(0,y,z) = g(y,z)$ für alle $y,z \in \R$, wobei $g \in C^1(\R^2)$ beliebig ist
+			\item $2u_x - u_y = 2u - x e^x$ mit $u(0,y) = y^2$ für alle $y \in \R$
+		\end{enumerate}
+		Erläutern Sie dabei Ihr Vorgehen und überprüfen Sie abschließend, ob die von Ihnen gefundene Lösung wirklich das Problem löst.
+	\end{task}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Wir betrachten die Charakteristiken
+		\begin{equation*}
+			\begin{pmatrix} x(t) \\ y(t) \end{pmatrix} = \begin{pmatrix} x_0 \\ y_0 \end{pmatrix} + t * \begin{pmatrix} -3 \\ 2 \end{pmatrix} \follows \begin{pmatrix} \dot{x}(t) \\ \dot{y}(t) \end{pmatrix} = \begin{pmatrix} -3 \\ 2 \end{pmatrix}
+		\end{equation*}
+		Sei $\alpha(t) \defeq u(x(t),y(t))$, d.h. $\alpha$ beschreibt $u$ entlang der Charakteristiken. Es gilt
+		\begin{equation*}
+			\alpha'(t) = u_x * \dot{x}(t) + u_y * \dot{y}(t) = -3u_x + 2u_y = 0
+		\end{equation*}
+		und somit ist $u$ konstant entlang der Charakteristiken. Parametrisiere die Kurve $\Gamma$ durch $x_0(s) = 1$ und $y_0(s) = s$. Dann ergibt sich die Randwertbedingung zu $g(s) = s^2 + 1$. Wir prüfen nun die nichtcharakteristische Bedingung, d.h. ob die Kurve $\Gamma$ auch alle Charakteristiken $\Xi_{(x_0,y_0)}$ durchläuft. Dazu prüfen wir den Tangentenvektor von $\Gamma$, nämlich $\left(\begin{smallmatrix} \dot{x}_0 \\ \dot{y}_0 \end{smallmatrix}\right) = \left(\begin{smallmatrix} 0 \\ 1 \end{smallmatrix}\right)$, und den Tangentenvektor der Charakteristik $\Xi_{(x_0,y_0)}$, nämlich $\left(\begin{smallmatrix} \dot{x} \\ \dot{y} \end{smallmatrix}\right) = \left(\begin{smallmatrix} -3 \\ 2 \end{smallmatrix}\right)$, auf lineare Unabhängigkeit:
+		\begin{equation*}
+			\det\begin{pmatrix} 0 & -3 \\ 1 & 2\end{pmatrix} = 3 \neq 0
+		\end{equation*}
+		Somit schneidet $\Gamma$ alle Charakteristiken $\Xi_{(x_0,y_0)}$. Somit können wir die Schar der Charakteristiken beschreiben durch 
+		\begin{equation*}
+			\begin{aligned}
+				x(s,t) &= x_0(s) - 3t = 1 - 3t & \follows t(x,y) &= \frac{1-x}{3} \\
+				y(s,t) &= y_0(s) + 2t = s + 2t & \follows s(x,y) &= y - 2t = y - \frac{2}{3} (1-x) = y + \frac{2}{3} x - \frac{2}{3}
+			\end{aligned}
+		\end{equation*}
+		Nach Konstruktion in der Vorlesung erhalten wir damit eine Lösung 
+		\begin{equation*}
+			u(x,y) = g(s(x,y)) = \brackets{y + \frac{2}{3} x - \frac{2}{3}}^2 + 1
+		\end{equation*}
+		Die Probe liefert mit den partiellen Ableitungen
+		\begin{equation*}
+			\left. \begin{array}{rcrl}
+			u_x(x,y) &=& \frac{4}{3} & \brackets{y + \frac{2}{3} x - \frac{2}{3}}^2 \\
+			u_y(x,y) &=& 2  & \brackets{y + \frac{2}{3} x - \frac{2}{3}}^2
+			\end{array} \right\} 
+			\follows -3 * \frac{4}{3} \brackets{y + \frac{2}{3} x - \frac{2}{3}}^2 + 4 \brackets{y + \frac{2}{3} x - \frac{2}{3}}^2 = 0
+		\end{equation*}
+		und außerdem $u(1,y) = y^2 + 1$ für den Anfangswert.
+		Somit ist $u$ also Lösung der Differentialgleichung.
+		%
+		\item Wir betrachten die partielle Differentialgleichung $u_x + u_y - u_z = x*e^{y-z}$ mit der Randbedingung $u(0,y,z) = g(y,z)$ für beliebiges $g \in C^1(\R^2)$. Definieren wir den \enquote{Rand} als die Fläche $\Gamma = \menge{(0,y,z) \in \R^3 : y,z \in \R}$. Diese lässt sich parametrisieren mit
+		\begin{equation*}
+			\gamma(\sigma, \tau) = 
+			\begin{pmatrix} 
+				x_0(\sigma, \tau) \\ 
+				y_0(\sigma, \tau) \\ 
+				z_0(\sigma, \tau) 
+			\end{pmatrix} 
+			= 
+			\begin{pmatrix}
+				0 \\
+				\sigma \\
+				\tau
+			\end{pmatrix}
+		\end{equation*}
+		Für die Tangentialebene erhalten wir die Spannvektoren 
+		\begin{equation*}
+			\gamma_\sigma(\sigma, \tau) = 
+			\begin{pmatrix}
+				0 \\ 1 \\ 0
+			\end{pmatrix}
+			\qquad
+			\gamma_\tau(\sigma, \tau) = 
+			\begin{pmatrix}
+				0 \\ 0 \\ 1
+			\end{pmatrix}
+			\follows
+			\dot{\gamma}(\sigma, \tau) = 
+			\begin{pmatrix}
+				0 & 0 \\ 1 & 0 \\ 0 & 1
+			\end{pmatrix}
+		\end{equation*}
+		Betrachten wir die Charakteristiken $\Xi_{\sigma, \tau} = \Image(\xi)$ mit
+		\begin{equation} \label{2eq: charakteristiken}
+			\xi(t, \sigma, \tau) =
+			\begin{pmatrix}
+				x(t, \sigma, \tau) \\
+				y(t, \sigma, \tau) \\
+				z(t, \sigma, \tau)
+			\end{pmatrix}
+			= 
+			\begin{pmatrix}
+				x_0(\sigma, \tau) + t \\
+				y_0(\sigma, \tau) + t \\
+				z_0(\sigma, \tau) - t \\
+			\end{pmatrix}
+			=
+			\begin{pmatrix}
+				t \\
+				\sigma + t \\
+				\tau - t \\
+			\end{pmatrix}
+		\end{equation}
+		Prüfen wir die nichtcharakteristische Bedingung um sicherzustellen, dass auch jede Charakteristik $\Xi_{\sigma, \tau}$ von $\Gamma$ durchlaufen wird:
+		\begin{equation*}
+			\det(\dot{\gamma} ~|~ \dot{\xi}) = \det\begin{pmatrix}
+				0 & 0 & 1 \\ 1 & 0 & 1 \\ 0 & 1 & -1
+			\end{pmatrix}
+			= 1 \neq 0
+		\end{equation*}
+		Bezeichne mit $f(u,x,y,z) = x * e^{y-z}$ die rechte Seite der Differentialgleichung. Schreibe $\xi(t) = \xi(t, \sigma, \tau)$ für fixiertes $\sigma$ und $\tau$ ($x$,$y$,$z$ analog). Sei $\alpha(t) \defeq u(\xi(t))$ die Funktion $u$ entlang einer Charakteristik $\Xi_{\sigma, \tau}$. Dann gilt
+		\begin{equation} \label{2eq: ode}
+			\begin{aligned}
+				\dot{\alpha}(t) 
+				&= Du * \dot{\xi} = f(u(\xi(t)), \xi(t)) = f(\alpha(t), t, \sigma + t, \tau -t) = t * e^{(\sigma + t) - (\tau - t)} \\
+				&= t*e^{\sigma - \tau + 2t}
+			\end{aligned}
+		\end{equation}
+		und dem Anfangswert $\alpha(0) = \alpha(0, \sigma, \tau) = g(\sigma, \tau)$. Lösen wir also dieses Anfangswertproblem und integrieren dazu die rechte Seite in \cref{2eq: ode} partiell:
+		\begin{equation*}
+			\begin{aligned}
+				\alpha(t) 
+				&= \int t*e^{\sigma - \tau + 2t} \diff{t} 
+				= \brackets{\frac{1}{2} e^{\sigma - \tau + 2t}} t - \int \frac{1}{2} e^{\sigma - \tau + 2t} \diff{t} \\
+				&= \frac{1}{2} t * e^{\sigma - \tau + 2t} - \frac{1}{4} e^{\sigma - \tau + 2t} + C(\sigma, \tau) \\
+				&= \brackets{\frac{1}{2} t - \frac{1}{4}} e^{\sigma - \tau + 2t} + C(\sigma, \tau)
+			\end{aligned}
+		\end{equation*}
+		Mit dem Anfangswert $\alpha(0) = g(\sigma, \tau)$ ergibt sich die Konstante
+		\begin{equation*}
+			\alpha(0) = \frac{1}{4} e^{\sigma - \tau} + C(\sigma, \tau) \overset{!}{=} g(\sigma, \tau) 
+			\follows
+			C(\sigma, \tau) = \frac{1}{4} e^{\sigma - \tau} + g(\sigma, \tau)
+		\end{equation*}
+		und somit die konkrete Lösung
+		\begin{equation*}
+			\alpha(t) = \brackets{\frac{1}{2} t - \frac{1}{4}} e^{\sigma - \tau + 2t} + \frac{1}{4} e^{\sigma - \tau} + g(\sigma, \tau)
+		\end{equation*}
+		Aus \cref{2eq: charakteristiken} erhalten wir die Inverse von $\xi$ als
+		\begin{equation*}
+			\xi^{-1}(x,y,z) =
+			\begin{pmatrix}
+				t(x,y,z) \\ \sigma(x,y,z) \\ \tau(x,y,u) 
+			\end{pmatrix}
+			=
+			\begin{pmatrix}
+				x \\ y-x \\ z+x
+			\end{pmatrix}
+		\end{equation*}
+		Nach Konstruktion in der Vorlesung erhalten wir die Lösung
+		\begin{equation*}
+			\begin{aligned}
+				u(x,y,z) 
+				&= \alpha(\xi^{-1}(x,y,z)) \\
+				&= \brackets{\frac{1}{2} x - \frac{1}{4}} e^{(y-x) - (z+x) + 2x} + \frac{1}{4} e^{(y-x)-(z+x)} + g(y-x, z+x) \\
+				&= \brackets{\frac{1}{2} x - \frac{1}{4}} e^{y-z} + \frac{1}{4} e^{y- z -2x} + g(y-x, z+x) 
+			\end{aligned} 
+		\end{equation*}
+		Nun prüfen wir noch, dass die gefundene Funktion auch wirklich eine Lösung der Differentialgleichung ist. Für die partiellen Ableitungen gilt
+		\begin{equation*}
+			\begin{aligned}
+				u_x(x,y,z) &= \frac{1}{2}e^{y-z} - \frac{1}{2} e^{y-z-2x}  - \partial_1 g(y-x, z+x) + \partial_2 g(y-x, z+x) \\
+				u_y(x,y,z) &= \brackets{\frac{1}{2}x - \frac{1}{4}}e^{y-z} + \frac{1}{4} e^{y-z-2x} + \partial_1 g(y-x, z+x) \\
+				u_z(x,y,z) &= - \brackets{\frac{1}{2}x - \frac{1}{4}}e^{y-z} - \frac{1}{4} e^{y-z-2x} + \partial_2 g(y-x, z+x)
+			\end{aligned}
+		\end{equation*}
+		Einsetzen liefert
+		\begin{equation*}
+			\begin{aligned}
+				& \frac{1}{2}e^{y-z} - \frac{1}{2} e^{y-z-2x}  - \partial_1 g(y-x, z+x) + \partial_2 g(y-x, z+x) \\
+				+ \ &
+				\brackets{\frac{1}{2}x - \frac{1}{4}}e^{y-z} + \frac{1}{4} e^{y-z-2x} + \partial_1 g(y-x, z+x) \\
+				+ \ &
+				\brackets{\frac{1}{2}x + \frac{1}{4}}e^{y-z} + \frac{1}{4} e^{y-z-2x} - \partial_2 g(y-x, z+x) \\
+				= \ &
+				e^{y-z} * \brackets{\frac{1}{2} + \frac{1}{2}x - \frac{1}{4} + \frac{1}{2}x - \frac{1}{4}}  - e^{y-z-2x} \brackets{\frac{1}{2} - \frac{1}{4} - \frac{1}{4} } \\
+				= \ &
+				x * e^{y-z}
+			\end{aligned}
+		\end{equation*}
+		Außerdem ist die Randwertbedingung erfüllt, denn
+		\begin{equation*}
+			u(0,y,z) = -\frac{1}{4} e^{y-z} + \frac{1}{4} e^{y-z} + g(y, z) = g(y,z)
+		\end{equation*}
+		und somit $u$ tatsächlich Lösung der partiellen Differentialgleichung.
+		%
+		\item Gegeben sei die partielle Differentialgleichung $2u_x - u_y = 2u + x*e^x$ und die Randwertbedingung $u(0,y) = y^2$ für alle $y \in \R$. Bezeichnen wir mit $f(u,x,y) = 2u - x e^x$  die rechte Seite.  Die Randwerte werden auf der Kurve $\Gamma = \menge{(0,y) \in \R^2 : y \in \R}$ angenommen. Diese können wir parametrisieren mit 
+		\begin{equation*}
+			\gamma(s) = 
+			\begin{pmatrix} 
+				x_0(s) \\ 
+				y_0(s) 
+			\end{pmatrix} 
+			= 
+			\begin{pmatrix}
+				0 \\
+				s
+			\end{pmatrix}
+			\follows \dot{\gamma}(s) =
+			\begin{pmatrix} 
+				\dot{x}_0(s) \\ 
+				\dot{y}_0(s) 
+			\end{pmatrix} 
+			= 
+			\begin{pmatrix}
+				0 \\
+				1
+			\end{pmatrix}
+		\end{equation*}
+		Damit wird die Randwertbedingung zu $g(s) = s^2$. Betrachten wir die Charakteristiken $\Xi_s$ mit
+		\begin{equation} \label{2eq: c-charakteristiken}
+			\xi(t, s) =
+			\begin{pmatrix}
+				x(t, s) \\
+				y(t, s)
+			\end{pmatrix}
+			= 
+			\begin{pmatrix}
+				x_0(s) + 2t \\
+				y_0(s) - t \\
+			\end{pmatrix}
+			=
+			\begin{pmatrix}
+				2t \\
+				s + t \\
+			\end{pmatrix}
+		\end{equation}
+		Die nichtcharakteristische Bedingung ist hier erfüllt, denn
+		\begin{equation*}
+			\det \begin{pmatrix}
+				0 & 2 \\ 1 & -1
+			\end{pmatrix}
+			= -2 \neq 0
+		\end{equation*}
+		Betrachte nun die Funktion $u$ entlang der Charakteristiken $\Xi_s$ für fixiertes $s$ beschrieben durch $\alpha(t) = u(\xi(t))$. Differenzieren ergibt
+		\begin{equation} \label{2eq: c-anfangswertproblem}
+			\dot{\alpha}(t) = u_x * \dot{x} + u_y * \dot{y} = f(u(\xi(t)), \xi(t)) = f(\alpha(t), 2t, s+t) = 2\alpha - 2t*e^{2t}
+		\end{equation} 
+		bei $\alpha(0,s) = g(s) = s^2$. Dieses Anfangswertproblem lösen wir mit Variation der Konstanten. Das zugehörige homogene Problem besitzt offensichtlich die Lösung $\alpha(t) = c(t) * e^{2t}$. Differenzieren wir diese Gleichung erhalten wir $\dot{\alpha}(t) = \dot{c}(t) * e^{2t} + 2c(t) * e^{2t}$. Setzen wir dies nun in \cref{2eq: c-anfangswertproblem} ein, dann erhalten wir für ein $\hat{c} \in \R$
+		\begin{equation*}
+			\dot{c}(t) * e^{2t} + 2c(t) * e^{2t} = 2c(t) * e^{2t} - 2t*e^{2t} \follows \dot{c}(t) = -2t \follows c(t) = \hat{c} - t^2
+		\end{equation*}
+		Damit ergibt sich die allgemeine Lösung $\alpha(t) = e^{2t} (\hat{c} - t^2)$. Durch den Anfangswert gilt $\alpha(0) = \hat{c} = s^2$ und somit ist $\alpha(t) = e^{2t} ( s^2 - t^2)$ konkrete Lösung des Anfangswertproblems, was sich auch leicht überprüfen lässt:
+		\begin{equation*}
+			\dot{\alpha}(t) = 2\underbrace{e^{2t}(s^2 - t^2)}_{= \alpha(t)} - 2t * e^{2t} = 2\alpha(t) - 2t * e^{2t} \quad \und \quad \alpha(0) = s^2
+		\end{equation*}
+		Aus \cref{2eq: c-charakteristiken} erhalten wir 
+		\begin{equation*}
+			\xi^{-1}(x,y) = 
+			\begin{pmatrix}
+				t(x,y) \\ s(x,y)
+			\end{pmatrix}
+			=
+			\begin{pmatrix}
+				\frac{1}{2} x \\ \frac{1}{2} x + y
+			\end{pmatrix}
+		\end{equation*}
+		Damit folgt nach Konstruktion in der Vorlesung eine Lösung
+		\begin{equation*}
+			\begin{aligned}
+				u(x,y) = \alpha(s(x,y)) 
+				&= e^{x} \brackets{\brackets{\frac{1}{2} x + y}^2 - \frac{1}{4} x^2} \\
+				&= e^x \brackets{\frac{1}{4} x^2 + xy + y^2 - \frac{1}{4} x^2 } \\
+				&= e^x \brackets{y^2 + xy} 
+			\end{aligned}
+		\end{equation*}
+		Dann gilt für die partiellen Ableitungen
+		\begin{equation*}
+			\begin{aligned}
+				u_x &= e^x \brackets{y^2 + xy} + y*e^x \\
+				u_y &= e^x \brackets{2y + x} 
+			\end{aligned}
+		\end{equation*}
+		und somit
+		\begin{equation*}
+			\begin{aligned}
+				2u_x - u_y &= 2e^x (y^2 + xy) + 2y * e^x - e^x (2y + x) \\
+				&= 2u + e^x (2y - 2y - x) \\
+				&= 2u - x*e^x 
+			\end{aligned}
+		\end{equation*}
+		und $u(0,y) = e^0 (y^2 + 0*y) = y^2$. Damit ist also $u$ tatsächlich Lösung der partiellen Differentialgleichung.
+	\end{enumerate}
+\end{exercisePage}

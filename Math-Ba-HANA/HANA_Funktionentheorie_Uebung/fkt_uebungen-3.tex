@@ -1,0 +1,237 @@
+\begin{exercisePage}
+	
+	\begin{task}
+		Das Doppelverhältnis $[z_1, z_2, z_3, z_4]$ von verschiedenen Punkten $z_1, z_2, z_3, z_4 \in \CC_\infty$ ist folgendermaßen erklärt:
+		\begin{equation*}
+			[z_1, z_2, z_3, z_4] = \frac{(z_1 - z_3) (z_2 - z_4)}{(z_1 - z_4) (z_2 - z_3)} \qquad z_1, z_2, z_3, z_4 \in \CC
+		\end{equation*}
+		Ist $z_j = \infty$, so definieren wir das Doppelverhältnis als Grenzwert, z.B.
+		\begin{equation*}
+			[\infty, z_2, z_3, z_4] \defeq \lim_{z \to \infty} [z, z_2, z_3, z_4] = \frac{z_2 - z_4}{z_2 - z_3}
+		\end{equation*}
+		\begin{enumerate}[nolistsep]
+			\item Sei $\abb{f}{\CC_\infty}{\CC_\infty}$ eine Möbius-Transformation. Beweisen Sie: Sind $z_1, z_2, z_3, z_4 \in \CC_\infty$ und $z_j \neq z_k$ für $j \neq k$, so gilt
+			\begin{equation*}
+				[z_1, z_2, z_3, z_4] = [f(z_1), f(z_2), f(z_3), f(z_4)]
+			\end{equation*}
+			\item Benutzen Sie (a) um zu zeigen: Sind drei verschiedene Punkte $z_1, z_2, z_3 \in \CC_\infty$ und drei verschiedene Punkte $w_1, w_2, w_3 \in \CC_\infty$ gegeben, so existiert genau eine Möbius-Transformation $\abb{f}{\CC_\infty}{\CC_\infty}$ mit der Eigenschaft $f(z_j) = w_j$ für $j=1,2,3$. Für $z \notin \menge{z_1, z_2, z_3}$ ist $f(z)$ gegeben durch
+			\begin{equation*}
+				[w_1, w_2, w_3, f(z)] = [z_1, z_2, z_3, z]
+			\end{equation*}
+		\end{enumerate}
+	\end{task}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Sei $\abb{f}{\CC_\infty}{\CC_\infty}$ eine Möbius-Transformation, d.h. es existieren $a,b,c,d \in \CC$ mit $ad - bc \neq 0$, sodass $f(z) = \frac{az + b}{cz + d}$. Wir definieren abkürzend $\alpha(z) \defeq cz + d$ und $\delta \defeq ad - bc$.
+		Außerdem gilt 
+		\begin{equation}
+			[z_1, z_2, z_3, z_4] = [z_2, z_1, z_4, z_3] = [z_3, z_4, z_1, z_2] 
+			\tag{$\star$} \label{3eq: 1}
+		\end{equation}
+		\begin{enumerate}[label=(\roman*), leftmargin=*]
+			\item Für $x,y \in \CC$ gilt
+			\begin{equation*}
+				\begin{aligned}
+					f(x) - f(y) = \frac{ax + b}{cx + d} - \frac{ay + b}{cy + d} 
+					&= \frac{(ax + b) (cy + d) - (ay + b (cx + d))}{(cx + d)(cy + d)} \\
+					&= \frac{ac x y + ad x + bc y + bd - ac x y - ad y - bc x  - bd}{\alpha(x) \alpha(y)} \\
+					&= \frac{(x-y) * \delta}{\alpha(x) * \alpha(y)}
+				\end{aligned} 
+			\end{equation*}
+			Damit ist dann
+			\begin{equation*}
+				\begin{aligned}
+					[f(z_1), f(z_2), f(z_3), f(z_4)] 
+					&= \frac{\Big( f(z_1) - f(z_3) \Big) * \Big( f(z_2) - f(z_4) \Big)}{\Big( f(z_1) - f(z_4) \Big) * \Big( f(z_2) - f(z_3 \Big)} \\
+					&= \frac{(z_1 - z_3) * \delta * (z_2 - z_4) * \delta}{\alpha(z_1) * \alpha(z_3) * \alpha(z_2) * \alpha(z_4)} * \frac{\alpha(z_1) * \alpha(z_4) * \alpha(z_2) * \alpha(z_3)}{(z_1 - z_4) * \delta * (z_2 + z_3) * \delta} \\
+					&= \frac{(z_1 - z_3) (z_2 - z_4)}{(z_1 - z_4) (z_2 - z_3)} \\
+					&= [z_1, z_2, z_3, z_4] 
+				\end{aligned}
+			\end{equation*}
+			
+			\item Genau ein $z_k = \infty$ und $c \neq 0$. Wegen \eqref{3eq: 1} können wir oBdA annehmen, dass $z_1 = \infty$. Dann ist $f(z_1) = \frac{a}{c}$ und es gilt
+			\begin{equation*}
+				f(z_1) - f(z) = \frac{a}{c} - \frac{a z + b}{c z + d} 
+				= \frac{ac z + ad - acz - bc}{c (c z + d)}
+				= \frac{\delta}{c * \alpha(z)} \qquad \forall z \in \CC
+			\end{equation*}
+			Somit ist
+			\begin{equation*}
+				\begin{aligned}
+					[f(z_1), f(z_2), f(z_3), f(z_4)] 
+					&= \frac{\delta (z_2 - z_4) * c * \alpha(z_4) * c * \alpha(z_2) * \alpha(z_3)}{c * \alpha(z_3) * \alpha(z_2) * \alpha(z_4) * \delta * (z_2 - z_3)} \\
+					&= \frac{z_2 - z_4}{z_2 - z_3} \\
+					&= [z_1, z_2, z_3, z_4]
+				\end{aligned}
+			\end{equation*}
+			
+			Für $c = 0$ ist $f(z_1) = \infty$ und somit $f(z_1) - f(z) = \infty$ für alle $z \in \CC$, sowie $\alpha \equiv d$. Es gilt
+			\begin{equation*}
+				\begin{aligned}
+					[f(z_1), f(z_2), f(z_3), f(z_4)] 
+					= \frac{f(z_2) - f(z_4)}{f(z_2) - f(z_3)} 
+					= \frac{z_2 - z_4}{z_2 - z_3} * \frac{\delta * d^2}{\delta * d^2}
+					= [z_1, z_2, z_3, z_4]
+				\end{aligned}
+			\end{equation*}
+			
+			\item Es seien $z_1 = z_2 = \infty$. Dann ist $f(z_1) = f(z_2) = \frac{a}{c}$ für $c \neq 0$. Somit vereinfacht sich Fall (ii) weiter zu
+			\begin{equation*}
+				\begin{aligned}
+					[f(z_1), f(z_2), f(z_3), f(z_4)] 
+					&= \frac{\delta*\delta}{c * \alpha(z_3) * c * \alpha(z_4)} * \frac{c * \alpha(z_4) * c * \alpha(z_3)}{\delta * \delta} \\
+					&= 1 \\
+					&= [z_1, z_2, z_3, z_4]
+				\end{aligned}
+			\end{equation*}
+			Für $c = 0$ ist $f(z_1) = f(z_2) = \infty$ und somit $[f(z_1), f(z_2), f(z_3), f(z_4)] = 1 = [z_1, z_2, z_3, z_4]$.
+			
+			Sei $z_1 = z_3 = \infty$, dann folgt die Aussage in beiden Fällen mit ähnlicher Rechnung wie oben.
+			
+			\item Analog zu den bisher gezeigten Fällen, rechnet man auch alle weiteren Fälle nach. 
+		\end{enumerate}
+		Damit erhält man schließlich für alle $z_k \in \CC_\infty$ ($k=1,2,3,4$) die Aussage $[z_1, z_2, z_3, z_4] = [f(z_1), f(z_2), f(z_3), f(z_4)]$.
+		
+		\item Wir konstruieren eine Möbius-Transformation $f$ mit $f(z_j) = w_j$ ($j=1,2,3$). Dazu betrachten wir das Doppelverhältnis $[z_1, z_2, z_3, z_4]$ als Funktion $\tau$ in $z$, d.h.
+		\begin{equation*}
+			\tau(z) \defeq [z_1, z_2, z_3, z] = \frac{(z_1 - z_3)(z_2 - z)}{(z_1 - z) (z_2 - z_3)} = \frac{-(z_1 - z_3) * z + (z_1 - z_3) z_2}{-(z_2 - z_3) + (z_2 - z_3) z_1}
+		\end{equation*}
+		Mit der zugeordneten Matrix $T \defeq \left( \begin{smallmatrix}
+		-(z_1 - z_3) & (z_1 - z_3) z_2 \\
+		-(z_2 - z_3) & (z_2 - z_3) z_1
+		\end{smallmatrix} \right)$ und $\det(T) = (z_1 - z_3) (z_2 - z_3) (z_2 - z_1) \neq 0$, da $z_1 \neq z_2$ vorausgesetzt war, ist $\tau$ wieder eine Möbius-Transformation.
+		Dabei gilt $\tau(z_1) = \infty$, $\tau(z_2) = 0$ und $\tau(z_3) = 1$. 
+		Sei $\sigma$ nun das Doppelverhältnis der $w_k$ und $z$ als Funktion in $z$ aufgefasst:
+		\begin{equation*}
+			\sigma(z) \defeq [w_1, w_2, w_3, z] = \frac{-(w_1 - w_3) * z + (w_1 - w_3) w_2}{-(w_2 - w_3) + (w_2 - w_3) w_1}
+		\end{equation*}
+		Mit der gleichen Überlegung wie für $\tau$ ist auch $\sigma$ wieder eine Möbius-Transformation mit der zugeordneten Matrix $S \defeq \left( \begin{smallmatrix}
+		-(w_1 - w_3) & (w_1 - w_3) w_2 \\
+		-(w_2 - w_3) & (w_2 - w_3) w_1
+		\end{smallmatrix} \right)$.
+		Mit 
+		\begin{equation*}
+			S^{-1} = \frac{1}{w_1 + w_2}
+			\begin{pmatrix}
+				\frac{1}{w_1 - w_3} & -\frac{w_2}{w_2 - w_3} \\
+				\frac{1}{w_1 - w_3} & -\frac{1}{w_2 - w_3}
+			\end{pmatrix}
+		\end{equation*}
+		ist $\sigma^{-1}$ wieder eine Möbius-Transformation und die Verkettung $\sigma^{-1} \circ \tau$ ist gegeben durch die Matrix
+		\begin{equation*}
+			S^{-1} * T = \frac{1}{w_1 + w_2}
+			\begin{pmatrix}
+				\frac{1}{w_1 - w_3} & -\frac{w_2}{w_2 - w_3} \\
+				\frac{1}{w_1 - w_3} & -\frac{1}{w_2 - w_3}
+			\end{pmatrix}
+			*
+			 \begin{pmatrix}
+			-(z_1 - z_3) & (z_1 - z_3) z_2 \\
+			-(z_2 - z_3) & (z_2 - z_3) z_1
+			\end{pmatrix}
+			= \dots
+		\end{equation*}
+		Die zugehörige Möbius-Transformation $f \defeq \sigma^{-1} \circ \tau$ erfüllt dann (wie man mit tausend mal mehr nachrechnen einsehen kann) gerade die Bedingungen $f(z_k) = w_k$ ($k=1,2,3$) und $[z_1, z_2, z_3, z] = [w_1, w_2, w_3, z]$. 
+		
+		\begin{lemma}
+			Sei $f$ eine Möbius-Transformation gegeben durch $f(z) = \frac{az + b}{cz + d}$ ($a,b,c,d \in \CC_\infty$) mit $f \neq \id$. Dann hat $f$ höchstens zwei Fixpunkte.
+		\end{lemma}
+		\begin{proof}
+			Die Fälle $c = 0$ und $a = 0$ sind klar.
+			Betrachte die Fixpunktgleichung $z = f(z) = \frac{az + b}{cz + d}$. Umstellen ergibt die Polynomgleichung zweiten Grades
+			\begin{equation*}
+				z ( cz + c) = c z^2 + cz = a z + b \equivalent 0 = c * z^2 + (c - a) z - b
+			\end{equation*}
+			die nach dem Fundamentalsatz der Algebra höchstens zwei verschiedene Lösungen besitzt. Damit kann die Möbius-Transformation $f$ maximal zwei Fixpunkte besitzen.
+		\end{proof}
+	
+		Sei nun $\schlange{f}$ eine weitere Möbius-Transformation, die die Interpolationsbedingungen erfüllt. Dann ist $f^{-1}(\schlange{f}(z_k)) = f^{-1}(w_k) = z_k$ für alle $k = 1,2,3$. Somit hat $f^{-1} \circ \schlange{f}$ also drei Fixpunkte. Jedoch kann eine Möbius-Transformation nur zwei Fixpunkte besitzen, wenn sie nicht die Identität ist. Somit muss $f^{-1} \circ \schlange{f} = \id$ gelten, was äquivalent zu $\schlange{f} = f$ ist. Somit ist das die Interpolationsbedingungen erfüllende $f$ eindeutig bestimmt.
+	\end{enumerate} 
+
+
+
+
+	\pagebreak
+	
+	
+	
+	
+	\begin{task}
+		Für $z \in \Omega \defeq \CC \setminus (-\infty, 0]$ sei der Hauptwert $\Arg(z)$ des Argumentes von $z$ festgelegt durch $- \pi < \Arg(z) < \pi$ (Das Argument $\phi$ von $z$ ist modulo $2\pi$ definiert durch $z = \abs{z} + e^{i\phi}$). Wir definieren $\abb{\Ln}{\Omega}{\CC}$ durch
+		\begin{equation}
+			\Ln(z) \defeq \ln\abs{z} + \i * \Arg(z) \tag{Hauptzweig des Logarithmus}
+		\end{equation}
+		Beweisen Sie:
+		\begin{enumerate}
+			\item $\Ln$ ist die Umkehrfunktion von $\abb{\exp}{\menge{z \in \CC : - \pi < \Im(z) < \pi}}{\Omega}$.
+			\item $\Ln$ ist holomorph. (Hinweis: Aufgabe 2.3)
+		\end{enumerate}
+	\end{task}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Sei $z \in \Omega$. Dann existiert $\phi \in (-\pi,\pi)$, sodass $z = \abs{z} * e^{i\phi}$, d.h. $\phi = \Arg(z)$. Es ist $\Im(\Ln(z)) = \Arg(z) = \phi \in (-\pi, \pi)$. Somit können wir $\exp$ anwenden und erhalten
+		\begin{equation*}
+			\exp(\Ln(z)) = \exp(\ln \abs{z}) * \exp(\i * \phi) = \abs{z} * e^{i \phi} = z
+		\end{equation*} 
+		Umgekehrt sei $z \in \menge{z \in \CC : -\pi < \Im(z) < \pi}$. Dann gilt mit $z = a + b \i$ und $b \in (-\pi, \pi)$ auch $\exp(a + b \i) = \exp(a) * \exp(b \i) \in \Omega$. Somit gilt
+		\begin{equation*}
+			\begin{aligned}
+				\Arg(\exp(a + b \i)) &= \Arg( \exp(a) * \exp(b \i) ) = b \\
+				\ln \abs{\exp(a + b \i)} &= \ln(\exp(a)) * \ln \abs{\exp(b \i)} = a
+			\end{aligned}
+		\end{equation*}
+		und schließlich
+		\begin{equation*}
+			\Ln(\exp(z)) = \ln \abs{\exp(a + b \i)} + \i * \Arg(\exp(a + b \i)) = a + b \i = z
+		\end{equation*}
+		Somit ist $\exp \circ \Ln = \id = \Ln \circ \exp$ und $\Ln$ die Umkehrung von $\exp$ als Abbildungen zwischen $\Omega$ und $\menge{z \in \CC : - \pi < \Im(z) < \pi}$.
+		
+		\item Wir wissen, dass $\exp$ auf $\CC$ stetig und holomorph ist mit $\exp'(z_0) = \exp(z_0) \neq 0$ für alle $z_0 \in \CC$. Nach Aufgabe 2.3 existieren dann offene Umgebungen $U$ von $z_0$ und $V$ von $\exp(z_0)$, sodass $\abb{\exp}{U}{V}$ ein Diffeomorphismus ist. 
+		Wir wissen außerdem, dass $\exp$ auf $\Omega' \defeq \menge{z \in \CC : - \pi < \Im(z) < \pi}$ injektiv ist, d.h. wir können jede beliebige offene Umgebung $U \subseteq \Omega'$ mit $z_0 \in U$ wählen und erhalten mit $V = \exp(U) \subseteq \Omega$ eine offene Umgebung von $\exp(z_0)$. Somit ist die Umkehrabbildung $\abb{\Ln}{V}{U}$ auf allen offenen $V \subseteq \Omega$ holomorph, d.h. auch auf $\Omega$ selbst.
+	\end{enumerate}
+
+
+
+	\pagebreak
+	
+	
+
+	\begin{task}
+		\begin{enumerate}
+			\item Finden Sie $z_1, z_2 \in \CC \setminus (-\infty, 0]$, sodass $\Ln(z_1 * z_2) \neq \Ln(z_1) + \Ln(z_2)$.
+			\item Sei $z_1 \in \CC \setminus (-\infty, 0]$ mit $\Re(z_1) = 0$ und $\Im(z_1) > 0$. Finden Sie alle $z_2 \in \CC \setminus (-\infty, 0]$, für die $\Ln(z_1 * z_2) = \Ln(z_1) + \Ln(z_2)$ gilt.
+		\end{enumerate}
+	\end{task}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Sei $z_1 = \i$ und $z_2 = \i - 1$. Dann sind offensichtlich $z_1, z_2 \in \CC \setminus (-\infty, 0]$. Es gilt
+		\begin{align*}
+				\Ln(\i) &= \ln\abs{\i} + \i * \Arg(\i) = 0 + \i * \frac{\pi}{2} \\
+				\Ln(\i - 1) &= \ln\abs{\i - 1} + \i * \Arg(\i - 1) = \ln(\sqrt{2}) + \i * \frac{3}{4} \pi \\
+			\intertext{Aber}
+				\Ln(\i * (\i - 1)) &= \Ln(-\i  - 1) = \ln \abs{i + 1} + \i * \Arg(-\i - 1) = \ln(\sqrt{2}) - \i * \frac{3}{4} \pi \\
+				\Ln(i) + \Ln(i-1) &= \ln(\sqrt{2}) + \i * \frac{3}{4} \pi + \i * \frac{\pi}{2} = \ln(\sqrt{2}) + \i * \frac{5}{4} \pi
+		\end{align*}
+		Wegen $\Ln(\i) + \Ln(\i-1) - \Ln(\i * (\i - 1)) = \i * \frac{1}{2} \pi \neq 0$ ist $\Ln(z_1 * z_2) \neq \Ln(z_1) + \Ln(z_2)$.
+		
+		\item Sei $z_k = r_k * e^{\i \phi_k}$ für $k = 1,2$ und wegen $\Re(z_1) = 0$ sowie $\Im(z_1) > 0$ gilt $r_1 > 0$ und $\phi_1 = \frac{\pi}{2}$. Notiere daher im Folgenden $\phi \defeq \phi_2$. Es gilt
+		\begin{equation*}
+			\Ln(z_1 z_2) = \ln{\abs{r_1 r_2 * e^{\i (\phi + \frac{\pi}{2})}}} + \i * \Arg\brackets{r_1 r_2 * e^{\i (\phi + \frac{\pi}{2})}} = \ln \abs{r_1 r_2} + \i * \brackets{\phi + \frac{\pi}{2} \mod 2\pi}
+		\end{equation*}
+		und 
+		\begin{equation*}
+		\begin{aligned}
+				\Ln(z_1) + \Ln(z_2) &= \ln\abs{r_1 e^{i \frac{\pi}{2}}} + \i * \Arg\brackets{r_1 e^{i \frac{\pi}{2}}} + \ln\abs{r_2 e^{i \phi}} + \i * \Arg\brackets{r_2 e^{i \phi}} \\
+				&= \ln\abs{r_1 r_2} + \i * \brackets{\frac{\pi}{2} + \phi}
+		\end{aligned}
+		\end{equation*}
+		Setzen wir nun beide Ausdrücke gleich, so erhalten wir
+		\begin{equation*}
+			\begin{aligned}
+			\ln \abs{r_1 r_2} + \i * \brackets{\phi + \frac{\pi}{2} \mod 2\pi} &= \ln\abs{r_1 r_2} + \i * \brackets{\frac{\pi}{2} + \phi} \\
+			\equivalent \qquad \phi + \frac{\pi}{2} \mod 2\pi &= \frac{\pi}{2} + \phi
+			\end{aligned}
+		\end{equation*}
+		Diese Gleichung wird für alle $\phi + \frac{\pi}{2} \in (-\pi, \pi)$ erfüllt. Da aber auch $\phi \in (-\pi, \pi)$ als Hauptwert gilt, schränkt sich diese beiden Bedingungen gegenseitig ein zu $\phi \in \brackets{-\pi, \frac{\pi}{2}}$. Somit gilt die Gleichheit der zu zeigenden Aussage für alle $z_2 = \abs{z_2} * e^{\i \phi}$ mit $\phi \in \brackets{-\pi, \frac{\pi}{2}}$
+	\end{enumerate}
+\end{exercisePage}

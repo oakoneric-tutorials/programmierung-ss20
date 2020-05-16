@@ -1,0 +1,102 @@
+\documentclass[ngerman, 11pt]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{parskip}  	% split paragraphs by vspace instead of intendations
+\usepackage[onehalfspacing]{setspace} % increase row-space
+\usepackage[title,titletoc]{appendix}
+
+\usepackage[utf8]{inputenc}
+\usepackage{chngcntr}
+\usepackage{eufrak}
+
+\usepackage{lmodern}
+\usepackage{ulem} 
+
+\usepackage{fancyhdr} 	% customize header / footer
+
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+\usepackage{blkarray}
+\usepackage{latexsym}
+%\usepackage{marvosym} 	% lightning (contradiction)
+%\usepackage{stmaryrd} 	% Lightning symbol
+%\usepackage{bbm} 		% unitary matrix
+%\usepackage{wasysym}	% add some symbols
+
+
+% further support for different equation setting
+\usepackage{cancel}
+\usepackage{xfrac}		% sfrac -> fractions e.g. 3/4
+\usepackage{units}		% units and fractions
+\usepackage{diagbox}
+
+\usepackage{../texmf/tex/latex/mathoperatorsMathTUD}
+
+\usepackage[table,dvipsnames]{tudscrcolor}
+\usepackage{tabularx} 	% tabularx-environment (explicitly set width of columns)
+\usepackage{longtable} 	% Tabellen mit Seitenumbrüchen
+\usepackage{multirow}
+\usepackage{booktabs}	% improved rules
+\usepackage{colortbl}
+
+
+\begin{document}
+	\section*{Grundlegende Räume der Analysis}
+	
+	\section*{Stetige Funktionen}
+	Sei $\Omega \subseteq \Rn$ offen.
+	\begin{equation*}
+	C^k(\Omega, \Rm) \defeq \menge{\abb{u}{\Omega}{\Rm}: D^\alpha u \text{ stetig auf } \Omega \enskip \forall \abs{\alpha} \le k}
+	\end{equation*}
+	\textbf{Norm:} $\norm{u}_{C^k} \defeq \sum\limits_{\abs{\alpha} \le k} \sup\limits_{x \in \Omega} \abs{D^\alpha u(x)}$ 
+	
+	\begin{tabular}{p{2cm} p{13cm}}
+		\hline
+		Raum & Definition \\ \hline\hline
+		%%%% stetige Funktionen %%%%
+		\multicolumn{2}{c}{\MakeUppercase{Stetige Funktionen}} \\ \hline
+		%
+		\multicolumn{2}{l}{Sei $\Omega \subseteq \Rn$ offen.} \\ 
+		%
+		$C^k(\Omega, \Rm)$ & $\defeq \menge{\abb{u}{\Omega}{\Rm}: D^\alpha u \text{ stetig auf } \Omega \enskip \forall \abs{\alpha} \le k}$ \\
+		& \textbf{Norm:} $\norm{u}_{C^k} \defeq \sum\limits_{\abs{\alpha} \le k} \sup\limits_{x \in \Omega} \abs{D^\alpha u(x)}$ \\
+		\multicolumn{2}{l}{Schreibe $C(\Omega) = C^0(\Omega)$} \\
+		$C^k_B(\Omega, \Rm)$ & $\defeq \menge{u \in C^k(\Omega, \Rm): D^\alpha u \text{ beschränkt auf } \Omega \enskip \forall \abs{\alpha} \le k}$ \\
+		$C^k(\quer{\Omega}, \Rm)$ & $\defeq \menge{u \in C^k(\Omega, \Rm): D^\alpha u \text{ stetig fortsetzbar auf } \quer{\Omega} \enskip \forall \abs{\alpha} \le k}$ \\ 
+		& \textbf{Normen:}
+		\begin{itemize}
+			\item $\norm{u}_0 \defeq \max\limits_{\abs{\alpha} \le k} \sup\limits_{x \in \Omega} \abs{D^\alpha u(x)}$
+			\item $\norm{u}_{W^{k,1}} \defeq \sum\limits_{\abs{\alpha} \le k} \int\limits_{\Omega} \abs{D^\alpha u(x)} \dx$
+		\end{itemize} \\
+		$C_0^\infty(\Omega)$ & $\defeq \menge{u \in C^k(\Omega) \enskip \forall k \in \N, \supp(u) \subset\subset \Omega}$ wobei $\supp(u) = \cl\brackets{\menge{x \in \Omega : u(x) \neq 0}}$ \\
+		& keine Metrik / Norm! \\ \hline
+		\multicolumn{2}{c}{\MakeUppercase{Hölderstetige Funktionen}} \\ \hline
+		%
+		$C^{k,\gamma}$ & $\defeq \menge{u \in C^k(\quer{\Omega}) : \Hol_\gamma(D^\alpha u, \quer{\Omega}) < \infty \enskip \forall \abs{\alpha} \le k}$ mit $\Hol_\gamma(v,\quer{\Omega}) = \sup\limits_{x,y \in \quer{\Omega}, x \neq y} \abs{\frac{v(x)-v(y)}{\abs{x-y}^\gamma}}$ für $\gamma\in (0,1]$ \\
+		& \textbf{Norm:} $\norm{u}_{C^{k,\gamma}} = \norm{u}_{C^k} + \sum\limits_{\abs{\alpha} \le k} \Hol_\gamma(D^\alpha u, \quer{\Omega})$ \\ \hline
+		\multicolumn{2}{c}{\MakeUppercase{Lebesque-Räume}} \\ \hline
+		%
+		$L^p(\Omega, \mu)$ & $\defeq \menge{\abb{u}{\Omega}{\K}: u \text{ messbar}, \norm{u}_{L^p} < \infty}$ \\
+		& \textbf{Norm:} 
+		\begin{itemize}
+			\item $\norm{u}_p = \brackets{\int_\Omega \abs{u}^p \diff{\mu}}^{\sfrac{1}{p}}$ für $1 \le p < \infty$ 
+			\item $\norm{u}_{\infty} = \esssup \limits_{x \in \Omega} \abs{u(x)} \defeq \inf\limits_{\Omega_0 \subseteq \Omega, \mu(\Omega_0) = 0} \sup\limits_{x \in \Omega \setminus \Omega_0} \abs{u(x)}$
+		\end{itemize} \\ \hline
+	%
+		\multicolumn{2}{c}{\MakeUppercase{Folgenräume}} \\ \hline
+		%
+		$\ell^p$ & $\defeq \menge{x = \folge{x_k}{k \in \N} : x_k \in \K^m, \norm{x}_{\ell^p} < \infty}$ \\
+		& \textbf{Norm:}
+		\begin{itemize}
+			\item $\norm{u}_{\ell^p} = \brackets{\sum\limits_{k=1}^\infty \abs{x_k}^p}^{\sfrac{1}{p}}$ für $1 \le p < \infty$ 
+			\item $\norm{u}_{\ell^\infty} = \sup\limits_{k \in \N} \abs{x_k}$
+		\end{itemize} \\ \hline
+		%
+		\multicolumn{2}{c}{\MakeUppercase{Sobolev-Räume}} \\ \hline
+		%
+		$C_E^\infty(\quer{\Omega})$ & $\defeq \menge{u \mid_{\quer{\Omega}} : u \in C^\infty(\Rn)}$ \\
+		& \textbf{Norm:} $\norm{u}_{W^{k,p}} = \brackets{ \sum\limits_{\abs{\alpha} \le k} \norm{D^\alpha u}_{L^p}^p }^{\sfrac{1}{p}}$ (Sobolev-Norm) \\
+		$H^{k,p}(\Omega)$ & $\defeq$ Vervollständigung von $C_E^\infty(\quer{\Omega})$ bzgl. $\norm{u}_{W^{k,p}}$ \\
+		$W^{k,p}(\Omega)$ & $\defeq \menge{u \in L^p(\Omega) : D^\alpha u \text{ ex. und } D^\alpha u \in L^p(\Omega) \enskip \forall \abs{\alpha} \le k}$
+	\end{tabular}
+\end{document}

@@ -1,0 +1,83 @@
+\begin{exercisePage}[Konvergenz \& Kompaktheit in topologischen Räumen][10/15]
+	
+	%%% AUFGABE 4 %%%
+	\begin{exercise}
+		Es sei $\tau$ die sogenannte koabzählbare Topologie auf $\R$, das heißt
+		\begin{equation*}
+			\tau = \menge{\emptyset} \cup \menge{O \subset \R \colon \R \setminus O \text{ ist abzählbar}}
+		\end{equation*}
+		Beweisen Sie die folgenden Aussagen:
+		\begin{enumerate}[leftmargin=*, label=(\alph*)]
+			\item  $\tau$ ist in der Tat eine Topologie auf $\R$.
+			\item  Eine Folge $\folge{x_n}{} \subset \R$ konvergiert genau dann bezüglich $\tau$ gegen $x \in \R$, wenn alle bis auf endlich viele Folgenglieder mit $x$ übereinstimmen.
+			\item Jede Teilmenge $M \subset \R$ ist folgenabgeschlossen bzgl. $\tau$.
+			\item Es gibt eine folgenabgeschlossene Menge in $(\R,\tau)$, die nicht abgeschlossen ist.
+		\end{enumerate}
+	\end{exercise}
+
+	\begin{enumerate}[leftmargin=\zulength, label=(zu \alph*)]
+		\item Es ist $\emptyset \in \tau$ offensichtlich und $\R \in \tau$, weil $\R \setminus \R = \emptyset$ abzählbar ist. Seien $U_i \in \tau$ für alle $i \in I$ mit einer beliebigen Indexmenge $I$. Das bedeutet, dass $\R \setminus U_i$ abzählbar ist für alle $i \in I$. Dann ist
+		\begin{equation*}
+		\R \setminus \brackets{\bigcup_{i \in I} U_i} = \bigcap_{i \in I} \underbrace{\brackets{\R \setminus U_i}}_{\text{abzählbar}}
+		\end{equation*}
+		abzählbar, da der Schnitt abzählbarer Mengen offensichtlich wieder abzählbar ist. Sei nun $I = \menge{1,\dots,n}$. Dann ist
+		\begin{equation*}
+		\R \setminus \brackets{\bigcap_{i \in I} U_i} = \bigcup_{i \in I} \brackets{\R \setminus U_i}
+		\end{equation*}
+		wieder abzählbar, da die endliche Vereinigung abzählbarer Mengen gemäß der Vorlesung MINT (oder auch ANAG vllt) wieder abzählbar ist.
+		%
+		\item \begin{proof-equivalence}
+			\hinrichtung Sei $\folge{x_n}{} \subset \R$ mit $x_n \to x \in \R$. Betrachten wir die Menge $M \defeq \menge{x_n \colon x_n \neq x}$. $A$ ist abzählbar, d.h. $V \defeq \R \setminus M \in \tau$. Wegen $x \in V$ ist $V$ eine Umgebung von $x$. Aufgrund der Konvergenz von $\folge{x_n}{}$ liegen nur endlich viele Folgenglieder nicht in $V$, d.h. $x_n \in \R \setminus V = M$ für alle $n \in \menge{1,\dots,N}$. Für alle $n \ge N$ gilt $x_n \in V = \R \setminus M$, also $x_n = x$ für fast alle $n \in \N$.
+			\rueckrichtung Sei $x_n = x$ für fast alle $n \in \N$ und $U$ eine Umgebung von $x$, d.h. insbesondere $x \in U$ und damit auch $x_n \in U$ für fast alle $n \in \N$. Somit liegen also fast alle Folgenglieder in einer beliebigen Umgebung von $x$ und deshalb $x_n \to x$.
+		\end{proof-equivalence}
+		%
+		\item Sei $\folge{x_n}{} \subset M$ eine Folge mit $x_n \to x$ und $x \in \R$. Nach Teil (b) existiert also ein $N \in \N$, sodass $x_n = x$ für alle $n \ge N$. Damit ist schließlich schon $x \in M$, da $x_n \in M$ vorausgesetzt war. 
+		%
+		\item Alle $M \subset \R$ sind folgenabgeschlossen. Es reicht also eine nicht abgeschlossene Menge $M$ zu finden. Es gilt
+		\begin{equation*}
+			\begin{aligned}
+			M \subset \R \text{ abgeschlossen} 
+			&\equivalent \R \setminus M \text{ offen, d.h. } \brackets{\R \setminus M} \in \tau \\
+			&\equivalent \R \setminus \brackets{\R \setminus M} \text{ abzählbar oder } \R \setminus M = \emptyset \\
+			&\equivalent M \text{ abzählbar oder } \R \subseteq M
+			\end{aligned}
+		\end{equation*}
+		Damit erfüllt jedes nicht-abzählbare $M \subsetneq \R$ die Bedingungen, z.B. $[0,1] \subset \R$.
+	\end{enumerate}
+
+	%%% AUFGABE 5 %%%
+	\begin{exercise}
+		Es sei $(X,\tau)$ ein topologischer Raum. Zeigen Sie:
+		\begin{enumerate}[leftmargin=*, label=(\alph*)]
+			\item Die Vereinigung endlich vieler kompakten Mengen $M_i \subset X$ ist kompakt.
+			\item Jede abgeschlossene Teilmenge einer kompakten Menge $M \subset X$ ist relativ kompakt.
+			\item Ist $\tau$ die koendliche Topologie auf $X=\R$, also $\tau = \menge{\emptyset} \cup \menge{O \subset \R \colon \R \setminus O \text{ ist endlich}}$, so gibt es eine Teilmenge von $X$, die kompakt, aber nicht abgeschlossen ist.
+		\end{enumerate}
+	\end{exercise}
+
+	\begin{enumerate}[leftmargin=\zulength, label=(zu \alph*)]
+		\item Seien $M_i \subset X$ kompakt für alle $i \in I = \menge{1,\dots,n}$. Betrachten wir nun $M \defeq \bigcup_{i \in I} M_i$ mit einer Überdeckung $\menge{U_j}_{j \in J}$. Da $M_i \subset M$ existiert für alle $i \in I$ eine endliche Teilüberdeckung $U_{i,1}, \dots, U_{i,k_i}$ von $M_i$. Somit ist $\bigcup_{i = 1}^n \bigcup_{j=1}^{k_i} U_{i,k_j}$ endlich und überdeckt alle $F_i$, also auch $F$.
+		%
+		\item Sei $M \subset X$ kompakt und $A \subseteq M$ abgeschlossen. $A$ ist genau dann relativ kompakt, wenn $\cl(A)$ kompakt ist. Wegen der Abgeschlossenheit von $A$ und demzufolge $\cl(A) = A$ reicht es zu zeigen, dass $A$ kompakt ist.
+		Sei $\mathcal{U} = \menge{U_i}_{i \in I}$ eine offene Überdeckung von $A \subseteq M$. Da $A$ abgeschlossen ist, ist $X \setminus A \in \tau$, d.h. $\schlange{\mathcal{U}} \defeq \menge{X \setminus A} \cup \ \mathcal{U}$ ist eine offene Überdeckung von $M$. Aufgrund der Kompaktheit von $M$ existiert eine endliche Teilüberdeckung $\schlange{\mathcal{U}}^\ast$ von $M$. Wegen $A \subseteq M$ ist $\schlange{\mathcal{U}}^\ast$ auch eine endliche Überdeckung von $A$. Ist $X \setminus A \in \schlange{\mathcal{U}}^\ast$, dann wähle $\mathcal{U}^\ast \defeq \schlange{\mathcal{U}}^\ast \setminus \menge{X \setminus A}$, sodass $\mathcal{U}^\ast$ eine endliche Teilüberdeckung von $A$ ist. Somit ist $A$ also kompakt und damit auch relativ kompakt.
+		%
+		\item Wir zeigen, dass jede Teilmenge $M \subseteq \R$ kompakt bezüglich $\tau$ ist. 
+		Sei also $M \subseteq \R$ beliebig und $\mathcal{U} \defeq \menge{U_i}_{i \in I}$ eine offene Überdeckung von $M$. Wähle nun $U_0 \in \mathcal{U}$ beliebig. Da $U_0 \in \tau$, ist $\R \setminus U_0$ endlich, d.h. nur endlich viele Elemente von $M$ liegen nicht in $U_0$. Schreibe $\menge{x_1, \dots, x_n} = \brackets{\R \setminus U_0} \cap M$. Für alle $i \in \menge{1, \dots, n}$ finden wir nun ein $U_i \in \mathcal{U}$ mit $x_i \in U_i$. Dann ist $\menge{U_0} \cup \menge{U_i}_{i=1}^n$ eine endliche Teilüberdeckung von $M$ und $M$ somit kompakt bezüglich $\tau$.		
+		Weiterhin gilt
+		\begin{equation*}
+			M \text{ abgeschlossen} \equivalent \R \setminus M \in \tau \equivalent \R \setminus \brackets{\R \setminus M} = M \text{ endlich oder } \R \setminus M = \emptyset
+		\end{equation*}
+		Somit ist jede nicht-endliche Menge $M^\ast \subsetneq \R$ nicht abgeschlossen, aber kompakt bezüglich $\tau$.
+	\end{enumerate}
+
+	%%% AUFGABE 6 %%%
+	\begin{exercise}
+		Sei $(X,\tau)$ ein topologischer Raum. Zeigen Sie:
+		\begin{enumerate}[leftmargin=*]
+			\item Erfüllt $X$ das erste Abzählbarkeitsaxiom, so ist jede kompakte Teilmenge von $X$ folgenkompakt.
+			\item Erfüllt $X$ das zweite Abzählbarkeitsaxiom, so ist jede folgenkompakte Teilmenge von $X$ kompakt.
+		\end{enumerate}
+	\textit{Hinweis:} Gilt das erste Abzählbarkeitsaxiom und hat eine Folge $\folge{x_n}{} \subset X$ keine konvergente Teilfolge, so hat sie auch keinen Häufungspunkt. Das heißt, jedes $x \in X$ hat eine Umgebung, in der nur endlich viele Folgenglieder liegen.
+	\end{exercise}
+
+\end{exercisePage}

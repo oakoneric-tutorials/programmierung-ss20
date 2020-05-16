@@ -1,0 +1,215 @@
+\begin{exercisePage}[Grundideen der linearen Theorie]
+	
+	\setcounter{taskcount}{28}
+	
+	\begin{lemma} \label{lemma: 10_1}
+		Ist $X$ ein normierter Raum und $Y \subseteq X$ ein endlich-dimensionaler linearer Unterraum, dann ist $Y$ vollständig.
+	\end{lemma}
+	\begin{proof}
+		Sei $(Y, \norm{\ .\ })$ ein Unterraum von $X$ mit $\dim Y = n$ und Basis $B \defeq \menge{e_1, \dots, e_n}$. Weiter sei $\folge{v_k}{k \in \N}$ eine Cauchyfolge bzgl. $\norm{\ . \ }$. Da im endlichdimensionalen Fall alle Normen äquivalent sind, gilt mit $\norm{\ . \ }_1 = \norm{\ . \ }_{\ell^1}$, dass $\alpha, \beta \in \K$ existieren, sodass $\alpha \norm{y}_1 \le \norm{y} \le \beta \norm{y}_1$ für alle $y \in Y$. Somit ist für alle $\epsilon > 0$ und $k,k$ hinreichend groß 
+		\begin{equation*}
+			\epsilon > \norm{v_k - v_j} \ge \alpha \norm{v_k - v_j}_1 = \alpha \sum_{i=1}^\infty \abs{v_{ki} - v_{ji}} \ge \alpha \abs{v_{ki} - v_{ji}}
+		\end{equation*} 
+		für alle $1 \le i \le n$: Damit sind auch $\folge{v_{ki}}{}$ und $\folge{v_{ji}}{}$ Cauchyfolgen in $\K$. Da $\K$ bezüglich $\norm{\ . \ }_1$ vollständig ist, existieren für alle $1 \le i \le n$ ein $u_i \in \K$ mit $\lim_{k \to \infty} v_{ki} = u_i$. Definiere $u \defeq (u_1, \dots, u_n) = \sum_i u_i e_i \in Y$. Schließlich gilt
+		\begin{equation*}
+			\begin{aligned}
+			0 
+			\le \lim_{k \to \infty} \norm{v_k - u} 
+			\le \beta \lim_{k \to \infty} \norm{v_k - u}_1 
+			= \beta \lim_{k \to \infty} \sum_{i=1}^n \abs{v_{ki} - u_i} 
+			= \beta \sum_{i=1}^n \lim_{k \to \infty} \abs{v_{ki} - u_i} 
+			= 0
+			\end{aligned}
+		\end{equation*}
+		Somit ist also $v_k \to u \in Y$ und $Y$ damit vollständig.
+ 	\end{proof}
+
+	\begin{lemma} \label{lemma: 10_2}
+		Ist $Y \subseteq X$ ein Banachraum. Dann ist $Y$ abgeschlossen.
+	\end{lemma}
+
+	\begin{lemma} \label{lemma: 10_3}
+		Sei $Y \subsetneq X$ ein echter linearer Teilraum. Dann gilt $\inn Y = \emptyset$.
+	\end{lemma}
+	\begin{proof}
+		Angenommen es sei $\inn Y \neq \emptyset$. Dann existiert ein $y \in \inn Y$ und da $\inn Y$ offen ist auch ein $\epsilon > 0$, sodass $B_\epsilon(y) \subseteq Y$. Sei nun $x \in X \setminus Y$, dann ist $\quer{x} \defeq y + \frac{\epsilon}{2 \norm{x}}  * x \in B_\epsilon(y) \subseteq Y$. Da $Y$ ein linearer Teilraum ist, gilt auch $x = \frac{2}{\epsilon} \norm{x} * (\quer{x} - y) \in Y$. Somit ist also $Y = X$.
+	\end{proof}
+
+	%%%% AUFGABE 29 %%%%
+	\begin{exercise}
+		\begin{enumerate}
+			\item Es sei $X$ ein Banachraum und $\abb{\phi}{X}{\R}$ konvex und stetig. Zeigen Sie, dass für alle $x_0 \in X$ ein $h^\ast \in X^\ast$ existiert mit $\phi(x_0) + \scal{h^\ast}{x-x_0} \le \phi(x)$ für alle $y \in X$. \\
+			\textit{Hinweis}: Führen Sie die Aufgabe auf den Fall $(x_0, \phi(x_0)) = (0,0)$ zurück. Finden Sie dann ein Funktional $g^\ast \in (X \times \R)^\ast$ mit der Eigenschaft $\scal{g^\ast}{(x,\phi(x) + \epsilon)} < 0$ für alle $x$ und alle $\epsilon > 0$. Nutzen Sie $g^\ast$, um ein geeignetes $h^\ast$ zu definieren.
+			\item Finden Sie eine konvexe Teilmenge des reellen Folgenraums $\ell^2$, deren Rand $0$ enthält, die aber nicht von $0$ getrennt werden kann. (D.h. es gibt kein $u^\ast$ in $(\ell^2)^\ast \setminus \menge{0}$ mit $\scal{u^\ast}{u} \le 0$ für alle $u \in M$) \\
+			\textit{Hinweis}: Suchen Sie eine Menge der Form $M = \menge{x \in \ell^2 : \abs{x_n} \le a_n \text{ für alle } n}$.
+			\item Aus einem früheren Semester stammt folgende Idee für einen Beweis, dass ein Beispiel wie in (b) gefordert nicht existieren kann.
+			
+			Es sei $M \subset \ell^2$ konvex und es gelte $0 \in \rand M$. Wir wenden den Trennungssatz 3.4 nicht auf $M$, sondern das Innere $N \defeq \inn{M}$ an. Natürlich ist $N$ offen und es lässt sich leicht zeigen, dass $N$ auch konvex ist. Wegen $0 \notin N$ gibt es folglich ein Funktional $u^\ast \in (\ell^2)^\ast$ mit $\scal{u^\ast}{u} < \scal{u^\ast}{0} = 0$ für alle $u \in N$. Für $u \in M$ wählen wir nun eine approximierende Folge $\folge{u_n}{n} \subset N$. Dann gilt $\scal{u^\ast}{u_n} < 0$ und da $u^\ast$ stetig ist, folgt nach Grenzübergang $\scal{u^\ast}{u} \le 0$. Somit lassen sich $M$ und $0$ trennen.
+			
+			Finden Sie den Fehler und begründen Sie anhand Ihres Beispiels aus (b), dass dies wirklich ein Fehler ist.
+		\end{enumerate}
+	\end{exercise}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Wir können die konvexe Funktion $\phi$ mittels linearer Translationen so verschieben, dass $(x_0, \phi(x_0))= (0,0)$ gilt.
+		Definiere dazu $\schlange{x} \defeq x - x_0$. Die Untersuchung in $x = x_0$ wird damit zur Untersuchung in $\schlange{x} = x_0 - x_0 = 0$. Definiere $\schlange{\phi}(x) \defeq \phi(x+x_0) - \phi(x_0)$, dann gilt $\schlange{\phi}(\schlange{x}) = \schlange{\phi}(0) = \phi(x_0) - \phi(x_0) = 0$. Somit wird schlussendlich die Untersuchung in $(x_0, \phi(x_0))$ zur Untersuchung in $(0,0)$. Gilt dann für $\schlange{\phi}$, dass $h^\ast(x) \le \schlange{\phi}(x) = \phi(x+x_0) - \phi(x_0) \follows \phi(x_0) + h^\ast(x) \le \phi(x+x_0)$. Anwendung des Translationsoperators $\abb{A}{X}{X}$ mit $x \mapsto x - x_0$ liefert wegen $h^\ast A \in L(X,\R)$ 
+		\begin{equation*}
+			\phi(x_0) + h^\ast (Ax) \le \phi(Ax + x_0) \equivalent \phi(x_0) + h^\ast (x-x_0) \le \phi(x)
+		\end{equation*}
+		für alle $x \in X$. Damit reduziert sich die zu zeigende Aussage auf die Existenz eines $h^\ast \in X^\ast$ mit $h^\ast(x) \le \phi(x)$ für alle $x \in X$.
+		
+		Wir suchen nun ein Funktional $g^\ast \in (X \times \R)^\ast$ mit $g^\ast(x,\phi(x) + \epsilon) < 0$. 
+		Wir betrachten $Y \defeq X \times \R$ und $M_\phi \defeq \menge{(x,y) : y \ge \phi(x)}$. Da $\phi$ konvex ist, ist auch $M_\phi$ konvex. Nach Teil 1 reicht $x_0 = 0$ und $y_0 = 0$ aus, d.h. $0 \in M_\phi$. Wähle nun ein $u_0 = (\schlange{x},\schlange{y}) \notin M$, d.h. $\schlange{y} < \phi(\schlange{x})$. Offensichtlich ist $M_\phi$ abgeschlossen. Dann existiert nach Trennungssatz also ein $\alpha \in \R$ und $g^\ast \in Y^\ast$ mit $g^\ast(u) < \alpha < g^\ast(u_0)$ für alle $u=(x,y) \in M_\phi$. Mit Linearität von $g^\ast$ folgt damit $g^\ast(x,y) - g^\ast(\schlange{x},\schlange{y}) = g^\ast(x-\schlange{x},y-\schlange{y}) < 0$.
+		\textcolor{cdpurple}{Jetzt weiß ich aber nicht, wie ich das $\phi(x) + \epsilon$ ins Spiel bringen soll. Und wie ich daraus das $h^\ast$ defnieren soll.}
+		%
+		\item Wir betrachten die Menge $M \defeq \menge{x = \folge{x_n}{n \in \N} \in \ell^2 : \abs{x_n} \le \frac{1}{n} \enskip \forall n \in \N}$, d.h. wir setzen entsprechend dem Hinweis $a_n \defeq \frac{1}{n}$.
+		\begin{itemize}[leftmargin=*]
+			\item Konvexität von $M$: Seien $x,y \in M$ und $\lambda \in [0,1]$. Dann gilt für die Folge $\lambda x + (1-\lambda) y$
+			\begin{equation*}
+				\abs{\lambda x_n + (1-\lambda) y_n} \le \lambda \abs{x_n} + (1-\lambda) \abs{y_n} \le \lambda \frac{1}{n} + (1-\lambda) \frac{1}{n} = \frac{1}{n}
+			\end{equation*}
+			für alle $n \in \N$. Somit ist auch $\lambda x + (1-\lambda) y \in M$, d.h. $M$ ist konvex.
+			\item $\inn(M) = \emptyset$: Sei $x \in M$ und $\epsilon > 0$. Dann hat jede $\epsilon$-Kugel die Gestalt
+			\begin{equation*}
+				B_\epsilon(x) = \menge{y \in \ell^2: \norm{x-y}_{\ell^2} < \epsilon} = \menge{y \in \ell^2 : \brackets{\sum_{i=1}^\infty \abs{x_i - y_i}^2}^{\sfrac{1}{2}} < \epsilon}
+			\end{equation*}
+			Somit enthält $B_\epsilon(x)$ insbesondere auch alle Folgen, die sich in genau einem Folgenglied um weniger als $\epsilon$ von $x$ unterscheiden. Wegen $\frac{1}{n} \to 0$ existiert für alle $\epsilon > 0$ ein $n_0 \in \N$ mit $\abs{x_{n_0}} + \epsilon > \frac{1}{n_0}$. Somit gilt stets $B_\epsilon(x) \nsubseteq M$ für alle $\epsilon > 0$ und alle $x \in M$. Schließlich kann $M$ also keine inneren Punkt besitzen, d.h $\inn(M) = \emptyset$. Da aber offensichtlich $M \neq \emptyset$ ist (z.B. $0 \in M$), ist jeder Punkt von $M$ ein Randpunkt, d.h. $M = \rand M$. Somit ist $0 \in M = \rand M$ ein Randpunkt.
+			\item Wir wollen zeigen, dass $0$ nicht von $M$ getrennt werden kann, d.h. es existiert kein $x^\ast \in (\ell^2)^\ast \setminus \menge{0}$, sodass $x^\ast(x) \le 0$ für alle $x \in M$. Da $\ell^2$ ein Hilbertraum ist, gilt $\brackets{\ell^2}^\ast \isomorph \ell^2$. Sei $J$ der zugehörige isometrische Isomorphismus. Dann ist die Existenz eines solchen $x^\ast \in \brackets{\ell^2}^\ast$ gleichbedeutend mit der Existenz eines $y \in \ell^2$ mit $Jy = x^\ast$ und $x^\ast(x) = (Jy)(x) = \scal{y}{x} = \sum_{i=1}^\infty y_i*x_i$. Angenommen es existiert ein $y \in \ell^2 \setminus \menge{0}$ mit $\scal{y}{x} \le 0$ für alle $x \in M$. Dann gibt es ein Index $i_0 \in \N$ mit $y_{i_0} \neq 0$, oBdA nehmen wir an, dass $y_1 \neq 0$. Mit $x_i = 0$ für alle $i \ge 2$ und $x_1 = \sgn(y_1) \in M$ ($\abs{x_1} = 1 \le \frac{1}{1}$) gilt dann $\scal{y}{x} = \abs{y_1} > 0$ im Widerspruch zur Annahme. Somit kann kein solches $y \in \ell^2$ existieren und dementsprechend auch kein $x^\ast \in \brackets{\ell^2}^\ast$. 
+		\end{itemize}
+		%
+		\item In Teil (b) haben wir gesehen, dass eine Menge auch nur aus Randpunkten bestehen kann, d.h. eine nichtleere Menge kann dennoch ein leeres Inneres besitzen. Somit kann nicht ohne Weiteres statt der Menge $M$ die Menge $N \defeq \inn(M)$ betrachtet werden, da darauf der Trennungssatz nicht mehr anwendbar ist.
+	\end{enumerate}
+
+ 	%%%% AUFGABE 30 %%%%
+ 	\begin{exercise}
+ 		Beweisen Sie die Folgenden Aussagen:
+ 		\begin{enumerate}
+ 			\item Es sei $B$ die Basis (im Sinne der linearen Algebra) eines Banachraumes $X$. Ist $B$ unendlich, so ist $B$ überabzählbar.
+ 			\item Es sei $H$ ein Hilbertraum und $\abb{A}{H}{H}$ symmetrisch, d.h. $\scal{Ax}{y} = \scal{x}{Ay}$ für alle $x,y \in H$. Ist $A$ linear, so ist $A$ stetig.
+ 			\item Es seien $(X, \norm{\cdot}_i)$ für $i = 1,2$ Banachräume. Gibt es ein $c_1$ mit $\norm{x}_1 \le c_1 \norm{x}_2$ für alle $x \in X$, so gibt es auch ein $c_2$ mit $\norm{x}_2 \le c_2 \norm{x}_1$ für alle $x \in X$.
+ 			\item Es sei $X$ ein normierter Raum und $C \subset X$ eine Teilmenge. Ist $C$ abgeschlossen und konvex, so ist $C$ der Schnitt von abgeschlossenen Halbräumen.
+ 			\item Es seien $X$ ein Banachraum, $\folge{A_n}{n} \subset L(X)$ eine Folge von Operatoren und $\abb{A}{X}{X}$ eine Abbildung. Konvergiert $\folge{A_n}{n}$ punktweise gegen $A$, so gilt $A \in L(X)$. \\
+ 			\textit{Anmerkung}: Es folgt nicht zwingend $A_n \to A$. Kennen Sie ein Beispiel? 
+ 		\end{enumerate}
+ 	\end{exercise}
+ 
+ 
+ 	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+ 		\item Sei $X$ ein Banachraum und $B$ eine unendliche Basis von $X$. Beweis durch Widerspruch --- Angenommen $B$ sei abzählbar, d.h. $B = \menge{v_i : i \in \N}$. Betrachten wir die Teilräume $X_n \defeq \menge{v_1, \dots, v_n}$ von $X$. Damit gilt folglich $X = \bigcup_{n \in \N} X_n$. 
+ 		
+ 		Da alle $X_n$ lineare Teilräume von $X$ sind und zudem $\dim X_n = n$ gilt (also alle $X_n$ endlich-dimensional sind), ist $X_n$ nach \cref{lemma: 10_1} vollständig für alle $n \in \N$.
+ 	
+ 		Da alle $X_n$ vollständig sind, sind sie also nach \cref{lemma: 10_2} auch abgeschlossen.
+ 		
+ 		Somit gilt mit \cref{lemma: 10_3} nun für alle $X_n$, dass $\inn X_n = \emptyset$ und folglich $\inn (\cl X_n) = \inn X_n = \emptyset$ im Widerspruch zum Baire'schen Kategoriensatz, nach welchem $\inn X_{n_0} \neq \emptyset$ für ein $n_0 \in \N$. Somit muss die Annahne, dass $B$ abzählbar ist, falsch gewesen sein und schlussendlich ist nun jede unendliche Basis von $X$ schon überabzählbar.
+ 		%
+ 		\item Nach dem Satz vom abgeschlossenen Graphen ist $A \in L(H)$ genau dann, wenn $\graph(A) \defeq \menge{(x,Ax) \in H^2: x \in H}$ abgeschlossen in $H^2$ ist. Wir zeigen die Abgeschlossenheit als Folgenabgeschlossenheit, d.h. dass für $x_n \to x$ und $Tx_n \to y$ schon $y = Tx$ gilt. Insbesondere reicht es wegen der Linearität von $A$ auch schon zu zeigen, dass dies für $x=0$ gilt. Sei also $\folge{x_n}{n \in \N}$ Nullfolge und $\folge{Ax_n}{n \in \N}$ konvergent. Wir müssen nun noch zeigen, dass dann auch $\lim_{n \to \N} Ax_n = 0$ ist. Sei $y \defeq \lim_{n \to \infty} A x_n$. Dann gilt mit der Stetigkeit des Skalarproduktes 
+ 		\begin{equation*}
+ 			\scal{y}{y} = \scal{\lim_{n \to \infty} Ax_n}{y} = \lim_{n \to \N} \scal{Ax_n}{y} = \lim_{n \to \N} \scal{x_n}{Ay} = \scal{0}{Ay} = 0
+ 		\end{equation*}
+ 		Damit folgt nun die Abgeschlossenheit von $\graph(A)$ und mit dem Satz vom abgeschlossenen Graphen auch die Stetigkeit von $A$.
+ 		
+% 		Offensichtlich gilt
+% 		\begin{equation*}
+% 			(x,y) \in \graph(A) \equivalent \scal{y}{z} = \scal{x}{Az} = \scal{Ax}{z} \quad \text{ für alle } z \in H
+% 		\end{equation*}
+% 		Die Abbildungen $x \mapsto \scal{x}{Az}$ und $y \mapsto \scal{y}{z}$ sind aufgrund der Stetigkeit des Skalarprodukts stetige lineare Funktionale. Aus der Stetigkeit folgt, dass Urbilder abgeschlossener Mengen wieder abgeschlossen sind und somit ist auch $\graph(A)$ abgeschlossen.
+ 		%
+ 		\item Seien $X_1 \defeq (X, \norm{.}_1)$ und $X_2 \defeq (X, \norm{.}_2)$ Banachräume. Dann ist der Operator $\abb{A = \id}{X_2}{X_1}$ bekanntermaßen bijektiv und wegen $\norm{x}_1 = \norm{Ax}_1 = \le c_1 \norm{x}_2$ ist $A \in L(X_2,X_1)$. Dann ist nach dem Satz von der inversen Abbildung auch $A^{-1}\in L(X_1, X_2)$, d.h. insbesondere auch, dass $A^{-1}$ beschränkt ist und somit ein $c_2$ existiert, so dass $\norm{A^{-1}x}_2 \le c_2 \norm{x}_1$. 
+ 		%
+ 		\item Bezeichnen wir mit $\mathcal{H}$ die Menge aller abgeschlossenen Halbräume, die $C$ enthalten, d.h. $\mathcal{H} \defeq \menge{ \menge{x \in X : \exists x^\ast \in X^\ast, \alpha \in \R : \scal{x^\ast}{x} \le \alpha} \supseteq C}$. Sei $C$ abgeschlossen und konvex. Wir wollen zeigen, dass $C = \bigcap_{H \in \mathcal{H}} H$.
+ 		\begin{description}
+ 			\item[$\mathbf{\subseteq}$ :] Sei $x \in C$. Da $C \subseteq H$ für alle $H \in \mathcal{H}$, gilt auch $x \in H$ für alle $H \in \mathcal{H}$ und schließlich $x \in \bigcap_{H \in \mathcal{H}} H$.
+ 			\item[$\mathbf{\supseteq}$ :] Wir zeigen die Kontraposition, d.h. dass für alle $x \notin C$ auch $x \notin \bigcap_{H \in \mathcal{H}} H$ gilt. Sei also $x_0 \notin C$. Da $C$ konvex und abgeschlossen ist, existiert nach Trennungssatz ein $x^\ast \in X^\ast$ und ein $\alpha \in \R$ mit $\scal{x^\ast}{x} \le \alpha < \scal{x^\ast}{x_0}$ für alle $x \in C$, d.h. $H \defeq \menge{x \in X : \scal{x^\ast}{x} = \alpha}$ trennt $x_0$ von $C$ und vielmehr beschreibt $H$ einen Halbraum, der $C$ enthält, d.h. $H \in \mathcal{H}$. Dagegen gilt $C \nsubseteq \quer{H} \defeq \menge{x \in X : \scal{x^\ast}{x} > \alpha}$, aber $x_0 \in \quer{H}$. Somit ist also $x_0 \notin \bigcap_{H \in \mathcal{H}} H$. Schließlich folgt $\bigcap_{H \in \mathcal{H}} H \subseteq C$.
+ 		\end{description}
+ 		%
+ 		\item Sei $A_n \in L(X)$ für alle $n \in \N$ und $A_n$ konvergiere puntkweise gegen $\abb{A}{X}{X}$, d.h. $A_n x \to A x$ für alle $x \in X$.
+ 		
+ 		Linearität --- Seien $x,y \in X$ und $\lambda \in \K$. Dann gilt
+		\begin{equation*}
+			\begin{aligned}
+			A(x+y) &= \lim_{n \to \infty} A_n (x+y) = \lim_{n \to \infty} An x + \lim_{n \to \infty} A_n y = Ax + Ay \\
+			A(\lambda x) &= \lim_{n \to \infty}A_n(\lambda x) = \lambda * \lim_{n \to \infty} A_n x = \lambda * Ax
+			\end{aligned}
+		\end{equation*}
+		Stetigkeit --- Da $A$ linear ist, reicht es zu zeigen, dass $A$ beschränkt ist, woraus dann schon Stetigkeit folgt. Da $A_n \in L(X)$, insbesondere also stetig, ist für alle $n \in \N$, ist $a_n \defeq \sup_{\norm{x} \le 1} \norm{A_n x} < \infty$ für alle $n \in \N$. Dementsprechend ist dann auch $\sup_{n \in \N} a_n < \infty$. Nach dem Satz von Banach-Steinhaus gilt dann $a \defeq \sup_{n \in \N} \norm{A_n} < \infty$, d.h. $\folge{A_n}{n \in \N}$ ist beschränkt in $L(X)$. Schließlich ist dann mit
+		\begin{equation*}
+			\norm{Ax} = \lim_{n \to \infty} \norm{A_n x} \le a * \norm{x}
+		\end{equation*}
+		auch $A$ beschränkt, also $A \in L(X)$.
+ 	\end{enumerate}
+ 
+ 	%%%% AUFGABE 31 %%%%
+ 	\begin{exercise}
+ 		Beweisen Sie die folgenden Aussagen:
+ 		\begin{enumerate}
+ 			\item Es sei $X$ ein Banachraum und $\folge{x_n^\ast}{n} \subset X^\ast$ eine Folge mit $x_n^\ast \rightharpoonup x^\ast \in X^\ast$. Dann gilt $x_n^\ast \weakstarconv x^\ast$.
+ 			\item Es sei $X = c_0$ der Raum der komplexen Nullfolgen. Dann gibt es eine Folge $\folge{x_n^\ast}{n} \subset X^\ast$, die \schwachstern gegen ein $x^\ast \in X^\ast$ konvergiert, aber nicht schwach.
+ 			\item Es sei $H$ ein Hilbertraum und $\folge{x_n}{n} \subset X$ eine Folge mit $x_n \weakconv x \in X$ und $\norm{x_n} \to \norm{x}$. Dann gilt $x_n \to x$.
+ 			\item Es sei $X = L^1([0,2\pi], \R)$. Dann gibt es eine Folge $\folge{x_n}{n} \subset X$, die schwach gegen ein $x \in X$ konvergiert, aber nicht stark. \\
+ 			\textit{Hinweis}: Aufgabe 13
+ 		\end{enumerate}
+ 	\end{exercise}
+ 
+ 	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+ 		\item Betrachte die Abbildung $\abb{\iota_x}{X^\ast}{\K}$ mit $\iota_x(x^\ast) = x^\ast(x)$.
+ 		\begin{itemize}
+ 			\item Linearität: Seien $x^\ast, y^\ast \in X^\ast$ und $\lambda \in \K$. Dann gilt
+ 			\begin{equation*}
+ 				\begin{aligned}
+ 				\iota_x(x^\ast + y^\ast) &= (x^\ast + y^\ast)(x) = x^\ast(x) + y^\ast(x) = \iota_x(x^\ast) + \iota_x(y^\ast) \\
+ 				\iota_x(\lambda*x^\ast) &= (\lambda * x^\ast)(x) = \lambda * x^\ast(x) = \lambda * \iota_x(x^\ast)
+ 				\end{aligned}
+ 			\end{equation*}
+ 			\item Stetigkeit: Es gilt $\abs{\iota_x(x^\ast)} = \abs{x^\ast(x)} \le \norm{x^\ast} * \norm{x} < \infty$ für alle $\norm{x} \le 1$. Das heißt auch, dass $\norm{\iota_x} \le \norm{x}$ für alle $x \in X$. Folgerung 3 der Vorlesung aus dem Satz von Hahn-Banach liefert sogar $\norm{\iota_x} = \norm{x}$.
+ 		\end{itemize}
+ 		Somit ist also $\iota_x \in L(X^\ast, \K)$.
+ 		Definieren wir nun damit eine Abbildung $\iota$, die $X$ in $X^\dast$ einbettet via
+ 		\begin{equation*}
+ 			\bigabb{\iota}{X}{X^\dast}{x}{\iota_x}
+ 		\end{equation*}
+ 		\begin{itemize}
+ 			\item Linearität: Seien $x,y \in X$ und $\lambda \in \K$.
+ 			\begin{equation*}
+ 				\begin{aligned}
+ 				\sqbrackets{\iota(x+y)}(x^\ast) 
+ 				&= \iota_{x+y}(x^\ast) 
+ 				= x^\ast(x+y) 
+ 				= x^\ast(x) + x^\ast(y) \\
+ 				&= \iota_x(x^\ast) + \iota_y(x^\ast) 
+ 				= (\iota_x + \iota_y) (x^\ast) \\
+ 				&= \sqbrackets{\iota(x) + \iota(y)}(x^\ast) \\
+ 				\sqbrackets{\iota(\lambda x)}(x^\ast) 
+ 				&= \iota_{\lambda x}(x^\ast) 
+ 				= x^\ast(\lambda x) 
+ 				= \lambda * x^\ast(x) \\
+ 				&= \lambda \iota_x(x^\ast) 
+ 				= (\lambda \iota_x)(x^\ast) \\
+ 				&= \sqbrackets{\lambda \iota(x)}(x^\ast)
+ 				\end{aligned}
+ 			\end{equation*} 
+ 			für alle $x^\ast \in X^\ast$
+ 			\item Isometrie: Nach Folgerung 3 bzw. der Bemerkung oben ist $\norm{\iota(x)} = \norm{\iota_x} = \norm{x}$.
+ 			\item Die Injektivität von $\iota$ folgt aus der Isometrie-Eigenschaft. Ebenso erhält man auch die Stetigkeit von $\iota$.
+ 		\end{itemize}
+ 		Somit ist also $\abb{\iota}{X}{X^\dast}$ eine lineare, isometrische Einbettung und wir können die Elemente des Bidualraums via $x^\dast(x^\ast) \defeq x^\ast(x)$ auffassen.
+ 		
+ 		Angenommen $\folge{x_n^\ast}{n \in \N} \subseteq X^\ast$ konvergiere schwach gegen $x^\ast \in X^\ast$. Per Defintion gilt dann $x^\dast(x_n^\ast) \to x^\dast(x^\ast)$ für alle $x^\dast \in X^\dast$. Somit gilt schließlich
+ 		\begin{equation*}
+ 			x_n^\ast(x) = x^\dast(x_n^\ast) \to x^\dast(x^\ast) = x^\ast(x)
+ 		\end{equation*}
+ 		also $x_n^\ast \weakstarconv x^\ast$.
+ 		%
+ 		\item ---
+ 		%
+ 		\item Im Hilbertraum wird schwache Konvergenz zur Konvergenz im Skalarprodukt (vgl. auch Erläuterungen zu Aufgabe 29b).
+ 		Es gilt $H^\ast \isomorph H$ mithilfe eines isometrischen Isomorphismus $\abb{J}{H}{H^\ast}$ mit $(Jw)(u) = \scal{w}{u}$ für alle $u,w \in H$. Somit kann jedes $h^\ast \in H^\ast$ via $J^{-1}$ auf ein $h \in H$ abgebildet werden, sodass $x_n \weakconv x$ gleichbedeutend ist mit $\scal{h}{x_n} \to \scal{h}{x}$ für alle $h \in H$. Wir betrachten im folgenden das Skalarprodukt über dem Körper $\R$, da für $\K= \mathbb{C}$ die Konvergenz durch die komplexe Konjugation unberührt bleibt. Mit der durch $\scal{.}{.}$ auf $H$ induzierten Norm $\norm{\ \cdot \ }$ gilt
+ 		\begin{equation*}
+ 			\norm{x_n - x}^2 
+ 			= \scal{x_n}{x_n} - \scal{x_n}{x} - \scal{x}{x_n} + \scal{x}{x} 
+ 			= \underbrace{\norm{x_n}^2}_{\to \norm{x}^2} + \norm{x}^2 - 2 \underbrace{\scal{x}{x_n}}_{\to \norm{x}^2} 
+ 			\to 0
+ 		\end{equation*}
+ 		Somit konvergiert auch $\norm{x_n - x} \to 0$, also folgt $x_n \to x$.
+ 	\end{enumerate}
+\end{exercisePage}

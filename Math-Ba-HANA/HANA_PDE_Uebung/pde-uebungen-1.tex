@@ -1,0 +1,161 @@
+\begin{exercisePage}
+	
+	\begin{task} Es sei $U \subset \Rn$ ein Gebiet, $u \in C^2(U,\Rn)$, $A \in C^1(U, \R^{m \times n})$, $\phi \in C^1(U)$ und $c \in \Rm$. Zeigen Sie:
+		\begin{enumerate}
+			\item $\div (\transpose{Du}) = \transpose{D(\div u)}$,
+			\item $\div (cA) = c\div A$,
+			\item $\div (\varphi A) = A * D\varphi + \varphi \div A$.
+		\end{enumerate}
+		\emph{Hinweis:} Wir betrachten Vektoren im $\Rn$ als Zeilenvektoren, $*$ ist das Skalarprodukt im $\Rn$, $Du = (\partial_j u_i)_{i,j=1,\dots,n}$, $\div$ und $*$ wirken auf eine Matrix \textit{zeilenweise}.
+		
+		Es seien nun $\abb{u,v}{U}{\R}$ hinreichend glatt. Beweisen Sie die \textbf{Formel von Leibniz}:
+		\begin{equation*}
+			D^\alpha(uv) = \sum_{\beta \leq \alpha} {\alpha \choose \beta} D^\beta u D^{\alpha-\beta}v
+		\end{equation*}
+		wobei für Multiindizes $\alpha, \beta$ gilt: 
+		\begin{equation*}
+			D^\alpha u = \partial_{x_1}^{\alpha_1}\dots\partial_{x_n}^{\alpha_n}u,\qquad {\alpha\choose\beta} = \frac{\alpha!}{\beta!(\alpha-\beta)!},\qquad \alpha! = \alpha_1!\cdot\alpha_2!\cdot\dots\cdots \alpha_n!
+		\end{equation*}
+		und $\beta \leq \alpha$ genau dann, wenn $\beta_i \leq \alpha_i$ für $i=1,\dots,n$.
+	\end{task}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Sei $u = (u_1, u_2, \dots, u_n) \in C^2$. Wir notieren Vektoren verkürzt $(u_i)_i = (u_i)_{i=1,\dots,n} = (u_1, u_2, \dots, u_n)$. Es ist
+		\begin{align*}
+			\div\brackets{\transpose{Du}} &= \div \trans{\begin{pmatrix}
+				\partial_1 u_1 & \partial_2 u_1 & \cdots & \partial_n u_1 \\
+				\vdots         & \vdots         & \ddots & \vdots \\
+				\partial_1 u_n & \partial_2 u_n & \cdots & \partial_n u_n
+			\end{pmatrix}} 
+			= \div \transpose{\partial_j u_i}_{i,j}
+			= \div \brackets{\partial_i u_j}_{i,j} \\
+			&= \begin{pmatrix}
+				\partial_{11} u_1 & \partial_{12} u_2 & \cdots & \partial_{1n} u_n \\
+				\vdots         & \vdots         & \ddots & \vdots \\
+				\partial_{n1} u_1 & \partial_{n2} u_2 & \cdots & \partial_{nn} u_n
+			\end{pmatrix}
+			= \brackets{\sum_{j=1}^n \partial_{ij} u_j}_{i}
+		\end{align*}
+		und außerdem
+		\begin{equation*}
+			\transpose{D(\div u)} 
+			= \transpose{D \brackets{\sum_{i=1}^n \partial_i u_i}}
+			= \begin{pmatrix}
+				\partial_{11} u_1 + \partial_{21} u_2 + \dots + \partial_{n1} u_n \\
+				\vdots \\
+				\partial_{1n} u_1 + \partial_{2n} u_2 + \dots + \partial_{nn} u_n
+			\end{pmatrix}
+			= \brackets{\sum_{j=1}^n \partial_{ji} u_j}_{i}
+		\end{equation*}
+		Wegen $u \in C^2$ sind alle partiellen Ableitungen stetig und können somit vertauscht werden. Daraus folgt die (zeilenweise) Gleichheit mit
+		\begin{equation*}
+			\div\brackets{\transpose{Du}} = \brackets{\sum_{j=1}^n \partial_{ij} u_j}_{i} = \brackets{\sum_{j=1}^n \partial_{ji} u_j}_{i} = \transpose{D(\div u)} 
+		\end{equation*} 
+		%
+		\item Es ist
+		\begin{align*}
+			\div(cA) &= \div \brackets{\sum_{j=1}^n c_j a_{ij}}_i = \sum_{i=1}^n \partial_i \sum_{j=1}^n c_j a_{ij} = \sum_{i=1}^n \sum_{j=1}^n \partial_i c_j a_{ij} \\
+			c * \div(A) &= c * \brackets{\sum_{j=1}^n \partial_j a_{ij}}_i = \sum_{i=1}^n c_i \sum_{j=1}^n \partial_j a_{ij} = \sum_{i=1}^n \sum_{j=1}^n \partial_j c_j a_{ij}
+		\end{align*}
+		und somit $\div(cA) = c * \div(A)$.
+		%
+		\item Man hat
+		\begin{align*}
+			A * D\phi &= A * (\partial_i \phi)_i = \brackets{\sum_{j=1}^n a_{ij} \ \partial_j \phi}_i \\
+			\phi \div(A) &= \phi * \brackets{\sum_{j=1}^n \partial_j a_{ij}}_i = \brackets{\sum_{j=1}^n \phi \ \partial_j a_{ij}}_i \\
+			\div(\phi A) &= \div\brackets{\brackets{\phi a_{ij}}_{i,j}} = \brackets{\sum_{j=1}^n \partial_j (\phi a_{ij})}_i
+		\end{align*}
+		Für fixiertes $i$ (also zeilenweise) erhält man mit der Produktregel für (partielle) Ableitungen
+		\begin{equation*}
+			\sum_{j=1}^n \partial_j (\phi a_{ij}) = \sum_{j=1}^n \brackets{(\partial_j \phi) a_{ij} + \phi (\partial_j a_{ij})} = \sum_{j=1}^n (\partial_j \phi) a_{ij} + \sum_{j=1}^n \phi (\partial_j a_{ij})
+		\end{equation*}
+		und somit $\div(\phi A) = A * (D\phi) + \phi * \div(A)$.
+	\end{enumerate}
+
+	\textbf{Leibnitz-Formel:} Vollständige Induktion über $\abs{\alpha} = k$.
+	\begin{induction}
+		\ianfang[$k = 0$] Für $\abs{\alpha} = 0$, also $\alpha = 0$ ist 
+		\begin{equation*}
+			D^0(uv) = uv = \binom{0}{0} D^0 u \ D^0 v
+		\end{equation*}
+		\ivorraussetzung Für $\abs{\alpha} = \sum_{i=1}^n \alpha_i = k$ gilt $D^\alpha(uv) = \sum_{\beta \leq \alpha} {\alpha \choose \beta} D^\beta u D^{\alpha-\beta}v$.
+		\pagebreak
+		\ischritt[$k \to k+1$] Seien $\abs{\alpha} = \abs{(\alpha_1, \alpha_2, \dots, \alpha_n)} = k+1$ und $\alpha' = (\alpha_1, \dots, \alpha_{n-1}, \alpha_n -1)$ sowie $\beta' = (\beta_1, \dots, \beta_{n-1}, \beta_n + 1)$. Dann ist $\abs{\alpha'} = k$ und $\abs{\beta'} = \abs{\beta} + 1$. Es gilt
+		\begin{align*}
+			D^\alpha (uv) 
+			&= \partial_{x_1}^{\alpha_1}\dots\partial_{x_n}^{\alpha_n} (uv)
+			= \partial_{x_n} \brackets{\partial_{x_1}^{\alpha_1}\dots\partial_{x_n}^{\alpha_n - 1} (uv)} \\
+			&= \partial_{x_n} \brackets{D^{\alpha'} (uv)} \\
+			\overset{\text{IV}}&{=} \partial_{x_n} \brackets{\sum_{\beta \leq \alpha'} \binom{\alpha'}{\beta} D^\beta u \ D^{\alpha'-\beta}v} \\
+			&= \sum_{\beta \leq \alpha'} \binom{\alpha'}{\beta} \brackets{\partial_{x_n} (D^\beta u) \ D^{\alpha'-\beta}v + D^\beta u \ \partial_{x_n} (D^{\alpha' - \beta} v) } \\
+			&= \sum_{\beta \leq \alpha'} \binom{\alpha'}{\beta} \brackets{D^{\beta'} u \ D^{\alpha'-\beta}v + D^\beta u \ D^{\alpha - \beta} v } \\
+			&= \dots \\
+			&= \sum_{\beta \leq \alpha} {\alpha \choose \beta} D^\beta u \  D^{\alpha-\beta}v
+		\end{align*}
+	\end{induction}
+
+
+
+
+
+
+
+	\begin{task}
+		Ermitteln Sie jeweils eine nichttriviale Lösung der folgenden partiellen Differentialgleichungen:
+		\begin{enumerate}
+			\item $v_y(x,y)= xy * v(x,y)$
+			\item $u_x(x,y) + y * u(x,y) = 0$
+		\end{enumerate}
+	\end{task}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Wir gehen analog zur Vorlesung vor und betrachten die Gleichung für fixiertes $x = \text{const}$. Dann erhalten wir eine gewöhnliche Differentialgleichung
+		\begin{equation*}
+			u'(y) = x y * u(y) 
+		\end{equation*} und lösen entweder durch geübtes Hinschauen oder mit Trennung der Variablen: sei $f(u(y)) = u(y)$ und $g(y) = x*y$. Der Ansatz
+		\begin{equation*}
+			\int^{u(y)} \frac{1}{f(\xi)} \diff{\xi} = \int^y g(\xi) \diff{\xi} \follows \ln(\abs{u(y)}) = \frac{1}{2} x y^2 + C
+		\end{equation*} 
+		Beachte, dass die unteren Integralgrenzen dabei in der Konstante $C$ zusammengefasst sind, da wir keinen Anfangswert vorgegeben haben. Die Gleichung \enquote{umgestellt} ergibt eine Lösung
+		\begin{equation*}
+			u(y) = \exp\brackets{\frac{1}{2}xy^2} \qquad \bzw \qquad v(x,y) = \exp\brackets{\frac{1}{2}xy^2}
+		\end{equation*}
+		Eine kurze Probe ergibt
+		\begin{equation*}
+			v_y(x,y) = xy * \exp\brackets{\frac{1}{2}xy^2} = xy * v(x,y)
+		\end{equation*}
+		%
+		\item Wir fixieren erneut eine Variable, diesmal $y = \text{const}$. Diesmal sehen wir direkt eine Lösung, nämlich
+		\begin{equation*}
+			u(x,y) = \exp(-xy)
+		\end{equation*}
+		Eine kurze Probe ergibt $u_x(x,y) + y * u(x,y) = -y * \exp(-xy) + y * \exp(-xy) = 0$.
+	\end{enumerate}
+
+	\begin{zusatz}
+		Klassifizieren Sie die nachstehenden partiellen Differentialgleichungen nach folgenden Gesichtspunkten:
+		\begin{enumerate}[nolistsep, topsep=-\parskip]
+			\item Ist die Differentialgleichung linear, semilinear, quasilinear oder voll nichtlinear?
+			\item Welche Ordnung hat die Differentialgleichung?
+		\end{enumerate}
+		\begin{align*}
+			\Delta u &=0\\
+			-\Delta u &=f(u)\\
+			|Du|&=1\\
+			u_t + \sum_{i=1}^n b^i u_{x_i}&=0\\
+			\det (D^2u) &=f\\
+			\div \left( \frac{Du}{\sqrt{1+|Du|^2}} \right)&=0\\
+			u_t-\Delta u &= f(u)\\
+			u_{tt} - \Delta u&=0\\
+			u_t + \div F(u)&=0 \\
+			u_t + u u_x + u_{xxx} &=0 \\
+			a u_t + \Delta u&=0\\
+			u_t + H(Du,x)&=0\\
+			u_t - \Delta (u^\gamma)&=0\\
+			-\Delta u &= \lambda u \\
+			\div(|Du|^{p-2}Du)&=0\\
+			u_t + uu_x&=0
+		\end{align*}
+	\end{zusatz}
+	
+\end{exercisePage}

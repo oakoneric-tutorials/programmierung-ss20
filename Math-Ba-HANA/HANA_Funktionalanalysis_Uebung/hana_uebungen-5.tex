@@ -1,0 +1,119 @@
+\begin{exercisePage}
+	
+\setcounter{taskcount}{12}
+
+%%%% AUFGABE 13 %%%%
+\begin{homework}
+	Es sei $X$ ein Hilbertraum mit Orthonormalsystem $\menge{e_i \colon i \in I}$
+	\begin{enumerate}
+		\item Beweisen Sie die Besselsche Ungleichung
+		\begin{equation*}
+			\sup_{J \subseteq I \text{ endlich}} \sum_{i \in J} \abs{\scal{u}{e_i}}^2 \le \norm{u}^2
+		\end{equation*}
+		für alle $u \in X$.
+		\item Sei $X = L([0,2\pi], \mathbb{C})$. Zeigen Sie, dass die Funktionen $t \mapsto \frac{1}{\sqrt{2\pi}} e^{-\i n t}$ ein Orthonormalsystem von $X$ bilden.
+		\item Folgern Sie für jedes $f \in L([0,2\pi], \mathbb{C})$, dass $\lim_{n \to \infty} \int_0^{2\pi} f(t) e^{\i n t} \diffskip{t}$
+	\end{enumerate}
+\end{homework}
+
+\begin{enumerate}[label=(zu \alph*), leftmargin=\zulength]
+	\item Sei $\mathcal{E} = \menge{e_i \colon i \in I}$. Nach Satz 19.2 gilt $P_{\quer{\lin(\mathcal{E})}(u)} = \sum_{k=1}^\infty \scal{e_k}{u} e_k$ für alle $u \in X$. Ohne Beschränkung nehmen wir an, dass $I = \menge{1, \dots, n}$ sei. Mit der auf $L^2$ definierten Norm gilt
+	\begin{align*}
+		0 &\le \norm{u - P_{\quer{\lin(\mathcal{E})}(u)}} = \scal{u- P_{\quer{\lin(\mathcal{E})}(u)}}{u - P_{\quer{\lin(\mathcal{E})}(u)}} \\
+		&= \scal{u - \sum_{k=1}^{n} \scal{e_k}{u} e_k}{u - \sum_{\ell=1}^{n} \scal{e_\ell}{u} e_\ell} \\
+		&= \scal{u}{u} - \scal{u}{\sum_{\ell=1}^{n} \scal{e_\ell}{u} e_\ell} - \scal{\sum_{k=1}^{n} \scal{e_k}{u} e_k}{u} + \scal{\sum_{k=1}^{n} \scal{e_k}{u} e_k}{\sum_{\ell=1}^{n} \scal{e_\ell}{u} e_\ell} \\
+		&= \norm{u}^2 - \sum_{\ell=1}^n \scal{e_\ell}{u} \scal{u}{e_\ell} - \sum_{k=1}^{n} \quer{\scal{e_k}{u}}\scal{e_k}{u} + \sum_{k=1}^{n} \sum_{\ell = 1}^n \quer{\scal{e_k}{u}} \scal{e_\ell}{u} \scal{e_k}{e_\ell} \\
+		&= \norm{u}^2 - 2 \sum_{k=1}^n \abs{\scal{e_k}{u}}^2 + \sum_{k=1}^{n} \quer{\scal{e_k}{u}} \scal{e_\ell}{u} \\
+		&= \norm{u}^2 - \sum_{k=1}^n \abs{\scal{e_k}{u}}^2
+	\end{align*}
+	Somit folgt daraus $\sum_{k=1}^n \abs{\scal{e_k}{u}}^2 \le \norm{u}^2$ für alle $u \in X$ und alle endlichen Indexmengen $I$. Da diese Ungleichung nun also für alle endlichen Indexmengen $I$ gilt, können wir auf der linken Seite zur Grenze übergehen ohne die Relation zu verlieren. Somit gilt
+	\begin{equation*}
+		\sup_{J \subseteq I \text{ endlich}} \sum_{i \in J} \abs{\scal{u}{e_i}}^2 \le \norm{u}^2
+	\end{equation*}
+	%
+	\pagebreak
+	%
+	\item Sei $\mathcal{E} = \menge{e_n \colon n \in \N}$ mit $e_n(t) \defeq \frac{1}{\sqrt{2\pi}} \exp(-\i n t)$. Wir wollen nun zeigen, dass $\mathcal{E}$ ein Orthonormalsystem ist.
+	Wir berechnen also für beliebige $n \neq m$
+	\begin{align*}
+		\scal{e_n}{e_m} &= \int_0^{2\pi} \quer{e_n(t)} * e_m(t) \diffskip{t} \\
+		&= \int_0^{2\pi} \frac{1}{\sqrt{2\pi}} \quer{\exp(- \i n t)} * \frac{1}{\sqrt{2\pi}} \exp(-\i m t) \diffskip{t} \\
+		&= \frac{1}{2\pi} \int_0^{2\pi} \exp(\quer{-\i n t}) * \exp(-\i m t) \diffskip{t} \\
+		&= \frac{1}{2\pi} \int_0^{2\pi} \exp(\i t (n-m)) \diffskip{t} \\
+		&= \frac{1}{2\pi} \frac{-\i}{(n-m)} \underbrace{\sqbrackets{\exp(\i t (n-m))}_0^{2\pi}}_{=0} \\
+		&= 0
+	\intertext{Außerdem gilt}
+		\norm{e_n} = \scal{e_n}{e_n} 
+		&= \int_0^{2\pi} \quer{e_n(t)} * e_n(t) \diffskip{t} \\
+		&= \int_0^{2\pi} \frac{1}{\sqrt{2\pi}} \quer{\exp(- \i n t)} * \frac{1}{\sqrt{2\pi}} \exp(-\i n t) \diffskip{t} \\
+		&= \frac{1}{2\pi} \int_0^{2\pi} \exp(\i n t) * \exp(-\i m t) \diffskip{t} \\
+		&= 1
+	\end{align*}
+	\item Sei $X = L^2([0,2\pi], \mathbb{C})$ und $\mathcal{E} = \menge{e_n \colon n \in \N}$ mit $e_n(t) \defeq \frac{1}{\sqrt{2\pi}} \exp(-\i n t)$. Außerdem sei $u \in L^2([0,2\pi],\mathbb{C})$. Nach (a) gilt
+	\begin{equation*}
+		\sup_{J \subseteq I \text{ endlich}} \sum_{i \in J} \abs{\scal{u}{e_i}}^2 \le \norm{u}^2
+	\end{equation*}
+	Wählen wir oBdA für alle $J$ die Darstellung $J = \menge{1, \dots, n}$ für ein $n \in \N$, dann gilt
+	\begin{equation*}
+		\sup_{J \subseteq I \text{ endlich}} \sum_{i \in J} \abs{\scal{u}{e_i}}^2 = \lim_{n \to \infty} \sum_{i = 1}^n \abs{\scal{u}{e_i}}^2 = \sum_{i=1}^\infty \abs{\scal{u}{e_i}}^2 \le \norm{u}^2 < \infty	
+	\end{equation*}
+	Daraus folgt also $\lim_{n \to \infty} \abs{\scal{u}{e_n}}^2 = 0$ und somit auch $\lim_{n \to \infty} \abs{\quer{\scal{u}{e_n}}}^2 = \lim_{n \to \infty} \abs{\scal{e_n}{u}}^2 = 0$. Daraus folgt nun $\lim_{n \to \infty} \scal{e_n}{u} = 0$. Skalarmultiplikation liefert dann auch $\lim_{n \to \infty} \sqrt{2\pi} * \scal{e_n}{u} = 0$. Berechnen wir nun 
+	\begin{align*}
+		\sqrt{2\pi} * \scal{e_n}{u} 
+		&= \sqrt{2\pi} * \int_0^{2\pi} \frac{1}{\sqrt{2\pi}} \quer{\exp(- \i n t)} * u(t) \diffskip{t} \\
+		&= \int_0^{2\pi} u(t) * \exp(\i n t) \diffskip{t} 
+	\end{align*}
+	Mit $f \defeq u$ folgt nun die Behauptung $\lim_{n \to \infty} \int_0^{2\pi} f(t) e^{\i n t} \diff{t} = 0$.
+\end{enumerate}
+
+%%%% AUFGABE 14 %%%%
+\begin{exercise}
+	Sei $\Omega \subseteq \Rn$ offen.
+	\begin{enumerate}[nolistsep, topsep=-\parskip]
+		\item Zeigen Sie, dass $C_B(\Omega, \norm{\ . \ }_C)$ nicht separabel ist.
+		\item Warum funktioniert das Argument aus (a) nicht für $C(\quer{\Omega}, \norm{\ . \ }_C)$ falls $\Omega$ beschränkt ist.
+		\item Zeigen Sie, dass $L^\infty(\Omega)$ nicht separabel ist.
+	\end{enumerate}
+\end{exercise}
+\begin{enumerate}[label=(zu \alph*), leftmargin=\zulength]
+	\item Wir betrachten die Abbildung $\abb{\Lambda}{C_B(\Omega)}{\ell^\infty}$ mit $f \mapsto \folge{f(n)}{n \in \N}$. Wählen wir eine beliebige Folge $\folge{x_n}{n \in \N}$ und konstruieren daraus eine Funktion $f \in C_B(\Omega)$, indem alle Folgenglieder Elementen aus $\Omega$ zugeordnet werden, und zwischen diesen Punkten setzen wir $f$ stetig fort (beispielsweise mit abschnittsweise affin-linearen Funktionen). Ohne Beschränkung nehmen wir daher im Folgenden an, dass $\N \subseteq \Omega$ und somit vereinfacht sich die Konstruktion zu $f(n) \defeq x_n$. Außerdem setzen wir $f(x) \defeq x_1$ für alle $x \le 1$. Somit wird $\Lambda$ nach Konstruktion surjektiv und ist stetig, da für alle $f,g \in C_B(\Omega)$ gilt
+	\begin{equation*}
+		\norm{\Lambda(f)-\Lambda(g)}_{\infty} = \sup_{n \in \N} \abs{f(n)-g(n)} \leq \sup_{x \in \Omega} \abs{f(x)-g(x)} = \norm{f-g}_{\infty}
+	\end{equation*}
+	Angenommen $C_B(\Omega)$ wäre separabel, d.h. es existiere eine abzählbare, dichte Teilmenge $D \subseteq C_B(\Omega)$. Da das Bild dichter Mengen unter surjektiven, stetigen Funktionen wieder dicht ist, muss auch $\Lambda(D) \subseteq \ell^\infty$ wieder abzählbar und dicht in $\ell^\infty$ sein. Dies würde jedoch bedeuten, dass auch $\ell^\infty$ wieder separabel ist im Widerspruch zum Beispiel aus der Vorlesung.
+	%
+	\stepcounter{enumi}
+	%
+	\item Wir wissen, dass $\ell^\infty(\Omega)$ nicht separabel ist. Außerdem wissen wir, dass $L^p(\Omega)$ für $1 \le p \le \infty$ Banachräume sind, also insbesondere auch metrische Räume. Ein metrischer Raum ist genau dann separabel, wenn er das zweite Abzählbarkeitsaxiom erfüllt. Nun erfüllt offensichtlich auch jeder lineare Unterraum eines metrischen Raumes das zweite Abzählbarkeitsaxiom und ist somit separabel.
+	
+	Angenommen $X \defeq L^\infty(\Omega)$ wäre separabel. 
+%	Dann erfüllt $X$ das zweite Abzählbarkeitsaxiom, d.h. es existiert eine abzählbare Basis $\mathcal{B} = \folge{B_i}{i \in I}$ von $(X, \tau)$, wobei $\tau$ die Standardtopologie bezüglich der von $X$ induzierten Metrik ist. Sei $Y \subseteq X$ ein linearer Unterraum. Dann ist $\mathcal{B}' = \folge{B_i \cap Y}{i \in I}$ offensichtlich wieder eine abzählbare Basis von $Y$ und somit erfüllt auch $Y$ das zweite Abzählbarkeitsaxiom und ist somit separabel.
+%	
+	Betrachten wir die Abbildung
+	\begin{equation*}
+		\bigabb{\iota}{\ell^\infty}{X}{\folge{x_k}{k}}{f(t) \defeq \sum_{k=1}^\infty x_k * \one_{[k,k+1)}(t)}
+	\end{equation*}
+	Dann ist diese Abbildung zum einen linear und auch isometrisch. Seien also $\folge{x_k}{k}, \folge{y_k}{k} \in \ell^\infty$ und $\lambda$ ein beliebiger Skalar.
+	\begin{align*}
+		\iota\brackets{\folge{x_k}{k} + \folge{y_k}{k}} 
+		= \iota\brackets{\folge{x_k + y_k}{k}} 
+		&= \sum_{k=1}^\infty (x_k + y_k) * \one_{[k,k+1)} \\
+		&= \sum_{k=1}^\infty x_k * \one_{[k,k+1)} + \sum_{k=1}^\infty y_k * \one_{[k,k+1)} \\
+		&= \iota\brackets{\folge{x_k}{k}} + \iota\brackets{\folge{y_k}{k}}\\
+		%
+		\iota\brackets{\lambda * \folge{x_k}{k}} 
+		= \iota\brackets{\folge{\lambda * x_k}{k}} 
+		&= \sum_{k=1}^\infty (\lambda * x_k) * \one_{[k,k+1)} \\
+		&= \lambda * \sum_{k=1}^\infty x_k * \one_{[k,k+1)} \\
+		&= \lambda * \iota\brackets{\folge{x_k}{k}} 
+		\norm{\iota\brackets{\folge{x_k}{k}} - \iota\brackets{\folge{y_k}{k}}}_X 
+		&= \norm{\sum_{k=1}^\infty (x_k - y_k) * \one_{[k,k+1)}}_X \\
+		&= \esssup_{t \in \Omega} \abs{\sum_{k=1}^\infty (x_k - y_k) * \one_{[k,k+1)}(t)} \\
+		%
+		&= \sup_{k \in \N} \abs{x_k - y_k} \\
+		&= \norm{\folge{x_k}{k} - \folge{y_k}{k}}_{\ell^\infty}
+	\end{align*}
+	
+	Somit können wir $\ell^\infty$ als linearen Teilraum von $X$ auffassen. Nach Annahme ist $X$ separabel, d.h. diese Eigenschaft vererbt sich auch auf $\ell^\infty$ im Widerspruch zum Beispiel der Vorlesung, dass $\ell^\infty$ nicht separabel ist.
+\end{enumerate}
+\end{exercisePage}

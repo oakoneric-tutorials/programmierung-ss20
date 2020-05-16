@@ -1,0 +1,130 @@
+\begin{exercisePage}[kompakte Operatoren]
+	
+\setcounter{taskcount}{18}
+
+%%%% AUFGABE 19 %%%%
+\begin{exercise}
+	\begin{enumerate}
+		\item Es seien $\Omega \subseteq \Rn$ offen und beschränkt, $\abb{K}{\quer{\Omega} \times \quer{\Omega}}{\R}$ stetig und $u \in C(\quer{\Omega})$. Wir betrachten den Fredholm'schen Integraloperator $A$ definiert durch 
+		\begin{equation*}
+			(Au)(x) \defeq \int_\Omega K(x,y) u(y) \dy
+		\end{equation*}
+		Zeigen Sie, dass der stetige lineare Operator $\abb{A}{C(\quer{\Omega})}{\quer{\Omega}}$ kompakt ist.
+		\item Der Differentialoperator $\abb{D}{C^1([0,1])}{C([0,1])}$ mit $Du = u'$ ist linear und stetig. Zeigen Sie, dass $D$ nicht kompakt ist.
+	\end{enumerate}
+\end{exercise}
+
+\begin{enumerate}[label=(zu \alph*), leftmargin=\zulength]
+	\item Es reicht zu zeigen, dass $A B_1(0)$ relativ kompakt ist. Da $K$ stetig ist, existiert für alle $\epsilon > 0$ ein $\delta > 0$, sodass $\abs{K(x,y) - K(\quer{x}, \quer{y})} < \epsilon$ für $\abs{x-\quer{x}} + \abs{y - \quer{y}} < \delta$. Sei $\folge{u_n}{n \in \N} \subseteq \quer{B_1(0)}$, d.h. $\norm{u_n} \le 1$ für alle $n \in \N$. Wir wollen zeigen, dass $A B_1(0)$ gleichgradig stetig ist. Also betrachten wir
+	\begin{align*}
+		\norm{(Au_n)(x) - (Au_n)(\quer{x})} &\le \int_\Omega \abs{K(x,y) un_(y) - K(\quer{x}, y) u_n(y)} \dy \\
+		&= \int_\Omega \abs{K(x,y) - K(\quer{x},y)} \abs{u_n(y)} \dy \\
+		&\le \int_\Omega \epsilon \abs{u_n(y)} \dy \\
+		&\le \epsilon * \underbrace{\norm{u_n}}_{\le 1} * \underbrace{\lambda(\Omega)}_{< \infty} \defqe \epsilon'		
+	\end{align*}
+	für alle $\abs{x-\quer{x}} < \delta$. Damit ist nun $A B_1(0)$ gleichgradig stetig. Nun müssen wir noch zeigen, dass $A B_1(0)$ beschränkt in $C(\quer{\Omega})$ ist. Dabei gilt aufgrund der Stetigkeit von $A$ für alle $u \in B_1(0)$
+	\begin{equation*}
+		\norm{Au} \le \norm{A} \norm{u} \le \norm{A}
+	\end{equation*}
+	da mit $u \in B_1(0)$ auch $\norm{u} \le 1$ ist. Da $\norm{A} < \infty$ gilt, ist $A B_1(0)$ also beschränkt durch $\norm{A}$.
+	
+	Dann folgt mit dem Satz von Arzela-Ascoli, dass $A B_1(0)$ relativ kompakt ist und somit auch $A$ kompakt.
+	%
+	\item Sei $\Omega = [0,1]$ und schreibe $\norm{\ \cdot \ }_k = \norm{\ \cdot \ }_{C^k}$ und $\norm{\ \cdot \ } = \norm{\ \cdot \ }_0$. Wir betrachten eine beschränkte Folge $\folge{u_n}{n \in \N} \subseteq C[0,1]$, die keine konvergente Teilfolge in $C(\quer{\Omega})$ hat\footnote{Diese existiert, da z.B. $u_n \defeq x^n$ durch $u = 1$ beschränkt ist und offensichtlich keine konvergente Teilfolge in $C[0,1]$ besitzt.}. Aufgrund der Beschränktheit existiert nun ein $\alpha \in \R$ mit $\norm{u_n} \le \alpha$ für alle $n \in \N$. Definieren wir nun eine Folge $\folge{U_n}{n \in \N} \subseteq C^1(\Omega)$ durch $U_n(x) \defeq \int_0^x u_n(y) \dy$ für alle $x \in \Omega$ und alle $n \in \N$. Somit ist dann $D U_n = u_n$. Wegen Beschränktheit der Folge $\folge{u_n}{}$ gilt nun
+	\begin{equation*}
+		\abs{\int_0^x u_n(y) \dy} \le \int_0^x \abs{u_n(y)} \dy \le \int_0^x \alpha \dy = \alpha \int_0^x \dy = \alpha * \lambda([0,x])
+	\end{equation*}
+	Damit ist nun
+	\begin{equation*}
+		\sup_{x \in [0,1]} \abs{U_n(x)} 
+		= \sup_{x \in [0,1]} \abs{\int_0^x u_n(y) \dy} 
+		\le \sup_{x \in [0,1]} \alpha * \lambda([0,x]) 
+		= \alpha * \sup_{x \in [0,1]} (x-0) = \alpha
+	\end{equation*}
+	Somit ist $\norm{U_n}_1 = \sup_{x \in [0,1]} \abs{U_n(x)} + \sup_{x \in [0,1]} \abs{u_n(x)} \le 2 \alpha < \infty$. Damit ist also die Folge $\folge{U_n}{n \in \N}$ beschränkt, ihr Bild $\folge{DU_n}{n \in \N} = \folge{u_n}{n \in \N}$ besitzt aber keine konvergente Teilfolge und ist somit nicht kompakt. Somit ist $D$ nicht kompakt.
+\end{enumerate}
+
+%%%% AUFGABE 20 %%%%
+\begin{exercise}
+	\begin{enumerate}
+		\item Es seien $X$ ein linearer normierter Raum und $Y$ ein Banachraum. Beweisen Sie, dass die Menge $K(X,Y)$ der linearen, kompakten Operatoren $\abb{A}{X}{Y}$ einen abgeschlossenen Unterraum von $L(X,Y)$ bilden.
+		\item Es sei $\folge{a_{i,k}}{i,k \in \N}$ eine reelle Doppelfolge mit $\sum_{i,k = 0}^\infty \abs{a_{ik}} < \infty$. Zeigen Sie mithilfe von Teil (a), dass 
+		\begin{equation*}
+			A \folge{x_k}{k \in \N} \defeq \folge{\sum_{k=0}^\infty \abs{a_{ik} x_k}}{i \in \N}
+		\end{equation*}
+		einen Operator $A \in K(\ell^\infty, \ell^1)$ definiert.
+	\end{enumerate}
+\end{exercise}
+
+\begin{enumerate}[label=(zu \alph*), leftmargin=\zulength]
+	\item Es ist klar, dass $0 \in K(X,Y)$. 
+	Sei $\lambda \in \mathbb{C}$ beliebig und $A \in K(X,Y)$. In jedem Vektorraum $X$ gilt für $x,y \in X$, dass $\lambda (x+y) = \lambda x + \lambda y$. Betrachten wir wieder die Einheitskugel $B_1(0)$. Da $A$ kompakt ist, ist $A B_1(0)$ relativ kompakt in $Y$, was auch durch Multiplikation mit $\lambda$ nicht verändert wird, d.h. $(\lambda A) B_1(0)$ ist wieder relativ kompakt und somit ist der Operator $\lambda A$ kompakt.
+	Seien nun $A,B \in K(X,Y)$. Wir wollen zeigen, dass $A B_1(0) + B B_1(0)$ relativ kompakt bzw. $\quer{A B_1(0) + B B_1(0)}$ kompakt ist in $Y$. Da $A$ und $B$ kompakt sind, sind auch die Bilder der Einheitskugel $A B_1(0)$ und $B B_1(0)$ relativ kompakt, d.h. $\quer{A B_1(0)}$ und $\quer{B B_1(0)}$ sind kompakt. Nun wissen wir, dass die Addition in $Y$, also die Abbildung $\abb{+}{Y \times Y}{Y}$ stetig ist und somit die Bilder kompakter Mengen wieder kompakt sind. Damit ist $\quer{A B_1(0)} + \quer{B B_1(0)}$ kompakt, insbesondere also abgeschlossen. Somit ist $\quer{A B_1(0) + B B_1(0)} \subseteq \quer{A B_1(0)} + \quer{B B_1(0)}$, d.h. auch $\quer{A B_1(0) + B B_1(0)}$ ist kompakt. Somit ist $A B_1(0) + B B_1(0)$ relativ kompakt und schlussendlich $A + B$ ein kompakter, linearer Operator.
+	
+	Wir müssen nun noch zeigen, dass $K(X,Y)$ abgeschlossen ist. Dafür sei $\folge{A_n}{n \in \N} \subseteq K(X,Y)$ mit $A_n \to A$ mit $A \in L(X,Y)$. % Da $A \in L(X,Y)$ reicht es zu zeigen, dass $A B_1(0)$ kompakt ist.
+	Sei $\folge{x_n}{n \in \N}$ eine beschränkte Folge in $X$. Da $A_1$ kompakt ist, existiert von $\folge{A_1 x_n}{n \in \N}$ eine konvergente Teilfolge, die wir für $I \subseteq \N$ mit $\folge{A_1 x_n}{n \in I}$ notieren. Außerdem ist $A_2$ kompakt, d.h. es gibt $J \subseteq \N$ sodass $\folge{A_2 x_m}{m \in J}$ konvergiert. Außerdem konvergiert $\folge{A_1 x_m}{m \in J}$ weiterhin. Nun können wir weiter Folgenglieder aussortieren, d.h. es existiert ein $K \subseteq J$, sodass $\folge{A_3 x_m}{m \in K}$ konvergiert und auch $\folge{A_1 x_m}{m \in K}$ sowie $\folge{A_2 x_m}{m \in K}$ konvergieren. Nun kann so weiter fortfahren und erhält schließlich $N_1 \subseteq N_2 \subseteq \cdots \subseteq \N$, sodass $\folge{A_k x_{k_i}}{i \in N_r}$ für alle $k \le r$ konvergiert. Wir konstruieren nun die daraus resultierende Diagonalfolge $\folge{y_i}{i \in \N}$. Dabei stellt man fest, dass die Folge $\folge{y_i}{}$ ab dem $k$-ten Glied mit der $k$-ten Aussonderung übereinstimmt, d.h. mit der Konvergenzfeststellung von oben konvergiert $\folge{A_n y_i}{i}$ also für alle $n \in \N$. Nun wollen wir zeigen, dass $\folge{A y_i}{i}$ auch konvergiert. Sei dazu $\epsilon > 0$ und oBdA nehmen wir an, dass $\norm{x_i} \le 1$ und somit $\norm{y_i} \le 1$ für alle $i \in \N$. Da $A_n \to A$, wähle $n \in \N$ mit $\norm{A_n - A} < \epsilon$ und ein $i_0 \in \N$ mit $\norm{A_n y_i - A_m y_j} < \epsilon$ für alle $i,j \ge i_0$. Dann gilt
+	\begin{equation*}
+		\begin{aligned}
+			\norm{A y_i - A y_j} &\le \norm{A y_i - A_n y_i} + \norm{A_n y_i - A_n y_j} + \norm{A_n y_j - A y_j} \\
+			&\le \norm{A - A_n} + \epsilon + \norm{A_n - A} \\
+			&\le 3\epsilon
+		\end{aligned}
+	\end{equation*}
+	Damit ist $\folge{A y_i}{i \in \N}$ eine Cauchy-Folge im Banachraum $Y$, d.h. diese konvergiert in $Y$. Somit haben wir für eine beschränkte Folge eine konvergente Bildfolge konstruiert und schließlich $A \in K(X,Y)$.
+\end{enumerate}
+
+%%%% AUFGABE 21 %%%%
+\begin{exercise}
+	Es sei $\Omega \defeq (0,1)$. Wir definieren für $u \in C(\quer{\Omega})$ und $x \in [0,1]$ einen Fredholm'schen Integraloperator durch
+	\begin{equation*}
+		(Au)(x) \defeq \int_0^1 \frac{x^2y}{2} u(y) \dy
+	\end{equation*}
+	Nutzen Sie die Neumann-Reihe, um eine explizite Lösung $u \in C(\quer{\Omega})$ der Gleichung
+	\begin{equation*}
+		f = u - Au
+	\end{equation*}
+	zu konstruieren. Dabei sei $f \in C(\quer{\Omega})$ gegeben durch $f(x) \defeq x^2$ für $x \in [0,1]$.
+\end{exercise}
+
+Um die Neumann-Reihe anwenden zu können, müssen wir zeigen, dass $\norm{A} < 1$ gilt. Sei dazu $x \in [0,1]$ und $\norm{u} \le 1$. Dann gilt
+\begin{align*}
+	\norm{Au} = \int_0^1 \frac{x^2y}{2} u(y) \dy = \frac{x^2}{2} \int_0^1 \frac{y}{2} u(y) \dy 
+	&\le \frac{1}{2} * \int_0^1 \frac{y}{2} \norm{u} \dy\\
+	&\le \frac{1}{2} * \int_0^1 \frac{y}{2}	\dy 
+	= \frac{1}{2} * \sqbrackets{\frac{y^2}{4}}_0^1 = \frac{1}{2} * \frac{1}{4} = \frac{1}{8} < 1
+\end{align*}
+Somit ist $\norm{A} = \sup_{\norm{u} \le 1} \norm{Au} \le \frac{1}{8} < 1$. Da offensichtlich auch $A \in L(X)$ gilt
+\begin{equation*}
+	(\id - A)^{-1} = \sum_{n=0}^\infty A^n
+\end{equation*}
+
+\pagebreak
+
+Damit lässt sich die Lösung der Gleichung allgemein schon angeben, denn aus $f = u - Au = (\id -A) * u$ folgt mittels Neumann-Reihe und der damit verbundenen Invertierbarkeit von $(\id -A)$
+\begin{equation*}
+	u = (\id - A)^{-1} \ f = \brackets{\sum_{n=0}^\infty A^n} \ f = \sum_{n=0}^\infty \brackets{A^n  \ f}
+	\tag{$\star$} \label{eq: 21_loesung}
+\end{equation*}
+
+Es gilt $(A^n f)(x) = \brackets{\frac{1}{8}}^n * x^2$ für alle $n \in \N$. Wir zeigen diese Aussage mit vollständiger Induktion über $n \in  \N$.
+\begin{induction}
+	\ianfang[$n = 0$] Mit $A^n = \id$ ist $A^0 f = f$ und $\brackets{\frac{1}{8}}^0 = 1$, also $(A^0 f)(x) = x^2$.
+	\ischritt[$n \mapsto n+1$] Es gilt
+	\begin{align*}
+		(A^{n+1} f) (x) 
+		= (A (A^n f))(x) 
+		&= \int_0^1 \frac{x^2y}{2} (A^n f)(y) \dy \\
+		\overset{\text{IV}}&{=} \int_0^1 \frac{x^2 y}{2} \brackets{\frac{1}{8}}^n y^2 \dy \\
+		&= \frac{x^2}{2} * \brackets{\frac{1}{8}}^n \int_0^1 y^3 \dy \\
+		&=  \frac{x^2}{2} * \brackets{\frac{1}{8}}^n \sqbrackets{\frac{1}{4}y^4}_0^1 \\
+		&= \frac{1}{8} * \brackets{\frac{1}{8}}^n * x^2 = \brackets{\frac{1}{8}}^{n+1} * x^2
+	\end{align*}
+\end{induction}
+
+Somit gilt mit der geometrische Reihe $\sum_{n=0}^\infty \brackets{\frac{1}{8}}^n = \frac{1}{1-\frac{1}{8}} = \frac{8}{7}$ in \eqref{eq: 21_loesung}
+\begin{equation*}
+	u = \sum_{n=0}^\infty A^n f = \sum_{n=0}^\infty \brackets{\frac{1}{8}}^n x^2 = \frac{8}{7} \ x^2
+\end{equation*}
+
+
+\end{exercisePage}

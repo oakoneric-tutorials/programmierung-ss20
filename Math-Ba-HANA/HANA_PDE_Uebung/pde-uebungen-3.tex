@@ -1,0 +1,123 @@
+\begin{exercisePage}
+	\stepcounter{taskcount}
+	\begin{task}
+		Bestimmen Sie eine Lösung $u \in C¹(U)$ des quasilinearen Randwertproblems
+		\begin{equation*}
+			\begin{aligned}
+				u u_x + u_y &= 1 \\
+				u(x,x) &= \frac{1}{2}x \quad \forall x \in \R\setminus\menge{\xi} 
+			\end{aligned} 
+		\end{equation*}
+		wobei $\xi \in \R$ geeignet gewählt und $U$ eine geeignet gewählte Umgebung der Menge ist, auf der $u$ vorgegeben ist. Nutzen Sie dazu die Methode der Charakteristiken, überprüfen Sie Ihr Ergebnis und skizzieren Sie einige Charakteristiken in der Nähe des Punktes $(\xi,\xi)$.
+	\end{task}
+
+	Aus der Vorlesung kennen wir die Notation $	a(u(x),x) * D u + b(u(x),x) = 0$. Wir notieren
+	$a(u(x,y),x,y) = (u(x,y), 1)$ und $b(u(x,y), x, y) = -1$.   Aus der Randwertbedingung erhalten wir eine Kurve $\Gamma = \menge{(x,x) \in \R^2 : x \in \R\setminus\menge{\xi}}$ mit Parametrisierung $\gamma(s) = \left(\begin{smallmatrix} x_0(s) \\ y_0(s) \end{smallmatrix}\right) = \left(\begin{smallmatrix} s \\ s \end{smallmatrix}\right)$, auf der $g(s) = \frac{1}{2} s$ gilt. Wir überprüfen die nichtcharakteristische Bedingung gemäß Konstruktion in der Vorlesung als
+	\begin{equation*}
+		\det \brackets{ \dot{\gamma} \mid a(g(s),\gamma(s))} = \det\begin{pmatrix} 1 & g(s) \\ 1 & 1 \end{pmatrix} = \det\begin{pmatrix} 1 & \frac{1}{2}s \\ 1 & 1 \end{pmatrix} = 1 - \frac{1}{2} s \neq 0 \enskip \forall s \neq 2
+	\end{equation*}
+	Wähle somit also $\xi = 2$, um die Regularität zu sichern. Betrachten wir $\alpha(t,s) = u(x(t,s), y(t,s)$ als die Funktion $u$ entlang der Charakteristiken. Da die partielle Differentialgleichung quasilinear ist, reichen die beiden folgenden charakteristischen Gleichungen zu lösen aus:
+	\begin{equation*}
+		\begin{aligned}
+			\begin{pmatrix} \dot{x} \\ \dot{y} \end{pmatrix} &= a ( \alpha, x,y) = \begin{pmatrix} \alpha \\ 1 \end{pmatrix} \\
+			\dot{\alpha} = - b(\alpha, x, y)  = 1
+		\end{aligned}
+	\end{equation*}
+	mit den Anfangswerten $\alpha(0,s) = \frac{1}{2} s$, $x(0,s) = s$ und $y(0,s) = s$. Lösen wir diese gewöhnlichen Differentialgleichungen:
+	\begin{equation*}
+		\setlength{\arraycolsep}{1pt}
+		\begin{array}{rclcrclcrcl}
+			\alpha(t) &=& t + c(s) &\quad\overset{\text{AW}}{\follows}\quad& c(s) &= &\frac{1}{2} s &\quad\follows\quad& \alpha(t,s) &=& t + \frac{1}{2} s \\
+			y(t) &=& t + c(s) &\quad\overset{\text{AW}}{\follows}\quad& c(s) &=& s &\quad\follows\quad& y(t,s) &=& t + s \\
+			x(t) &=& \frac{1}{2} t^2 + \frac{1}{2} s t + c(s) &\quad\overset{\text{AW}}{\follows}\quad& c(s) &=& s &\quad\follows\quad& x(t,s) &=&  \frac{1}{2} t^2 + \frac{1}{2} s t + s
+		\end{array}
+	\end{equation*}
+	Wegen der charakteristischen Bedingung können wir dieses Gleichungssystem nach $t$ und $s$ auflösen:
+	\begin{equation*}
+		\begin{aligned}
+			y(t,s) &= t + s \follows s = y - t \\
+			x(t,s) &= \frac{1}{2}t^2 + \frac{1}{2} s t + s = \frac{1}{2}t^2 + \frac{1}{2} (y - t) t + y - t = t \brackets{\frac{1}{2} y - 1} + y
+		\end{aligned}
+	\end{equation*}
+	also
+	\begin{equation*}
+		t(x,y) = \frac{x-y}{\frac{1}{2} y - 1} \quad \und \quad s(x,y) = y - \frac{x-y}{\frac{1}{2} y - 1}
+	\end{equation*}
+	Setzen wir dies als Lösung $u(x,y) = \alpha(t(x,y),s(x,y)$ zusammen, erhalten wir
+	\begin{equation*}
+		\begin{aligned}
+			u(x,y) &= \alpha\brackets{\frac{x-y}{\frac{1}{2}y - 1} \ , \ y - \frac{x-y}{\frac{1}{2} y - 1}} \\
+			&= \frac{x-y}{\frac{1}{2}y - 1} + \frac{1}{2} y - \frac{1}{2} \frac{x-y}{\frac{1}{2} y - 1} \\
+			&= \frac{x-y}{y - 2} + \frac{1}{2} y \qquad \forall x, y \in \R, y \neq 2
+		\end{aligned}
+	\end{equation*} 
+	Überprüfen wir unser Ergebnis:
+	Es gilt
+	\begin{equation*}
+		\begin{aligned}
+			u(x,y) &= \frac{x-y}{y - 2} + \frac{1}{2} y \\
+			u_x(x,y) &= \frac{1}{y-2} \\
+			u_y(x,y) &= \frac{-1}{y-2} -  \frac{x-y}{(y-2)^2} + \frac{1}{2} =\frac{2-x}{(y-2)^2} + \frac{1}{2}
+		\end{aligned}
+	\end{equation*}
+	Setzen wir dies in die partielle Differentialgleichung ein, so erhalten wir
+	\begin{equation*}
+		\begin{aligned}
+			u(x,y) * u_x(x,y) + u_y(x,y) &= \brackets{\frac{x-y}{y - 2} + \frac{1}{2} y} * \frac{1}{y-2} + \frac{2-x-2y}{(y-2)^2} + \frac{1}{2} \\
+			&= \frac{x-y}{(y-2)^2} + \frac{1}{2} y \frac{1}{y-2} + \frac{2-x}{(y-2)^2} + \frac{1}{2} \\
+			&= \frac{2-y}{(y-2)^2} + \frac{1}{2} y \frac{1}{y-2} + \frac{1}{2} \\
+			&= \brackets{\frac{1}{2} y - 1} \frac{1}{y-2} + \frac{1}{2} \\
+			&= 1
+		\end{aligned}
+	\end{equation*}
+	und für die Randwerte $u(x,x) = \frac{1}{2} x$ für alle $x \neq 2$.
+	
+	Betrachten wir die Charakteristiken beschrieben mit einer Parametrisierung für fixiertes $s \neq 2$ und betrachten das Gleichungssystem
+	\begin{equation*}
+		\begin{aligned}
+			x(t) &= \begin{pmatrix} \frac{1}{2} t^2 + \frac{1}{2} s t + s \\ t + s \end{pmatrix} 
+			= \begin{pmatrix} 2 \\ 2 \end{pmatrix} 
+			\follows t &= 2 - s
+			\follows 2 &= \frac{1}{2} (2-s)^2 + \frac{1}{2} s (2-s) + s = 2
+		\end{aligned}
+	\end{equation*}
+	Somit sind die Gleichungen unabhängig von $s \in \R \setminus \menge{2}$ erfüllt und alle Charakteristiken gehen durch den Punkt $(2,2)$.  
+	
+	\pgfplotsset{
+		  compat=1.10,% mit writeLaTeX bisher noch nicht möglich
+		  every axis/.append style={
+		  	axis x line=middle,    % put the x axis in the middle
+		  	axis y line=middle,    % put the y axis in the middle
+		  	axis line style={->}, % arrows on the axis
+		  	enlargelimits=0.05,
+		  	grid,
+		  	domain=-5:5,
+		  }
+		}
+		
+	\centering
+	\begin{tikzpicture} 
+		\begin{axis}[%
+			xmin =   0,
+			xmax =  4,
+			ymin  = -2,
+			ymax =  4,
+			axis equal,
+			legend style={
+				at={(0,0)},
+				anchor=north west,at={(axis description cs:1.1,1)}}
+		]
+		% s = 0
+		\addplot [domain=-4:4, smooth, samples=100, variable=\t, cddarkblue, line width=1pt]({0.5*t^2}, {t});
+		% s = 0.5
+		\addplot [domain=-4:4, smooth, samples=100, variable=\t, cddarkgreen, line width=1pt]({0.5*t^2 + 0.5 * t * 0.5 + 0.5}, {t + 0.5});
+		% s = 1
+		\addplot [domain=-4:4, smooth, samples=100, variable=\t, cdpurple, line width=1pt]({0.5*t^2 + 0.5 * t * 1 + 1}, {t + 1});
+		\addplot [domain=-5:4, smooth, samples=100, variable=\t, cdorange, line width=1pt]({0.5*t^2 + 0.5 * t * 3 + 3}, {t + 3});
+		\addplot [domain=-5:4, smooth, samples=100, variable=\t, cdblue, line width=1pt]({0.5*t^2 + 0.5 * t * 4 + 4}, {t + 4});
+		\legend{$s=0$,$s=\frac{1}{2}$,$s=1$,$s=3$,$s=4$}
+		\end{axis} 
+		\node[above,font=\bfseries] at (current bounding box.north) {Charakteristiken $x(t) = \begin{pmatrix} \frac{1}{2} t^2 + \frac{1}{2} s t + s \\ t + s \end{pmatrix}$};
+	\end{tikzpicture} 
+	
+\end{exercisePage}

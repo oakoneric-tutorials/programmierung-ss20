@@ -1,0 +1,143 @@
+\begin{exercisePage}[Beispielräume \& Lineare Operatoren]
+	\vspace{\parskip}
+	
+	\begin{lemma} \label{lemma: 6.1}
+		Es sei $u_\alpha (x) \defeq x^\alpha$ mit $\alpha \in \R$. Dann gilt
+		\begin{equation*}
+			\begin{aligned}
+				u_\alpha \in L^1((1,\infty)) &\equivalent \alpha < -1 \\
+				u_\alpha \in L^1((0,1)) &\equivalent \alpha > -1
+			\end{aligned}
+		\end{equation*}
+	\end{lemma}
+	\begin{proof}
+		siehe Vorlesung ''Maß und Integral`` oder Schilling: ''Maß und Integral``, Seite 60.
+	\end{proof}
+
+
+	%%%% AUFGABE 17 %%%%
+	\begin{exercise}
+		Es sei $\Omega \subseteq \Rn$ offen und $p,q \in [1,\infty]$.
+		\begin{enumerate}[nolistsep, topsep=-\parskip]
+			\item Es sei $p \le q$ und $\Omega$ beschränkt. Beweisen Sie $L^q(\Omega) \subseteq L^p(\Omega)$.
+			\item Es sei $p \ne q$. Weisen Sie nach, dass ein $\Omega$ mit $L^q(\Omega) \nsubseteq L^p(\Omega)$ existiert.
+			\item Es sei $u(x) \defeq\abs{x}^\alpha$. Für welche $\alpha \in \R$ gilt $u \in L^p(B_1(0))$, für welche $u \in W^{1,p}(B_1(0))$?
+		\end{enumerate}
+	\end{exercise}
+	\begin{enumerate}[label=(zu \alph*), leftmargin=\zulength]
+		\item Wir schreiben $\norm{\ . \ }_q$ für $\norm{\ . \ }_{L^q}$ und zeigen zuerst, dass $\norm{u}_q \le \norm{u}_p * \lambda(\Omega)^{\frac{1}{q} - \frac{1}{p}}$.
+		Sei dafür $r >1$. Dann ist $\frac{1}{r} + \frac{r-1}{r} = 1$. Somit gilt
+		\begin{equation*}
+			\begin{aligned}
+				\norm{u}_q = \brackets{\int_\Omega \abs{u(x)}^q \dx}^{\frac{1}{q}}
+				&= \norm{\abs{u}^q}_1^{\frac{1}{q}} = \norm{\abs{u}^q * 1}_1^{\frac{1}{q}} \\
+				\overset{\text{Hölder}}&{\le} \norm{\abs{u}^q}_r^{\frac{1}{q}} * \norm{1}_{\frac{r}{r-1}}^{\frac{1}{q}} \\
+				&= \brackets{\brackets{\int_\Omega \abs{\abs{u(x)}^q}^r \dx}^{\frac{1}{r}}}^{\frac{1}{q}} *
+				\brackets{\brackets{\int_\Omega \abs{1}^{\frac{r}{r-1} \dx}}^{\frac{r-1}{r}}}^{\frac{1}{q}} \\
+				&= \brackets{\int_\Omega \abs{u}^qr \dx}^{\frac{1}{qr}} * \brackets{\int_{\Omega}\dx }^{\frac{r-1}{qr}} \\
+				&= \norm{u}_{qr} * \lambda(\Omega)^{\frac{r-1}{qr}} 
+			\end{aligned}
+		\end{equation*}
+		Sei nun $r \defeq \frac{p}{q} > 1$ (da $p > q$). Dann folgt 
+		\begin{equation*}
+			\norm{u}_q \le \norm{u}_p * \lambda(\Omega)^{\frac{1}{q} - \frac{1}{p}}
+		\end{equation*}
+		Zurück zur eigentlichen Aufgabe: für $p=q$ ist die Aussage klar. Sei $u \in L^p(\Omega)$, d.h. $\norm{u}_p < \infty$. Dann ist
+		\begin{equation*}
+			\norm{u}_q \le \underbrace{\norm{u}_p}_{< \infty} * \underbrace{\lambda(\Omega)^{\frac{1}{q} - \frac{1}{p}}}_{< \infty} < \infty
+		\end{equation*}
+		und somit ist $u \in L^q(\Omega)$.
+		%
+		\pagebreak
+		%
+		\item Sei $p < q$. Wir betrachten $\Omega = (1,\infty)$ und $u(x) \defeq x^{-\frac{1}{p}}$. Da $\frac{q}{p} > 1$, ist nach \cref{lemma: 6.1} $x^{-\frac{q}{p}} \in L^1(\Omega)$. Somit gilt
+		\begin{equation*}
+			\int_\Omega \abs{x^{-\frac{1}{p}}}^q \dx = \int_\Omega x^{-\frac{q}{p}} \dx < \infty
+		\end{equation*}
+		d.h. $u \in L^q(\Omega)$. Jedoch gilt
+		\begin{equation*}
+			\int_\Omega \abs{x^{-\frac{1}{p}}}^p \dx = \int_\Omega x^{-1} \dx = \infty
+		\end{equation*}
+		d.h. $u \notin L^p(\Omega)$.
+		Für $p > q$ betrachten wir $\Omega = (0,1)$ und die Funktion $u(x) \defeq x^{-\frac{1}{p}}$. Dann ist $\frac{q}{p} < 1$, d.h. nach \cref{lemma: 6.1} gilt $u^{\frac{q}{p}} \in L^1(\Omega)$ und somit 
+		\begin{equation*}
+			\int_\Omega \abs{u(x)}^q \dx = \int_0^1 x^{-\frac{q}{p}} \dx < \infty
+		\end{equation*}
+		d.h. $\norm{u}_q < \infty$ und $u \in L^q(\Omega)$. Jedoch ist
+		\begin{equation*}
+			\int_\Omega \abs{u(x)}^p \dx = \int_0^1 x^{-1} \dx = \infty
+		\end{equation*}
+		d.h. $u \notin L^p(\Omega)$ nach \cref{lemma: 6.1}.
+	\end{enumerate}
+	
+	
+	
+	
+	
+	%%%% AUFGABE 18 %%%
+	\begin{exercise}
+		Untersuchen Sie die folgenden linearen Operatoren auf Beschränktheit und bestimmen Sie gegebenenfalls die Operatornorm.
+		\begin{enumerate}[topsep=-\parskip]
+			\item Definiere für $X = (C([0,1],\R), \norm{\ . \ }_C)$, $m \in \N$, paarweise verschiedene $t_k \in [0,1]$ und $c_k \in \R$ für $k \in \menge{1, \dots, m}$ fest den Operator
+			\begin{equation*}
+				\abb{A}{X}{\R} \mit f \mapsto \sum_{k=1}^m c_k f(t_k)
+			\end{equation*}
+			\item $\abb{F}{\ell^\infty}{\ell^\infty} \mit \folge{x_k}{k \in \N} \mapsto \folge{x_{k+1} - x_k}{k \in \N}$
+			\item Seien $D(m) = \menge{f \in L^p(\R) \colon \int_\R \abs{xf(x)}^p \dx \in \R}$ und $p \in [1,\infty)$.
+			\begin{equation*}
+				\abb{m}{D(m) \subseteq L^p(\R)}{L^p(\R)} \mit f \mapsto (x \mapsto x * f(x))
+			\end{equation*}			
+		\end{enumerate}
+	\end{exercise}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=\zulength]
+		\item Es gilt
+		\begin{equation*}
+			\norm{Af} = \norm{\sum_{k=1}^m c_k f(t_k)} \le \sum_{k=1}^m \abs{c_k} * \abs{f(t_k)}
+		\end{equation*}
+		Wegen $\norm{f}_C = \sup_{x \in [0,1]} f(x) \ge f(t_k)$ für alle $k \in \menge{1, \dots, m}$ gilt also
+		\begin{equation*}
+			\sum_{k=1}^m \abs{c_k} * \abs{f(t_k)} \le \sum_{k=1}^m \abs{c_k} \norm{f}_C = c * \norm{f}_C
+		\end{equation*}
+		mit $c \defeq \sum_{k=1}^m \abs{c_k} < \infty$. Somit ist $A$ beschränkt. Außerdem gilt für die Operatornorm
+		\begin{equation*}
+			\norm{A} = \sup_{\norm{f}_C \le 1} \norm{Af} = \sum_{k=1}^m \abs{c_k} = c
+		\end{equation*} 
+		da $\abs{\sum_{k=1}^m c_k f(t_k)}$ genau dann unabhängig von $f$ groß wird, wenn die $\abs{c_k}$ groß werden.
+		%
+		\item Es gilt $\norm{\folge{x_k}{k \in \N}}_{\ell^\infty} = \sup_{k \in \N} \abs{x_k}$. 
+		\begin{equation*}
+			\begin{aligned}
+				\norm{F \folge{x_k}{k \in \N}}_{\ell^\infty} 
+				&= \norm{\folge{x_{k+1} - x_k}{k \in \N}}_{\ell^\infty} 
+				= \sup_{k \in \N} \abs{x_{k+1} - x_k} \\
+				&\le \sup_{k \in \N} \abs{x_{k+1}} + \sup_{k \in \N} \abs{x_k} 
+				\le 2\sup_{k \in \N}  \abs{x_k} \\
+				&= 2 * \norm{\folge{x_k}{k \in \N}}_{\ell^\infty}
+			\end{aligned}
+		\end{equation*}
+		Wegen $2 < \infty$ ist $F$ also beschränkt. Sei $\norm{\folge{x_k}{k \in \N}}_{\ell^\infty} \le 1$ (d.h. alle unbenannten $\sup$ laufen über genau diese Folgen).
+		\begin{equation*}
+			\norm{F} 
+			= \sup \norm{ F \folge{x_k}{k \in \N}}_{\ell^\infty}
+			=\sup \sup_{k \in \N} \abs{ x_{k+1} - x_k} 
+			= 2 * \sup \norm{\folge{x_k}{k \in \N}}
+			= 2
+		\end{equation*}
+		\item Wir definieren eine Folge $\folge{f_n}{n \in \N} \subseteq L^p(\R)$ durch $f_n \defeq \one_{[n,n+1]}$. Dann gilt nämlich
+		\begin{equation*}
+			\int_\R \abs{f_n(x)}^p \dx = \int_n^{n+1} \dx = 1 < \infty \qquad \forall n \in \N
+		\end{equation*}
+		d.h. $f_n \in L^p(\R)$ für alle $p \in [1,\infty)$ und alle $n \in \N$. Weiterhin ist
+		\begin{equation*}
+			\begin{aligned}
+				\int_\R \abs{mf}^p \dx 
+				&= \int_n^{n+1} \abs{x}^p \dx 
+				= \int_n^{n+1} x^p \dx \\
+				&= \sqbrackets{\frac{1}{p+1} x^{p+1}}_n^{n+1} 
+				= \frac{1}{p+1} \brackets{(n+1)^{p+1} - n^{p+1}} < \infty
+			\end{aligned}
+		\end{equation*}
+		für alle $n \in \N$ und alle $p \in [1,\infty)$, d.h. $mf_n \in L^p(\R)$. Jedoch gilt $\brackets{\int_\R \abs{mf}^p \dx}^{\sfrac{1}{p}} \to \infty$ für $n \to \infty$, da $(n+1)^{p+1} - n^{p+1} \to \infty$. Somit ist $m$ unbeschränkt.
+	\end{enumerate}
+\end{exercisePage}
