@@ -1,0 +1,390 @@
+% This work is licensed under the Creative Commons
+% Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy
+% of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or
+% send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+% (c) Eric Kunze, 2019
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template for lecture notes and exercises at TU Dresden.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[ngerman, a4paper, 11pt]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage[onehalfspacing]{setspace} % increase row-space
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{lmodern}
+\usepackage{ulem} 
+
+\usepackage{fancyhdr} 	% customize header / footer
+
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+%\usepackage{blkarray}
+\usepackage{latexsym, marvosym, wasysym, stmaryrd}
+\usepackage{bbm} 		% unitary matrix
+
+
+% further support for different equation setting
+\usepackage{cancel}
+\usepackage{xfrac}		% sfrac -> fractions e.g. 3/4
+\usepackage{diagbox}
+
+\usepackage{../mathoperatorsAuD}
+
+\usepackage[table,dvipsnames]{tudscrcolor}
+\usepackage{tabularx} 	% tabularx-environment (explicitly set width of columns)
+\usepackage{multirow}
+\usepackage{booktabs}	% improved rules
+
+
+\newcommand{\begriff}[1]{\textbf{#1}}
+\newcommand{\person}[1]{\textsc{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             COUNTER                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{chngcntr}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+
+\pretocmd{\chapter}{\setcounter{section}{0}}{}{}
+\pretocmd{\chapter}{\setcounter{equation}{0}}{}{}
+
+\renewcommand{\labelitemi}{\raisebox{2pt}{\scalebox{.4}{$\blacksquare$}}}
+\renewcommand{\labelitemii}{$\vartriangleright$}
+\renewcommand{\labelitemiii}{--}
+% Variantionen des Dreiecks als Aufzählungszeichen $\blacktriangleright$ / $\vartriangleright$ / $\triangleright$
+
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\renewcommand{\labelenumii}{\alph{enumii}.}
+\renewcommand{\labelenumiii}{\roman{enumiii}.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}   % change title headings look
+\usepackage{chngcntr}   % modify counters
+\usepackage{relsize}    % relative font size (smaller[i], larger[i], ...)
+
+\titleformat{\section}[hang]{\bfseries\LARGE\centering}{\thesection}{8pt}{}
+%\titleformat*{\section}{\bfseries\titlefont\sectionsize}
+\titleformat*{\subsection}{\sffamily\itshape\large\centering}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{listings}
+\lstdefinestyle{noframe}{
+	basicstyle=\small\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style 
+	language=Haskell,                 % the language of the code
+	numbers=none,                    % where to put the line-numbers; possible: (none, left, right)
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+\lstdefinestyle{frame}{
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Haskell,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREM ENVIRONMENTS // MATH
+
+\usepackage{ntheorem}
+
+\DeclareMathSymbol{*}{\mathbin}{symbols}{"01}
+
+\counterwithin{equation}{section}
+\newcounter{themcount}
+\counterwithin{themcount}{section}
+
+\newcommand{\skiparound}{10pt}
+\theorempreskip{\skiparound}
+\theorempostskip{\skiparound}
+
+\theoremstyle{nonumberplain}
+\theoremseparator{.}
+\theorembodyfont{}
+
+\newtheorem{aufgabe}{Aufgabe}
+\theorembodyfont{\itshape}
+\newtheorem{bemerkung}[themcount]{Bemerkung}
+
+\usepackage[
+	type={CC},
+	modifier={by-nc-sa},
+	version={4.0},
+]{doclicense}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           REFERENCES                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[unicode,bookmarks=true]{hyperref}
+\hypersetup{
+	% pdfborder={0 0 0}			% no boxed around links
+	pdfborderstyle={/S/U/W 1},	% underlining insteas of boxes
+	linkbordercolor=cdblue,
+	urlbordercolor=cdblue
+}
+
+\usepackage{cleveref}
+\crefname{bemerkung}{Bemerkung}{Bemerkungen}
+
+\usepackage{bookmark}		% pdf-bookmarks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      ADDITIONAL COMMANDS                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*\ruleline[1]{\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-.8ex}{#1}\hspace{1ex}\hrulefill}}}
+
+\usepackage{opensans}
+
+% \usepackage[autostyle=true,german=quotes]{csquotes}
+\newcommand*{\enq}[1]{\flq \ \!\!\! #1 \!\!\! \frq}
+
+\newcommand{\step}[2][]{\ensuremath{\overset{{#1} (\text{#2})}{=}}}
+\newcommand*{\astep}[2][]{\ensuremath{\overset{{#1} (\text{#2})}&{=}}}
+
+\begin{document}
+	\begin{center}
+		{\bfseries \sffamily \huge Beweis von Programmeigenschaften -- Induktion} 
+		
+		\ruleline{\sffamily \Large Übungsblatt 5}
+		
+		{\scshape Eric Kunze --- \today}
+	\end{center}
+	\medskip
+	
+	{ \footnotesize \doclicenseThis }
+	
+	\begin{center}
+		\small \slshape Keine Garantie auf Vollständigkeit und/oder Korrektheit!
+	\end{center}
+	
+\section*{Vollständige Induktion auf $\N$}
+
+
+Für wollen eine Eigenschaft $P(n)$ für alle $n \in \N$ zeigen. Da die natürlichen Zahlen eine schöne Struktur besitzen, kennen wir das Prinzip der vollständigen Induktion für Beweise dieser Art. Dazu zeigen wir einen \begriff{Induktionsanfang} für das kleinste $n$, für das die Eigenschaft $P$ gelten soll. Meist ist das $P(0)$ oder $P(1)$. Der entscheidende Prozess passiert im \begriff{Induktionsschritt}. Dafür nehmen wir an, die Eigenschaft gelte für \textit{ein} $n \in \N$. Nun zeigen wir die Eigenschaft für $n+1$. Formal zeigt man also die Implikation $P(n) \implies P(n+1)$.
+
+\section*{Induktion auf Listen}
+
+\subsection*{Das Prinzip}
+Dieses Prinzip wollen wir nun auf Listen anwenden, denn Listen haben eine ähnliche Struktur wie die natürlichen Zahlen. Wir wollen wieder eine Eigenschaft $P(\texttt{xs})$ für alle Listen \texttt{xs :: [a]} zeigen, wobei \texttt{a} ein beliebiger Typ ist. Im \begriff{Induktionsanfang} zeigen wir die Eigenschaft für die kleinste Form einer Liste: die leere Liste. Zu beweisen ist also $P(\texttt{[ ]})$. 
+Im \begriff{Induktionsschritt} nehmen wir an, die Eigenschaft gelte für eine Liste \texttt{xs :: [a]} (Induktionsvoraussetzung) und zeigen davon ausgehend, dass für alle \texttt{x :: a} die Eigenschaft auch für \texttt{(x:xs)} gilt. 
+
+\subsection*{In der Praxis}
+
+Im Induktionsanfang macht es sich oftmals ganz gut, wenn man die linke Seite und die rechte Seite der Gleichung separat betrachtet. Im Induktionsschritt gehen wir von der linken Seite der Gleichung aus (mit der erweiterten Liste \texttt{(x:xs)}) und werten so lange Funktionen gemäß des gegebenen Codes aus bis wir nicht mehr weiter kommen. Dann ist in der Regel Zeit für die Induktionsvoraussetzung und schließlich wenden wir (evtl. nach ein paar Umformungen mit Kommutativ-, Assoziativ- oder Distributivgesetz für \texttt{+} und \texttt{*}) die Definitionen des Codes \enquote{rückwärts} an, d.h. wir ersetzen die rechte Seite einer \enquote{Code-Gleichung} durch die linke. Am Ende erhalten wir die rechte Seite der zu zeigenden Gleichung mit \texttt{(x:xs)}. Damit ist der Induktionsschritt gezeigt.
+
+In der Lehrveranstaltung wird sehr großer Wert auf die korrekte Notation gelegt. Daher müssen wir auch sehr achtsam formulieren, insbesondere wenn wir die Induktionsvoraussetzung angeben. Daher sei folgendes Muster (analog zu den offiziellen Musterlösungen) empfohlen:
+\begin{itemize}
+	\item {\sffamily \bfseries Induktionsanfang:} Sei \texttt{xs = []}. Dann gilt \enq{Gleichung}
+	\item {\sffamily \bfseries Induktionsvoraussetzung:} Sei \texttt{xs :: [a]}, sodass \enq{Gleichung} gilt.
+	\item {\sffamily \bfseries Induktionsschritt:} Sei \texttt{x :: a}. Dann gilt \enq{Gleichungen}
+\end{itemize}
+
+\subsection*{Ein Beispiel: Aufgabe 1}
+
+Zu zeigen ist die Gleichung
+\begin{equation*}
+	\texttt{sum (foo xs) = 2 * sum xs - length xs} \qquad \text{für alle } \texttt{xs :: Int}
+\end{equation*}
+mittels Induktion über Listen.
+\begin{description}	
+	\item[Induktionsanfang] Sei \texttt{xs == []}. 
+	\begin{align*}
+		\text{linke Seite: } \quad &\texttt{sum (foo []) \step{2} sum [] \step{6} 0} \\
+		\text{rechte Seite: } \quad &\texttt{2 * sum [] - length [] \step{10} 2 * sum [] - 0 \step{6} 2 * 0 - 0 = 0}
+	\end{align*}
+	
+	\item[Induktionsvoraussetzung] Sei \texttt{xs :: [Int]}, sodass gilt
+	\begin{equation*}
+		\texttt{sum (foo xs) = 2 * sum xs - length xs}
+	\end{equation*}
+
+	\item[Induktionsschritt] Sei \texttt{x :: Int}. Es gilt
+	\begin{align*}
+		\texttt{sum (foo (x:xs))} \astep{3} \texttt{sum (x : x : (-1) : foo xs)} \\
+		\astep[3*]{7} \texttt{x + x + (-1) + sum (foo xs)} \\
+		\astep{IV} \texttt{x + x + (-1) + 2 * sum xs - length xs} \\
+		\astep{Komm.} \texttt{2 * x + 2 * sum xs - 1 - length xs)} \\
+		\astep{Dist.} \texttt{2 * (x + sum xs) - (1 + length xs)} \\
+		\astep{7} \texttt{2 * sum (x:xs) - (1 + length xs)} \\
+		\astep{11} \texttt{2 * sum (x:xs) - length (x:xs)} 
+	\end{align*}
+\end{description}
+
+
+\section*{Strukturelle Induktion auf algebraischen Datentypen}
+
+Neben Listen spielten aber auch algebraische Datentypen eine wichtige Rolle in der funktionalen Programmierung. Können wir das Induktionsprinzip auch auf diese Strukturen übertragen? Ihr könnt die Antwort schon vermuten: ja!
+
+Ich versuche im Folgenden einen Zwischenweg zu finden, der zwar die Theorie hinter struktureller Induktion auf algebraischen Datentypen vermittelt, aber auf korrekte Formalitäten verzichtet. Für die formal korrekte Darstellung sei auf das Skript verwiesen.
+
+Zu zeigen sei wieder eine Eigenschaft $P$ für einen algebraischen Datentyp. Erinnern wir uns, wie diese konzipiert sind: wir haben Konstruktoren, die wiederum Typen als Argumente haben. Dabei unterscheiden wir nun zwei Fälle:
+\begin{itemize}
+	\item ein Konstruktor ist rekursiv\footnote{die Bezeichnung führe ich so ein, um einfacher darüber reden zu können; es ist aber keine Bezeichnung im Sinne der Vorlesung}, d.h. er enthält den definierenden Datentyp wieder, z.B. \texttt{Branch x Tree Tree}, wenn \texttt{Branch} Teil der Definition des Datentyps \texttt{Tree} ist.
+	\item ein Konstruktor ist ein Basiskonstruktor\footnote{auch hier wieder meine eigene Bezeichnung, nicht im Sinne der Vorlesung}, wenn er nicht rekursiv ist, z.B. \texttt{Leaf x} oder \texttt{Nil} im Datentyp \texttt{Tree}.
+\end{itemize}
+
+Wir haben im Wesentlichen zwei Baumstrukturen kennengelernt.
+\begin{enumerate}
+	\item \texttt{data BinTree a = Branch a (BinTree a) (BinTree a) | Leaf a} \\
+	Hier ist also \texttt{Branch} ein rekursiver Konstruktor, weil er zwei Argumente \texttt{BinTree a} hat, die er selbst aber definieren soll. Dagegen hat der Konstruktor \texttt{Leaf} nur ein Argumenttyp \texttt{a}, nicht aber \texttt{BinTree a}. Dementsprechend ist \texttt{Leaf} mit unserer Sprechweise ein Basiskonstruktor.
+	\item \texttt{data BinTree a = Branch a (BinTree a) (BinTree a) | Nil} \\
+	Auch hier ist \texttt{Branch} ein rekursiver Konstruktor, \texttt{Nil} dagegen ein Basiskonstruktor.
+\end{enumerate}
+
+Damit können wir nun das deutlich allgemeinere Prinzip der strukturellen Induktion besprechen. 
+
+Der \begriff{Induktionsanfang} besteht wieder aus den kleinsten Einheiten des Datentyps, also den Basiskonstruktoren. Im Falle von Bäumen wäre also die Eigenschaft für Blätter zu zeigen. 
+In der \begriff{Induktionsvoraussetzung} nehmen wir nun an, dass die Eigenschaft für die rekursiven Argumente aller rekursiven Konstruktoren gelte. Im Falle von Bäumen gelte die Eigenschaft also für die Teilbäume eines Knotens. 
+Im \begriff{Induktionsschritt} zeigen wir die Eigenschaft für den rekursiven Konstruktor. Das heißt also wir setzen die Teile aus der Induktionsvoraussetzung mithilfe des Konstruktors zu einem neuen Objekt zusammen und zeigen dafür die Eigenschaft. Für Bäume entspricht dieser Fall dem eines Knotens. 
+
+\section*{Quantifizierung}
+
+Unter Quantifizierung versteht man die richtige und vor allem vollständige Typangabe mit den richtigen Quantoren (Existenz- bzw. Allquantor). Beispielsweise ist \texttt{xs :: [Int]} die Quantifizierung von \texttt{xs}. Im Laufe der Induktionen geben wir diese Typen immer an. Zumindest für die Variablen, über die induziert wird, ist das meistens auch sehr logisch und geläufig. 
+
+Schwieriger wird es bei der sogenannten Quantifizierung freier Variablen (ich sage oft kurz freie Quantifizierung). Es können in manchen Induktionen Variablen auftreten, die zwar vorkommen (und damit quantifiziert werden müssen), aber für die Induktion nicht von Belang sind. Daher werden deren Typen oft vergessen! Typisches Beispiel für solche freie Variablen sind Knotenbeschriftungen in Bäumen, die in der Regel nicht wichtig für die Induktion sind (da es eher um die Baumstruktur geht), aber trotzdem richtig quantifiziert werden müssen. Die freien Variablen sind stets mit einem Allquantor versehen, d.h. mit Formulierungen der Form \enquote{für alle $\dots$} verbunden.
+
+Konkrete Beispiele seht ihr in der Übung.
+
+\subsection*{Ein Beispiel: Zusatzaufgabe {2 }\footnote{ehemalige Klausuraufgabe}}
+
+Wir haben folgende Code-Vorgabe:
+
+\begin{lstlisting}[style=frame]
+data BinTree a = Branch a (BinTreee a) (BinTree a) | Leaf a
+
+p :: BinTree a -> [a]
+p (Leaf x) = [x]
+p (Branch x s t) = [x] ++ (p s ++ p t)
+
+d :: BinTree a -> BinTree a -> BinTree a
+d (Leaf x) u = Branch x u u
+d (Branch x s t) u = Branch x s (d t u)
+\end{lstlisting}
+
+Wir sollen folgende Aussage zeigen:
+\begin{equation*}
+	\texttt{p (d t u) = p t ++ (p u ++ p u)} \quad \text{für jeden Typ } \texttt{a} \text{ und alle Bäume } \texttt{t, u :: BinTree a}
+\end{equation*}
+Dabei darf die folgende Eigenschaft benutzt werden (Assoziativität von \texttt{++}):
+\begin{equation}
+	\forall \ \texttt{xs, ys, zs :: [a]} \qquad\qquad \texttt{xs ++ (ys ++ zs) = (xs ++ ys) ++ zs}
+	\tag{B}
+\end{equation}
+Gemäß Hinweis reicht der Beweis mittels struktureller Induktion über die Struktur des Baumes \texttt{t}. Damit wird \texttt{u} immer freie Variable sein!
+
+\begin{description}
+	\item[Induktionsanfang] Sei \texttt{x :: a} und \texttt{u :: BinTree a}. Dann gilt
+	\begin{align*}
+	\texttt{p (d (Leaf x) u)} 
+		\astep{9} \texttt{p (Branch x u u)} \\
+		\astep{6} \texttt{[x] ++ p u ++ p u} \\
+		\astep{5} \texttt{p (Leaf x) ++ p u ++ p u}
+	\end{align*}
+	\item[Induktionsvoraussetzung] Sei \texttt{t :: BinTree a}, sodass für alle \texttt{u :: BinTree a} gilt:
+	\begin{equation*}
+		\texttt{p (d t u) = p t ++ p u ++ p u} \tag{IV}
+	\end{equation*}
+	\item[Induktionsschritt] Sei \texttt{x :: a} und \texttt{u,s :: BinTree a}. Es gilt:
+	\begin{align*}
+		\texttt{p (d (Branch x s t) u)}
+		\astep{10} \texttt{p (Branch x s (d t u))} \\
+		\astep{6} \texttt{[x] ++ (p s ++ p (d t u))} \\
+		\astep{\text{IV}} \texttt{[x] ++ p s ++ p t ++ p u ++ p u} \\
+		\astep{\text{B}} \texttt{[x] ++ p s ++ p t ++ p u ++ p u} \\
+		\astep{6} \texttt{p (Branch x s t) ++ p u ++ p u}
+	\end{align*}
+\end{description}
+
+
+\section*{Übersicht}
+
+\subsection*{Induktion auf Listen}
+
+\begin{description}
+	\item[Induktionsanfang] Sei \enq{freie Quantifizierung} und \texttt{xs = []}. 
+	\begin{itemize}[nolistsep, topsep=-\parskip]
+		\item linke Seite: $\dots$
+		\item rechte Seite: $\dots$
+	\end{itemize}
+	\item[Induktionsvoraussetzung] Sei \texttt{xs :: [a]}, sodass \enq{freie Quantifizierung} gilt:
+	\begin{itemize}[nolistsep, topsep=-\parskip]
+		\item \enq{Gleichung für \texttt{l}} , \enq{Gleichung für \texttt{r}}
+	\end{itemize}
+	\item[Induktionsschritt] Sei \texttt{x :: a} und \enq{freie Quantifizierung}. Es gilt: \enq{Gleichungsfolge}
+\end{description}
+
+%Im Laufe der Übung haben wir zwei wesentliche Baumstrukturen kennengelernt.
+%\begin{enumerate}[leftmargin=*]
+%	\item \texttt{data BinTree a = Branch a (BinTree a) (BinTree a) | Nil}
+%	\item \texttt{data BinTree a = Branch a (BinTree a) (BinTree a) | Leaf a}
+%\end{enumerate}
+
+\subsection*{Baumstruktur mit leeren Bäumen}
+\begin{center}
+	\texttt{data BinTree a = Branch a (BinTree a) (BinTree a) | Nil}
+\end{center}
+
+\begin{description}
+	\item[Induktionsanfang] Sei \enq{freie Quantifizierung} und \texttt{t = Nil}. 
+	\begin{itemize}[nolistsep, topsep=-\parskip]
+		\item linke Seite: $\dots$
+		\item rechte Seite: $\dots$
+	\end{itemize}
+	\item[Induktionsvoraussetzung] Seien \texttt{l,r :: BinTree a}, sodass \enq{freie Quantifizierung} gilt:
+	\begin{itemize}[nolistsep, topsep=-\parskip]
+		\item \enq{Gleichung für \texttt{l}} , \enq{Gleichung für \texttt{r}}
+	\end{itemize}
+	\item[Induktionsschritt] Sei \texttt{x :: a} und \enq{freie Quantifizierung}. Es gilt: \enq{Gleichungsfolge}
+\end{description}
+
+\subsection*{Baumstruktur mit expliziten Blättern}
+\begin{center}
+	\texttt{data BinTree a = Branch a (BinTree a) (BinTree a) | Leaf a}
+\end{center}
+
+\begin{description}
+	\item[Induktionsanfang] Sei \texttt{x :: a} und \enq{freie Quantifizierung}.
+	\begin{itemize}[nolistsep, topsep=-\parskip]
+		\item linke Seite: $\dots$
+		\item rechte Seite: $\dots$
+	\end{itemize}
+	\item[Induktionsvoraussetzung] Seien \texttt{l,r :: BinTree a}, sodass \enq{freie Quantifizierung} gilt:
+	\begin{itemize}[nolistsep, topsep=-\parskip]
+		\item \enq{Gleichung für \texttt{l}}, \enq{Gleichung für \texttt{r}}
+	\end{itemize}
+	\item[Induktionsschritt] Sei \texttt{x :: a} und \enq{freie Quantifizierung}. Es gilt: \enq{Gleichungsfolge}
+\end{description}
+
+
+
+\end{document}
+
