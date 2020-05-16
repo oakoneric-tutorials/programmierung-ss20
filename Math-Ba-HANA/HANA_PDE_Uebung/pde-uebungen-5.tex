@@ -1,0 +1,109 @@
+\begin{exercisePage}
+	
+	\setcounter{taskcount}{11}
+	
+	\begin{task}
+		Eine Funktion $u\in C^2(U)$ über einer offenen Menge $U\subset\Rn$ heißt harmonisch, falls $\Delta u = 0$ in $U$.
+		\begin{enumerate}
+			\item Zeigen Sie, dass die durch 
+			\begin{equation*}
+				u(x)= 
+				\begin{cases}
+					\ln(|x|) & \text{für } n=2, \\
+					\frac{1}{|x|^{n-2}} & \text{für } n\geq 3
+				\end{cases}
+			\end{equation*}
+			definierte Funktion auf $\Rn \setminus \menge{0}$ harmonisch ist.
+			
+			\item Es sei $\abb{u}{\Rn}{\R}$ harmonisch und $A\in \R^{n\times n}$ orthogonal. Zeigen Sie, dass durch $v(x)= u(Ax)$ eine harmonische Funktion $\abb{v}{\Rn}{\R}$ definiert wird.
+		\end{enumerate}
+	\end{task}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Sei $n = 2$ und $x = (x_1, x_2) \in U$. Dann ist $u(x) = \ln \abs{x} = \ln(r(x))$ mit $r(x) \defeq \abs{x}$. Mit $r_{x_i}(x) = \frac{x_i}{\abs{x}}$ ist
+		\begin{equation*}
+			u_{x_i}(x) = \frac{1}{\abs{x}} * r_{x_i}(x) = \frac{x_i}{\abs{x}^2} = \frac{1}{x_1^2 + x_2^2}
+		\end{equation*}
+		Leiten wir weiter nach $x_i$ ab, dann erhalten wir
+		\begin{equation*}
+			u_{x_i x_i}(x) = \partial_{x_i} \frac{1}{x_1^2 + x_2^2} = \frac{x_1^2 + x_2^2 - x_i * 2x_i}{\abs{x}^4} = \frac{\abs{x}^2 - 2x_i^2}{\abs{x}^4}
+		\end{equation*}
+		und somit für den Laplace-Operator
+		\begin{equation*}
+			\Delta u(x) = x_{x_1 x_1} + u_{x_2 x_2} = \frac{\abs{x}^2 - 2x_2^2}{\abs{x}^4} + \frac{\abs{x}^2 - 2x_2^2}{\abs{x}^4}= 0 \quad \checkmark
+		\end{equation*}
+		Sei $n \ge 3$. Dann ist $u(x) = \abs{x}^{2-n}$. Es gilt
+		\begin{equation*}
+			\begin{aligned}
+				u_{x_i}(x) &= (2-n) * \abs{x}^{1-n} * \frac{x_i}{\abs{x}} = (2-n) * \abs{x}^{-n} * x_i \\
+				u_{x_i x_i} &= (2-n) * \partial_{x_i} \brackets{x_i * \abs{x}^{-n}} \\
+				&= (2-n) * \brackets{\abs{x}^{-n} - n * \abs{x}^{-n-1} \frac{x_i}{\abs{x}} * x_i} \\
+				&= (2-n) * \brackets{\abs{x}^{-n} - n * \abs{x}^{-n-2} * x_i^2} 
+			\end{aligned}
+		\end{equation*}
+		Damit gilt für den Laplace-Operator
+		\begin{equation*}
+			\begin{aligned}
+				\Delta u(x) = \sum_{i=1}^n u_{x_i x_i}(x) 
+				&= (2-n) * \brackets{\sum_{i=1}^n \abs{x}^{-n} - n * \abs{x}^{-n-2} * \sum_{i=1}^n x_i^2} \\
+				&= (2-n) \brackets{n * \abs{x}^{-n} - n* \abs{x}^{-n-2} * \abs{x}^2} \\
+				&= 0 \qquad \checkmark
+			\end{aligned}
+		\end{equation*}
+		
+		\item Sei $\abb{u}{\Rn}{\R}$ harmonisch und $A \in \R^{n \times n}$ orthogonal, d.h. $\trans{A} = A^{-1}$. Betrachte
+		\begin{equation*}
+			\begin{aligned}
+				v_{x_i}(x) &= Du(Ax) * \partial_i Ax = Du(Ax) * a_i = \sum_{k=1}^n u_{x_k}(Ax) * a_{ki} \\
+				v_{x_i x_i}(x) &= \partial_{x_i} \brackets{\sum_{k=1}^n u_{x_k}(Ax) * a_{ki}} 
+				= \sum_{k=1}^n \sum_{\ell=1}^n u_{x_k x_\ell}(Ax) * a_{ki} a_{\ell i}
+			\end{aligned}
+		\end{equation*}
+		Aufgrund der Orthogonalität von $A$ ist $\sum_{i=1}^n a_{ki} a_{\ell i} = \delta_{k \ell}$. Somit ist
+		\begin{equation*}
+			\Delta v(x) = \sum_{i=1}^n v_{x_i x_i}(x) = \sum_{i=1}^n \sum_{k=1}^n \sum_{\ell=1}^n u_{x_k x_\ell}(Ax) * a_{ki} a_{\ell i}
+			= \sum_{i=1}^n u_{x_i x_i}(Ax) 
+			= \Delta u(Ax) = 0 \quad \checkmark
+		\end{equation*}
+		und daher auch $v$ harmonisch.
+	\end{enumerate}
+	
+	\begin{task}
+		Es sei $\Phi$ die Fundamentallösung der Laplace-Gleichung, d.\,h.
+		\begin{equation*}
+			\Phi(x) = \begin{cases} 
+				-\frac{1}{2\pi} \ln (|x|) &\text{für } n=2,\\
+				\frac{1}{n(n-2)\alpha(n)} \frac{1}{|x|^{n-2}} &\text{für } n \geq 3 
+			\end{cases}
+		\end{equation*}
+		für $x\neq 0$. Zeigen Sie für $x\neq 0$ die Abschätzungen $\abs{D\Phi(x)} \le c \abs{x}^{1-n}$ und $\abs{D^2\Phi(x)} \le c \abs{x}^{-n}$.
+	\end{task}
+	
+	Für $n=2$ gilt $\Phi_{x_i}(x) = -\frac{1}{2\pi} \frac{1}{\abs{x}} * \frac{x_i}{\abs{x}} = -\frac{1}{2\pi} * \frac{x_i}{\abs{x}^2}$. Leiten wir für $n \ge 3$ nach $x_i$ ab, so erhalten wir $\Phi_{x_i}(x) = \frac{2-n}{n(n-2) \alpha(n)} * \abs{x}^{1-n} \frac{x_i}{\abs{x}} = \frac{2-n}{n(n-2) \alpha(n)} * x_i * \abs{x}^{-n}$. Beide Fälle können wir mit einer universellen Konstante $c$ zusammenfassen und erhalten mit $\frac{x_i}{\abs{x}} \le 1$ auch folgende Abschätzung:
+	\begin{equation*}
+		\Phi_{x_i}(x) = c * x_i * \abs{x}^{-n} = c * \abs{x}^{1-n} * \frac{x_i}{\abs{x}} \le c * \abs{x}^{1-n} 
+		\qquad (i = 1, \dots, n)
+	\end{equation*}
+	Damit erhalten wir für die erste Ungleichung
+	\begin{equation*}
+		\abs{D\Phi(x)} = \sqrt{\sum_{i=1}^n \Phi_{x_i}(x)^2} \le \sqrt{\sum_{i=1}^n \brackets{c * \abs{x}^{1-n}}^2}
+		= c * n * \abs{x}^{1-n} = c * \abs{x}^{1-n}
+	\end{equation*}
+	Für die zweiten Ableitungen gilt dann entsprechend
+	\begin{equation*}
+		\begin{aligned}
+			\Phi_{x_i x_j}(x) 
+			&= c \brackets{\delta_{ij} \abs{x}^{-n} - n x_i \abs{x}^{-n-1} * \frac{x_j}{\abs{x}}} 
+			= c * \abs{x}^{-n} \brackets{\delta_{ij} - n * x_i x_j * \abs{x}^{-2} } \\
+			%
+			\follows \quad
+			%
+			\abs{D^2 \Phi(x)} 
+			&= \sqrt{\sum_{i=1}^n \sum_{j=1}^n \Phi_{x_i x_j}(x)^2}
+			= \sqrt{\sum_{i=1}^n \sum_{j=1}^n \brackets{\abs{x}^{-n}}^2 * \brackets{c \delta_{ij} - n x_i x_j \abs{x}^{-2}}^2} \\
+			&= \abs{x}^{-n} \sqrt{nc^2 - 2n \abs{x}^{-2} \sum_{i=1}^n x_i^2 + n^2 \abs{x}^{-4} \sum_{i=1}^n x_i^2 \sum_{j=1}^n x_j^2} \\
+			&= \abs{x}^{-n} * \sqrt{nc^2 - 2n + n^2} \\
+			&\le c \abs{x}^{-n}
+		\end{aligned}
+	\end{equation*}
+\end{exercisePage}

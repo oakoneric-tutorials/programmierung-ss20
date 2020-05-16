@@ -1,0 +1,89 @@
+% This work is licensed under the Creative Commons
+% Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy
+% of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or
+% send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+% (c) Eric Kunze, 2019
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template for lecture notes and exercises at TU Dresden.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[ngerman, a4paper, 11pt]{report}
+
+\usepackage[ngerman]{babel}
+
+%\usepackage[default, scale=0.95]{opensans}
+%\usepackage[cm]{sfmath}
+
+\usepackage{../../texmf/tex/latex/layoutMathTUD}
+\usepackage[smallequationskip]{../../texmf/tex/latex/mathworkMathTUD}
+
+\usepackage{../../texmf/tex/latex/mathoperatorsMathTUD}
+\usepackage{fkt_theorem}
+
+\usepackage{../../texmf/tex/latex/titlepageMathTUD}
+\usepackage{../../texmf/tex/latex/graphicsMathTUD}
+
+\input{./fkt_local_headings}
+\input{./fkt_local_changes}
+
+%\usepackage{../../texmf/tex/latex/referencesMathTUD}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%---------------------------------------
+% additional packages
+%---------------------------------------
+
+\usepackage{csquotes}
+
+%---------------------------------------
+% general settings
+%---------------------------------------
+
+\name{Eric Kunze}
+\matnr{Nummer}
+\email{\href{mailto:eric.kunze@mailbox.tu-dresden.de}{\ttfamily eric.kunze@mailbox.tu-dresden.de}}
+
+\modul{Höhere Analysis -- Funktionentheorie}
+\period{Wintersemester 2019/20}
+
+%\renewcommand{\tutor}{Dr. Legrand}
+%\renewcommand{\group}{Tag x. DS, (un)gerade Woche}
+
+\lecturer{Prof. Dr. Stefan Siegmund}
+\faculty{Mathematik}
+\institute{Analysis}
+\professorship{Dynamik und Steuerung}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{pdfpages}
+
+\undef\folge
+\NewDocumentCommand{\folge}{m m}{\left\{ #1 \right\}_{#2}}
+\renewcommand{\complement}{\mathsf{C}}
+
+\newcommand{\widesim}[1][2.5]{
+	\mathrel{\scalebox{#1}[1]{\ensuremath{\sim}}}
+}
+
+\newenvironment{indentpar}{\vspace{\parskip} \par \setlength{\parindent}{1cm}}{\vspace{\parskip} \par}
+
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{document}
+
+\makeTUtitle
+    
+\tableofcontents
+
+\chapter{Komplexe Zahlen \& Differenzierbarkeit}
+\label{chapter_1_komplexeZahlen}
+\input{fkt_1_komplexeDifferenzierbarkeit}
+
+\end{document}

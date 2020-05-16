@@ -1,0 +1,86 @@
+\begin{exercisePage}[Dualräume \& schwache Topologie]
+	
+	\setcounter{taskcount}{32}
+	
+	\begin{lemma} \label{lemma: 33}
+		Sei $X$ ein normierter Raum und $U \subset X$ ein linearer Unterraum. Dann gilt:
+		\begin{equation*}
+		\forall x^\ast \in X^\ast \mit x^\ast\mid_U = 0: x^\ast = 0 \follows U \text{ ist dicht in } X 
+		\end{equation*}
+	\end{lemma}
+	\begin{exercise}
+		Es sei $X$ ein normierter Raum mit separablem Dualraum $X^\ast$. Beweisen Sie:
+		\begin{enumerate}[nolistsep]
+			\item In der Einheitssphäre gibt $S_{X^\ast} = \menge{u^\ast \in X^\ast : \norm{u^\ast} = 1} \subset X^\ast$ liegt eine dichte Folge $\folge{u_n^\ast}{}$.
+			\item In der Einheitssphäre $S_X \subset X$ liegt eine Folge $\folge{u_n}{}$, die $\scal{u_n^\ast}{u_n} \ge \frac{1}{2}$ für alle $n \in \N$ erfüllt.
+			\item Die lineare Hülle von $\folge{u_n}{}$ ist dicht in $X$.
+			\item $X$ ist separabel.
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Wir wissen, dass für einen separablen metrischen Raum $X$ auch alle Teilmengen $Y \subseteq X$ separabel sind. Wählen wir $S_{X^\ast}$ als Teilmenge des separablen Raumes $X^\ast$, dann ist $S_{X^\ast}$ separabel, d.h. es existiert eine abzählbare Dichte Menge $D$ und diese hat die Form $D = \menge{u_n : n \in \N}$. Damit ist dann die Folge $\folge{u_n}{n \in \N}$ dicht in $S_{X^\ast}$.
+		\item Fixiere ein $n \in \N$. Da $u_n^\ast \in S_{X^\ast}$, ist $\norm{u_n^\ast} = 1$. Angenommen es gäbe nun kein $u_n \in S_X$ mit $\scal{u_n^\ast}{u_n} \ge \frac{1}{2}$, so wäre
+		\begin{equation*}
+		\norm{u_n^\ast} = \sup_{\norm{u_n} = 1} \abs{\scal{u_n^\ast}{u_n}} \le \frac{1}{2}
+		\end{equation*}
+		im Widerspruch zur Annahme $\norm{u_n^\ast} = 1$. Somit existiert also ein $u_n \in S_X$ mit $\scal{u_n^\ast}{u_n} \ge \frac{1}{2}$ und mit $n \in \N$ beliebig existiert also eine Folge $\folge{u_n}{n \in \N}$ mit $\scal{u_n^\ast}{u_n} \ge \frac{1}{2}$ für alle $n \in \N$.
+		\item Sei $U \defeq \mathrm{lin}\menge{u_n : n \in \N}$. Sei $u^\ast \in X^\ast$ mit $u^\ast \mid_U = 0$. Angenommen $u^\ast \neq 0$, oBdA setzen wir $\norm{u^\ast} = 1$. Da $\folge{u_n^\ast}{n \in \N}$ dicht ist, existiert ein $u_{n_0}^\ast$ mit $\norm{u^\ast - u_{n_0}^\ast} \le \frac{1}{4}$. Nach (b) gilt dann 
+		\begin{equation*}
+		\frac{1}{2} \le \abs{u_{n_0}^\ast ( u_{n_0} )} = \abs{u_{n_0}^\ast ( u_{n_0} ) - u^\ast(u_{n_0})} \le \norm{u_{n_0}^\ast - u^\ast} * \underbrace{\norm{u_{n_0}}}_{=1} \le \frac{1}{4}
+		\end{equation*}
+		Dies ergibt aber einen Widerspruch und somit muss $u^\ast = 0$ sein. Mit \cref{lemma: 33} ist also $U$ dicht in $X$.
+		\item Setze $D \defeq \menge{u_n : n \in \N}$. Diese Menge $D$ ist abzählbar und nach (c) auch dicht in $X$, d.h. es gilt $\quer{\mathrm{lin}(A)} = X$. Somit ist $X$ separabel.
+	\end{enumerate}
+	
+	\begin{exercise}
+		Sei $X$ ein normierter Raum.
+		\begin{enumerate}[nolistsep]
+			\item Zeigen Sie, dass $\tau_w$ eine Topologie auf $X$ ist und dass Konvergenz in $(X,\tau_w)$ gerade die schwache Konvergenz ist.
+			\item Zeigen Sie, dass $\tau_w^\ast$ eine Topologie auf $X$ ist und dass Konvergenz in $(X,\tau_w^\ast)$ gerade die schwache${}^\ast$ Konvergenz ist.
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Sei $\tau_w$ wie in der Vorlesung definiert.
+		\begin{itemize}
+			\item Es ist klar, dass $\emptyset \in \tau_w$ und $X \in \tau_w$ gilt.
+			\item Sei $I$ eine beliebige Indexmenge und $M_i \in \tau_w$ für alle $i \in I$. Sei $u_0 \in \bigcup_{i \in I} M_i$. Dann existiert ein $i_0 \in I$ mit $u_0 \in M_{i_0}$. Da $M_{i_0} \in \tau_w$ liegt, existieren $u_1^\ast, \dots, u_k^\ast \in X^\ast$ und $\epsilon > 0$, sodass $v \in M_{i_0} \subseteq \bigcup_{i \in I} M_i$ falls $\abs{\scal{u_j^\ast}{v-u_0}} < \epsilon$ erfüllt ist für alle $j = 1, \dots, k$. Somit gilt schließlich auch $\bigcup_{i \in I} M_i \in \tau_w$.
+			\item Seien $M_1, M_2 \in \tau_w$ und $u_0 \in M_1 \cap M_2$. Dann ist $u_0 \in M_1$ und $u_0 \in M_2$. Da $M_1, M_2 \in \tau_w$ existieren $u^\ast_1, \dots, u^\ast_k \in X^\ast$ und $w^\ast_1, \dots, w_\ell^\ast \in X^\ast$ sowie $\epsilon_1, \epsilon_2 > 0$, sodass $v \in M_1$ falls $\abs{\scal{u^\ast_j}{v-u_0}} < \epsilon_1$ für alle $j = 1, \dots, k$ und $v \in M_2$ falls $\abs{\scal{w^\ast_j}{v-u_0}} < \epsilon_2$ für alle $j = 1, \dots, \ell$. Definieren wir nun $\epsilon \defeq \min\menge{\epsilon_1, \epsilon_2} > 0$ so gilt $v \in M_1 \cap M_2$ falls $\abs{\scal{u^\ast_j}{v-u_0}} < \epsilon$ für alle $j = 1, \dots, k$ und $\abs{\scal{w^\ast_j}{v-u_0}} < \epsilon$ für alle $j = 1, \dots, \ell$ gilt. Somit ist also $M_1 \cap M_2 \in \tau_w$ und damit auch jeder endliche Schnitt (da dieser als verschachtelter Schnitt von je zwei Mengen gesehen werden kann).
+			\item Konvergenz in $\tau_w$ --- Sei $\folge{u_n}{n \in \N} \subseteq X$ und $u \in X$. $\folge{u_n}{}$ konvergiert genau danns schwach gegen $u$, wenn $\scal{u^\ast}{u_n} \to \scal{u^\ast}{u}$ für alle $u^\ast \in U$ bzw. genau dann, wenn für alle $u^\ast \in X^\ast$ und alle $\epsilon > 0$ ein $n_0(\epsilon)$ existiert, sodass für alle $n > n_0(\epsilon)$ gilt, dass $\abs{\scal{u^\ast}{u} - \scal{u^\ast}{u_n}} = \abs{\scal{u^\ast}{u-u_n}} < \epsilon$ ist. Somit existiert für jede offene Umgebung $U(u) \in \tau_w$ ein $n_0$, sodass für alle $n > n_0$ gilt, dass $\abs{\scal{u_i^\ast}{u-u_n}} <\epsilon_{U(u)}$ für alle $u^\ast_j$ $(j=1, \dots, k)$ und $\epsilon > 0$ per Definition von $\tau_w$.
+			Damit ist nun also $u_n \in U(u)$ für alle $n > n_0$ für alle offenen Umgebungen von $U(u)$ von $u$, d.h. $u_n \overset{\tau_w}{\to} u$.
+			
+			Sei andersherum nun $u_n \overset{\tau_w}{\to} u$, d.h. für alle offenen Umgebungen $U(u)$ existiert ein $n_0 \in \N$ mit $u_n \in U(u)$ für alle $n>n_0$. Diese Umgebungen sind dann definiert durch die Existenz von $u_1, \dots, u_k \in X^\ast$ und $\epsilon > 0$, sodass $v \in U(u)$ falls $\abs{\scal{u_i^\ast}{u-v}} < \epsilon$ für alle $i \in \menge{1,  \dots, k}$. Für ein beliebiges $\epsilon>0$ und endlich viele beliebige $u^\ast \in X^\ast$ liegen nun nur endlich viele $u_n$ nicht in der Umgebung von $u$. Damit muss also für alle $u^\ast \in X^\ast$ und für alle $\epsilon >0$ ein $n_0 \in \N$ existieren, sodass $\abs{\scal{u^\ast}{u-u_n}} = \abs{\scal{u^\ast}{u} - \scal{u^\ast}{u_n}}	< \epsilon$, d.h. $\scal{u^\ast}{u_n} \to \scal{u^\ast}{u}$ für alle $u^\ast \in X^\ast$, d.h. $u_n \weakconv u$.
+		\end{itemize}
+	\pagebreak
+		\item Sei $\tau_w^\ast$ wie in der Vorlesung definiert.
+		\begin{itemize}
+			\item Es ist klar, dass $\emptyset \in \tau_w^\ast$ und $X^\ast \in \tau_w^\ast$ gilt.
+			\item Sei $I$ eine beliebige Indexmenge und $M_i^\ast \in \tau_w^\ast$ für alle $i \in I$. Sei $u_0^\ast \in \bigcup_{i \in I} M_i^\ast$. Dann existiert ein $i_0 \in I$ mit $u_0^\ast \in M_{i_0}^\ast$. Da $M_{i_0}^\ast \in \tau_w^\ast$ liegt, existieren $u_1, \dots, u_k \in X$ und $\epsilon > 0$, sodass $v^\ast \in M_{i_0}^\ast \subseteq \bigcup_{i \in I} M_i^\ast$ falls $\abs{\scal{v-u_0}{u_j}} < \epsilon$ erfüllt ist für alle $j = 1, \dots, k$. Somit gilt schließlich auch $\bigcup_{i \in I} M_i^\ast \in \tau_w^\ast$.
+			\item Seien $M_1^\ast, M_2^\ast \in \tau_w^\ast$ und $u_0^\ast \in M_1^\ast \cap M_2^\ast$. Dann ist $u_0^\ast \in M_1^\ast$ und $u_0^\ast \in M_2^\ast$. Da $M_1^\ast, M_2^\ast \in \tau_w^\ast$ existieren $u_1, \dots, u_k \in X$ und $w_1, \dots, w^\ast \in X$ sowie $\epsilon_1, \epsilon_2 > 0$, sodass $v^\ast \in M_1^\ast$ falls $\abs{\scal{v^\ast-u_0^\ast}{u_j}} < \epsilon_1$ für alle $j = 1, \dots, k$ und $v^\ast \in M_2^\ast$ falls $\abs{\scal{v^\ast-u_0^\ast}{w_j}} < \epsilon_2$ für alle $j = 1, \dots, \ell$. Definieren wir nun $\epsilon \defeq \min\menge{\epsilon_1, \epsilon_2} > 0$ so gilt $v^\ast \in M_1^\ast \cap M_2^\ast$ falls $\abs{\scal{v^\ast-u_0^\ast}{u_j}} < \epsilon$ für alle $j = 1, \dots, k$ und $\abs{\scal{v^\ast-u_0^\ast}{w_j}} < \epsilon$ für alle $j = 1, \dots, \ell$ gilt. Somit ist also $M_1^\ast \cap M_2^\ast \in \tau_w^\ast$ und damit auch jeder endliche Schnitt (da dieser als verschachtelter Schnitt von je zwei Mengen gesehen werden kann).			
+			\item Konvergenz in $\tau_w^\ast$ --- Sei $\folge{u_n^\ast}{n \in \N} \subseteq X^\ast$ und $u^\ast \in X^\ast$. $\folge{u_n^\ast}{}$ konvergiert genau dann schwach${}^\ast$ gegen $u^\ast$, wenn $\scal{u_n^\ast}{u} \to \scal{u^\ast}{u}$ für alle $u \in X$ bzw. genau dann, wenn für alle $u \in X$ und alle $\epsilon > 0$ ein $n_0(\epsilon)$ existiert, sodass für alle $n > n_0(\epsilon)$ gilt, dass $\abs{\scal{u^\ast}{u} - \scal{u_n^\ast}{u}} = \abs{\scal{u^\ast - u_n^\ast}{u}} < \epsilon$ ist. Somit existiert für jede offene Umgebung $U(u^\ast) \in \tau_w^\ast$ ein $n_0$, sodass für alle $n > n_0$ gilt, dass $\abs{\scal{u^\ast - u_n^\ast}{u_j}} <\epsilon_{U(u^\ast)}$ für alle $u_j$ $(j=1, \dots, k)$ und $\epsilon > 0$ per Definition von $\tau_w^\ast$.
+			Damit ist nun also $u_n^\ast \in U(u^\ast)$ für alle $n > n_0$ für alle offenen Umgebungen von $U(u^\ast)$ von $u^\ast$, d.h. $u_n^\ast \overset{\tau_w^\ast}{\to} u^\ast$.
+			
+			Sei andersherum nun $u_n^\ast \overset{\tau_w^\ast}{\to} u^\ast$, d.h. für alle offenen Umgebungen $U(u^\ast)$ existiert ein $n_0 \in \N$ mit $u_n^\ast \in U(u^\ast)$ für alle $n>n_0$. Diese Umgebungen sind dann definiert durch die Existenz von $u_1, \dots, u_k \in X$ und $\epsilon > 0$, sodass $v^\ast \in U(u^\ast)$ falls $\abs{\scal{u^\ast - v^\ast}{u_i}} < \epsilon$ für alle $i \in \menge{1,  \dots, k}$. Für ein beliebiges $\epsilon>0$ und endlich viele beliebige $u \in X$ liegen nun nur endlich viele $u_n^\ast$ nicht in der Umgebung von $u$. Damit muss also für alle $u \in X$ und für alle $\epsilon >0$ ein $n_0 \in \N$ existieren, sodass $\abs{\scal{u^\ast - u_n^\ast}{u}} = \abs{\scal{u^\ast}{u} - \scal{u_n^\ast}{u}}	< \epsilon$, d.h. $\scal{u_n^\ast}{u} \to \scal{u_n^\ast}{u}$ für alle $u \in X$, d.h. $u_n^\ast \weakstarconv u^\ast$.
+		\end{itemize}
+	\end{enumerate}
+
+	\begin{exercise}
+		Es sei $X$ ein reflexiver Banachraum und $T \in L(X,\ell^1)$. Zeigen Sie, dass $T$ kompakt ist.
+	\end{exercise}
+
+	\begin{exercise}
+		Für $\K = \R$, $p \in (1, \infty)$, $q = \frac{p}{p-1}$ und $\folge{y_n}{n \in \N} \in \ell^q$ betrachten wir die Funktion
+		\begin{equation*}
+			\abb{F}{\ell^p}{\R} \mit F(\folge{x_n}{}) \defeq \sum_{n \in \N} \brackets{\frac{1}{p} \abs{x_n}^p - y_n x_n}
+		\end{equation*}
+		Zeigen Sie, dass $F$ auf der Menge 
+		\begin{equation*}
+			A \defeq \menge{\folge{x_n}{n \in \N} \in \ell^p: x_n \ge 0 \text{ für alle } n \in \N}
+		\end{equation*}
+		ein Minimum besitzt.
+		
+		\textit{Hinweis:} Nutzen Sie Satz 3.19 der Vorlesung.
+	\end{exercise}
+
+\end{exercisePage}

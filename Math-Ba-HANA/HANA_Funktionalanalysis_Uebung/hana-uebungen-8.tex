@@ -1,0 +1,132 @@
+\begin{exercisePage}[Dualräume \& Distributionen]
+	\setcounter{taskcount}{21}
+	
+	\begin{exercise}
+		Bekanntlich gilt $\ell^1 \subsetneq (\ell^\infty)^\ast$ (genauer: für alle $u^\ast \in \ell^1$ liefert $u \mapsto \scal{u^\ast}{u}$ ein stetiges lineare Funktional auf $\ell^\infty$, jedoch nicht jedes $u^\ast \in (\ell^\infty)^\ast$ lässt sich so darstellen). Zeigen Sie nun, dass es eine isometrische konjugiert-lineare Isomorphie $\abb{T}{\ell^1}{(c_0)^\ast}$ gibt, wobei $c_0$ der Raum der komplexen Nullfolgen (versehen mit der Supremumsnorm) ist.
+	\end{exercise}
+
+%%%% AUFGABE 22 %%%%
+	\begin{exercise}
+		Es sei $\Omega \subseteq \Rn$ offen.
+		\begin{enumerate}[nolistsep]
+			\item Überprüfen Sie, welche der folgenden Abbildungen $T$ für $\phi \in C_0^\infty(\Omega)$ eine Distribution definieren. Bestimmen Sie gegebenenfalls die Orndung von $T$ sowie die Ableitung $\partdiff{x_1} T$ und deren Ordnung.
+			\begin{enumerate}[label=(\roman*)]
+				\item $T(\phi) \defeq \partdiff{x_1} \brackets{\phi(x) e^{x_1}} \mid_{x = 0}$ auf $\Omega = \Rn$
+				\item $T(\phi) \defeq \sum_{k=1}^n \int_\Omega \sin(\abs{x}^2) \partdiff{x_k}\phi(x) \dx$
+			\end{enumerate}
+		\item Zeigen Sie, dass die Topologie auf $\mathcal{D}(\Omega)$ nicht metrisierbar ist. Hinweis: Skalierung ändert nicht den Träger einer Funktion und ist stetig.
+		\end{enumerate}
+	\end{exercise}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Sei $\phi \in C_0^\infty(\Omega)$ und $\Omega_0 \subset \subset \Omega$.
+		\begin{enumerate}[label=(zu \roman*), leftmargin=*]
+			\item Es ist 
+			\begin{equation*}
+				\begin{aligned}
+					T(\phi) &= \partdiff{x_1} \brackets{\phi(x) * e^{x_1}} \mid_{x=0} \\
+					&= \brackets{\partdiff{x_1} \phi(x)}_{x=0} e^{x_1} + \phi(x) e^{x_1} \mid_{x=0} \\
+					&= \partdiff{x_1} \phi(x) \mid_{x=0} + \phi(0)
+				\end{aligned}
+			\end{equation*}
+			Somit gilt
+			\begin{equation*}
+				\begin{aligned}
+				\abs{T(\phi)} = \abs{\partdiff{x_1} \phi(x) \mid_{x=0} + \phi(0)} 
+				&\le \abs{\partdiff{x_1} \phi(x)}_{x=0} + \abs{\phi(0)} \\
+				&\le \sup_{x \in \quer{\Omega_0}} \abs{\partdiff{x_1} \phi(x) + \phi(x)} \\
+					&= \sum_{\abs{\alpha} \le 1} \sup_{x \in \quer{\Omega_0}} \abs{D^\alpha \phi(x)} \\
+					&= \norm{\phi}_{C^1}
+				\end{aligned}
+			\end{equation*}
+			Somit ist also $T$ eine Distribution von Ordnung $k = 1$.
+			Für die Ableitung gilt nach Definition
+			\begin{equation*}
+				(D^\alpha T)(\phi) \defeq (-1)^\alpha T(D^\alpha \phi)
+			\end{equation*}
+			Hier sei $\alpha = 1$ und somit 
+			\begin{equation*}
+				\begin{aligned}
+					(\partdiff{x_1} T)(\phi) \defeq (-1) * T\brackets{\partdiff{x_1} \phi} 
+					&= (-1) * \partdiff{x_1} \sqbrackets{\brackets{\partdiff{x_1} \phi(x)} e^{x_1}}_{x=0} \\
+					&= (-1) * \sqbrackets{\frac{\partial^2}{\partial x_1^2} \phi(x) e^{x_1} + \partdiff{x_1} \phi(x) e^{x_1}}_{x=0} \\
+					&= - \frac{\partial^2}{\partial x_1^2} \phi(x) \mid_{x=0} - \partdiff{x_1} \phi(x) \mid_{x=0}
+				\end{aligned}
+			\end{equation*}
+			Nun kann beide Summanden gegen das Supremum abschätzen und erhält dann Beschränktheit in der $C^2$-Norm. Also ist die Ordnung $k = 2$.
+			%
+			\item Da $\Omega_0 \subseteq \Rn$ kompakt ist, also insbesondere beschränkt, existiert eine Konstante $\gamma \in \R$ mit $\abs{x} \le \gamma$ für alle $x \in \Omega_0$.
+			Für die Distribution $T$ gilt
+			\begin{equation*}
+				\begin{aligned}
+					T(\phi) &= \sum_{k=1}^n \int_\Omega \sin(\abs{x}^2) * \partdiff{x_k} \phi(x) \dx \\
+					&= \sum_{k=1}^n (-1) * \int_\Omega \partdiff{x_k} \sin(\abs{x}^2) * \phi(x) \dx \\
+					&= (-1) * \sum_{k=1}^n \int_\Omega \cos(\abs{x}^2) * 2x_k * \phi(x) \dx
+				\end{aligned}
+			\end{equation*}
+			Im Absolutbetrag folgt dann
+			\begin{equation*}
+				\begin{aligned}
+				\abs{T(\phi)} &\le \sum_{k=1}^n \int_\Omega \abs{\cos(\abs{x}^2)} * 2 \abs{x_k} * \abs{\phi(x)} \dx \\
+				&\le \sum_{k=1}^n \int_\Omega 1 * 2 \gamma * \norm{\phi}_{C^0} \dx \\
+				&= \sqbrackets{n * 2 \gamma * \lambda(\Omega)} * \norm{\phi}_{C^0}
+				\end{aligned}
+			\end{equation*}
+			Somit ist also $T$ eine Distribution von Ordnung $k = 0$. 
+			Für die Ableitung gilt
+			\begin{equation*}
+				\begin{aligned}
+					\brackets{\partdiff{x_1} T}(\phi) &= (-1) * T\brackets{\partdiff{x_1} \phi} \\
+					&= -\sum_{k=1}^n \int_\Omega \sin(\abs{x}^2) \partdiff{x_k} \brackets{\partdiff{x_1} \phi(x)} \dx \\
+					&= - \sum_{k=1}^n \int_\Omega \sin(\abs{x}^2) \frac{\partial^2}{\partial x_k x_1} \phi(x) \dx 
+				\end{aligned}
+			\end{equation*}
+			Mittels partieller Integration kann nun die Ableitung wieder auf den Sinus ''geschoben`` werden, d.h. wir können erneut mit der $C^0$-Norm abschätzen. Somit hat auch die Ableitung von $T$ wieder Ordnung $k=0$.
+		\end{enumerate}
+	\end{enumerate}
+
+%%%% AUFGABE 24 %%%%
+	\begin{exercise}
+		Es sei $\Omega \subseteq \Rn$ offen.
+		\begin{enumerate}
+			\item Es sei $\mu$ ein Maß auf $\Omega$ mit $\mu(\Omega) = 1$ und $f \in L^1(\Omega, \mu)$ reellwertig. Weiterhin sei $\abb{\phi}{\R}{\R}$ konvex. Zeigen Sie die Jensen'sche Ungleichung:
+			\begin{equation*}
+				\phi \brackets{\int_\Omega f \diff{\mu}} \le \int_\Omega (\phi \circ f) \diff{\mu}
+			\end{equation*}
+			Hinweis: Bekanntlich gilt für jede konvexe Funktion $\phi$ auf $\R$ und jedes $x_0 \in \R$, dass $a,b \in \R$ existieren, die 
+			\begin{equation*}
+				ax_0 + b = \phi(x_0) \und ax + b \le \phi(x) \text{ für alle } x \in \R
+			\end{equation*}
+			erfüllen. Betrachten Sie $x_0 \defeq \int_\Omega f \diff{\mu}$.
+			\item Es sei zudem $\Omega$ beschränkt und $p \in [1,\infty)$. Zeigen Sie die Poincaré'sche Ungleichung: Es existiert eine Konstante $C > 0$ mit <
+			\begin{equation*}
+				\norm{u}_{L^p} \le C * \norm{\nabla u}_{L^p} \text{ für alle } u \in W_0^{1,p}(\Omega)
+			\end{equation*}
+			Hinweis: Überlegen Sie sich zuerst für ein allgemeines $u \in C_0^1(\Omega)$  mit Hilfe von (a), dass $\abs{u(x,y)}^p \le (2R)^{p-1} \int_{-R}^R \chi_\Omega(s,y) * \abs{\partial_1 u(s,y)}^p \diff{s}$ für ein geeignetes $R > 0$.
+		\end{enumerate}
+	\end{exercise}
+
+	\begin{enumerate}[leftmargin=*, label = (zu \alph*)]
+		\item Da $\phi$ konvex ist, existieren $a, b \in \R$, sodass $ax_0 + b = \phi(x_0)$ und $ay + b \le \phi(y)$ für alle $y \in \R$. Betrachten wir gemäß Hinweis $x_0 \defeq \int_\Omega f \diff{\mu}$, d.h. es gilt
+		\begin{equation*}
+			a \int_\Omega f \diff{\mu} + b = \phi\brackets{\int_\Omega f \diff{\mu}}
+		\end{equation*}
+		und wegen Linearität des Integrals gilt auch 
+		\begin{equation*}
+			\int_\Omega af + b \diff{\mu} = a * \int_\Omega f \diff{\mu} + b = \phi\brackets{\int_\Omega f \diff{\mu}}
+		\end{equation*}
+		Außerdem gilt mit $y = f(x)$ 
+		\begin{equation*}
+			a f(x) + b \le \phi(f(x)) 
+		\end{equation*}
+		für alle $f(x) \in \Omega$. Somit ist wegen $\mu(\Omega) = 1$ auch $\int_\Omega b \diff{\mu} = b * \mu(\Omega) = b \in \R$ und damit
+		\begin{equation*}
+			\begin{aligned}
+				\phi\brackets{\int_\Omega f \diff{\mu}} = \phi(x_0) &= ax_0 + b \\
+				&= a \int_\Omega f \diff{\mu} + b * \int_\Omega  \diff{\mu} \\
+				&= \int_\Omega af + b \diff{\mu} \\
+				&\le \int_\Omega \phi(f) \diff\mu = \int_\Omega (\phi \circ f) \diff{\mu}
+			\end{aligned}
+		\end{equation*}
+	\end{enumerate}
+\end{exercisePage}

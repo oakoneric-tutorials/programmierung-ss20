@@ -1,0 +1,105 @@
+Wir erinnern uns an die Einführung der komplexen Zahlen. Wir wollen eine Zahl $z$ finden mit $z^2 = -1$, nämlich $z = \i$. Wir erweitern also $\R$ so, dass weiterhin die Körperaxiome gelten und definieren
+\begin{equation}
+	\CC \defeq \menge{x + \i * y \colon x,y \in \R}
+\end{equation}
+und identifizieren
+\begin{equation}
+	1 \sim (1,0) \in \R^2 \qquad \i \sim (0,1) \in \R^2
+\end{equation}
+mit der Addition
+\begin{equation}
+	(x_1 + \i * y_1) + (x_2 + \i * y_2) = (x_1 + x_2) + \i * (y_1 + y_2)
+\end{equation}
+sowie der Multiplikation
+\begin{equation}
+	(x_1 + \i * y_1) * (x_2 + \i * y_2) = (x_1 * x_2 - y_1 * y_2) + \i * (x_1 * y_2 + x_2 * y_1)
+\end{equation}
+Formal können wir auch $\CC = \R^2$ identifizieren mit der gewöhnlichen (komponentenweisen) Addition und der Multiplikation
+\begin{equation}
+	(x_1, y_1) * (x_2, y_2) = (x_1 * x_2 - y_1 * y_2 , x_1 * y_2 + x_2 * y_1)
+\end{equation}
+Dann bildet $(\CC, +, *)$ einen Körper mit $\i = (0,1)$ und Einselement $(1,0)$.
+
+\begin{definition}
+	Für $z = x + \i * y \in \CC$ heißt $x = \Re(z)$ der \begriff{Realteil} von $z$ und $y = \Im(z)$ der  \begriff{Imaginärteil} von $z$. Die \begriff{konjugiert} komplexe Zahl von $z$ ist $\quer{z} \defeq x - \i * y$. Als \begriff{Betrag} definieren wir
+	\begin{equation}
+	\abs{z} \defeq \sqrt{z * \quer{z}} = \sqrt{x^2 + y^2}
+	\end{equation}
+\end{definition}
+
+Für $z_1, z_2 \in \CC$ gilt $\abs{z_1 * z_2} = \abs{z_1} * \abs{z_2}$ und
+\begin{equation}
+	\frac{1}{z} = \frac{\quer{z}}{\quer{z} * z} = \frac{\quer{z}}{\abs{z}^2} = \frac{x - \i * y}{x^2 + y^2}
+\end{equation}
+
+\begin{definition}[Polardarstellung]
+	Jedes $z \in \CC$ lässt sich darstellen als
+	\begin{equation}
+		z = r * e^{\i * \phi} = r * (\cos(\phi) + \i * \sin(\phi))
+	\end{equation}
+	mit $r = \abs{z}$ und $\phi \in \R$. Dabei heißt $\phi$ \begriff{Argument} von $z$ und ist für $z \neq 0$ nur bis auf ganzzahlige Vielfache von $2\pi$ bestimmt.
+\end{definition}
+
+\begin{definition}[Differenzierbarkeit]
+	 Sei $\Omega \subseteq \CC$ offen, $z_0 \in \Omega$ und $\abb{f}{\Omega}{\CC}$.
+	\begin{enumerate}[label=(\arabic*)]
+		\item $f$ heißt in $z_0$ \begriff{(komplex) differenzierbar} genau dann, wenn
+		\begin{equation}
+			f'(z_0) \defeq \lim_{z \to z_0, z \neq z_0} \frac{f(z) - f(z_0)}{z-z_0} \text{ existiert}
+		\end{equation}
+		$f'(z_0)$ heißt dann \begriff{Ableitung} von $f$ in $z_0$.
+		\item $f$ heißt (in $\Omega$) \begriff{holomorph} genau dann, wenn $f$ in jedem Punkt $z_0 \in \Omega$ differenzierbar ist.
+	\end{enumerate}
+\end{definition}
+
+\begin{*bemerkung}
+	Unser erstes großes Ziel wird sein zu zeigen, dass holomorphe Funktionen beliebig oft differenzierbar sind und sogar analytisch, d.h. sie lassen sich in jedem Punkt in eine Potenzreihe entwickeln.
+\end{*bemerkung}
+
+\begin{beispiel}
+	\begin{enumerate}[label=(\arabic*)]
+		\item $f(z) = c = \text{const.} \follows f' = 0$
+		\item $f(z) = z \follows f' = 1$
+		\item $f(z) = \exp(z) = \sum_{n=0}^\infty \frac{z^n}{n!}$ ist holomorph auf $\CC$ mit $f'(z) = \exp(z)$
+		\begin{proof}
+			Für $z_0 = 0$:
+			\begin{equation}
+				\begin{aligned}
+					\abs{\frac{f(z) - f(0)}{z - 0} - 1} 
+					&= \abs{\sum_{n=1}^\infty \frac{z^{n-1}}{n!} -1} 
+					= \abs{\sum_{n=2}^\infty \frac{1}{n!} * z^{n-1}} \\
+					\overset{\abs{z} \le 1}&{\le} \abs{z} * \sum_{n=2}^\infty \frac{1}{n!}
+					= \abs{z} * (e - 2) \to 0 \quad (z \to 0)
+				\end{aligned}
+			\end{equation}
+			 Für $z_0 \in \CC$ beliebig.
+			\begin{equation}
+				\frac{\exp(z) - \exp(z_0)}{z - z_0} = \exp(z_0) * \frac{\exp(z-z_0) - 1}{z - z_0} \to \exp(z_0)
+			\end{equation}
+		\end{proof}
+		\item $\abb{f}{\CC \ohneNull}{\CC}$ mit $f(z) = \frac{1}{z}$ ist holomorph und $f'(z) = -\frac{1}{z^2}$
+		\begin{proof}
+			\begin{equation}
+				\frac{1}{z-z_0} * \brackets{\frac{1}{z} - \frac{1}{z_0}} = \frac{1}{z * z_0} \to - \frac{1}{z_0^2} \quad (z \to z_0)
+			\end{equation}
+		\end{proof}
+	\end{enumerate}
+\end{beispiel}
+
+\begin{bemerkung}
+	\begin{enumerate}[label=(\arabic*)]
+		\item Seien $\Omega \subseteq \CC$ offen, $\abb{f,g}{\Omega}{\CC}$ holomorph und $\alpha \in \CC$. Dann sind auch $\alpha * f$, $f+g$, $f*g$ und $\frac{f}{g}$ (auf $\menge{z \in \CC : g(z) \neq 0}$) holomorph und es gilt
+		\begin{subequations}
+			\begin{align}
+				(\alpha * f)' &= \alpha * f' \\
+				(f+g)' &= f' + g' \\
+				(f*g)' &= f' * g + f * g' \\
+				(\frac{f}{q})' &= \frac{f'*g - f*g'}{g^2}
+ 			\end{align}
+		\end{subequations}
+		\item \begriff{Kettenregel}: Seien $\Omega, \Omega' \subseteq \CC$ offen, $\abb{f}{\Omega}{\CC}$, $\abb{g}{\Omega'}{\CC}$ holomorph und $f(\Omega) \subseteq \Omega'$. Dann ist auch $(g \circ f)$ holomorph mit
+		\begin{equation}
+			(g \circ f)'(z) = (g' \circ f)(z) * f'(z)
+		\end{equation}
+	\end{enumerate}
+\end{bemerkung}

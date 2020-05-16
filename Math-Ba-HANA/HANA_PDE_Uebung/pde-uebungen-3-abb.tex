@@ -1,0 +1,53 @@
+\documentclass[margin=5mm]{standalone}
+\usepackage{tudscrcolor} 
+%\usepackage{pgfplots}
+%\usepgfplotslibrary{fillbetween} 
+%\pgfplotsset{
+%  compat=1.10,% mit writeLaTeX bisher noch nicht möglich
+%  every axis/.append style={
+%  	axis x line=middle,    % put the x axis in the middle
+%  	axis y line=middle,    % put the y axis in the middle
+%  	axis line style={->}, % arrows on the axis
+%%  	xlabel={$\Re(z)$},          % default put x on x-axis
+%%  	ylabel={$\Im(z)$},          % default put y on y-axis
+%  	enlargelimits=0.05,
+%  	grid,
+%  	domain=-5:5,
+%  	ymin = -5,
+%  	ymax = 5,
+%  	xmin = -5,
+%  	xmax = 5,
+%  }
+%}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10}   % in my packages used compat=1.15
+\usepgfplotslibrary{fillbetween}
+
+\usepackage{tikz}
+\usetikzlibrary{patterns,arrows,calc,decorations.pathmorphing,backgrounds, positioning,fit,petri,decorations.fractals}
+\usetikzlibrary{matrix}
+
+\begin{document} 
+
+	\begin{tikzpicture} 
+		\begin{axis}[%
+			xmin =   0,
+			xmax =  4,
+			ymin  = -2,
+			ymax =  4,
+			axis equal
+		]
+			% s = 0
+			\addplot [domain=-2:4, smooth,, samples=100, variable=\t, cddarkblue, line width=1pt]({0.5*t^2}, {t});
+			% s = 0.5
+			\addplot [domain=-3:4, smooth,, samples=100, variable=\t, cddarkgreen, line width=1pt]({0.5*t^2 + 0.5 * t * 0.5 + 0.5}, {t + 0.5});
+			% s = 1
+			\addplot [domain=-3:4, smooth,, samples=100, variable=\t, cdpurple, line width=1pt]({0.5*t^2 + 0.5 * t * 1 + 1}, {t + 1});
+			% s = 2
+			\addplot [domain=-4:4, smooth,, samples=100, variable=\t, cdorange, line width=1pt]({0.5*t^2 + 0.5 * t * 2 + 2}, {t + 2});
+		\end{axis} 
+		\node[above,font=\bfseries] at (current bounding box.north) {Charakteristiken $x(t) = \begin{pmatrix} \frac{1}{2} t^2 + \frac{1}{2} s t + s \\ t + s \end{pmatrix}$};
+	\end{tikzpicture} 
+
+\end{document}

@@ -1,0 +1,144 @@
+\begin{exercisePage}
+	
+	\begin{task}
+		Sei $\Omega \defeq B(0,1) \subseteq \CC$ (Einheitskreis), $\abb{f}{\Omega}{\CC}$, $f(\Omega) \subseteq \R$. Zeigen Sie: Ist $z_0 \in \Omega$, $f$ komplex differenzierbar in $z_0$, dann gilt $f'(z_0) = 0$. Ist $f$ (in $\Omega$) holomorph, so ist $f$ konstant.
+	\end{task}
+	
+	Sei $f \simeq (u,v)$, $f = u + \i v$ und $z=x + \i y \simeq (x,y)$. Wegen $f(\Omega) \subseteq \R$ ist $v \equiv 0$. Da $f$ in $z_0 = x_0 + \i y_0 \simeq (x_0, y_0)$ komplex differenzierbar ist, ist $\abb{f}{\R^2}{\R}$ dort auch reell differenzierbar und es gelten die Cauchy-Riemann Differentialgleichungen $u_x(x_0,y_0) = v_y(x_0, y_0) = 0$ bzw. $u_y(x_0, y_0) = -v_x(x_0, y_0) = 0$. Somit ist auch $u'(z) = 0$ und somit $f'(x_0,y_0) \simeq f'(z_0) = 0$.
+	
+	Sei $f$ holomorph auf $\Omega$. Dann gilt $f'(z) = 0$ für alle $z \in \Omega$, insbesondere ist $u',v' \equiv 0$ und dann sind $u$ und $v$ als reelle Funktionen konstant, also auch $f  = u + \i  v$.
+	
+	
+	\begin{task}
+		\begin{enumerate}[label=(\alph*), nolistsep]
+			\item Weisen Sie nach, dass die Funktion 
+			\begin{equation*}
+				\abb{u}{\R^2}{\R} \qquad u(x,y) \defeq e^{-x} (x * \cos(y) + y * \sin(y))
+			\end{equation*}
+			der Laplace-Differentialgleichung $\Delta u = u_{xx} + u_{yy}  = 0$ genügt.
+			\item Bestimmen Sie eine Funktion $\abb{v}{\R^2}{\R}$ mit $v(0,0) = 0$ derart, dass $u$,$v$ die Cauchy-Riemann-Differentialgleichungen erfüllen.
+			\item Schreiben Sie $f = u + \i v$ mithilfe der komplexen Exponentialfunktionen als Funktion von $z = x + \i y$.
+		\end{enumerate}
+	\end{task}
+
+	\begin{enumerate}[label=(zu \alph*), leftmargin=*]
+		\item Es ist
+		\begin{align*}
+			u_x(x,y) &= -e^{-x} \brackets{x * \cos(y) + y*\sin(y)} + e^{-x} * \cos(y) \\
+			&= e^{-x} \brackets{(1-x) \cos(y) - y \sin(y)} \\
+			u_{xx}(x,y) &= e^{-x} \brackets{x \cos(y) + y\sin(y) - 2\cos(y)} \\
+			&= e^{-x} \brackets{(x-2) \cos(y) + y \sin(y)} \\
+			u_y(x,y) &= e^{-x} \brackets{-x \sin(y) + \sin(y) + y \cos(y)} \\
+			&= e^{-x} \brackets{(1-x) \sin(y) + y \cos(y)} \\
+			u_{yy}(x,y) &= e^{-x} \brackets{-x \cos(y) + \cos(y) + \cos(y) - y\sin(y)} \\
+			&= -e^{-x} \brackets{(x-2) \cos(y) + y \sin(y)}
+		\end{align*}
+		Damit gilt $u_{xx} + u_{yy} = 0$.
+		\item Es gilt $u_x(x,y) = e^{-x} \brackets{(1-x) \cos(y) - y \sin(y)}$ und nach den Cauchy-Riemann Differentialgleichungen muss $u_x = v_y$ gelten. Löse diese Differentialgleichung für fixiertes $x$ durch Integration:
+		\begin{equation*}
+			\begin{aligned}
+				v(x,y) &= \int u_x(x,y) \diffskip{y} = \int e^{-x} \brackets{(1-x) \cos(y) - y \sin(y)} \diffskip{y} \\
+				&= e^{-x} \brackets{ (1-x) \int \cos(y) \diffskip{y} - \int y \sin(y) \diffskip{y}} \\
+				&= e^{-x} \brackets{(1-x) \sin(y) - \sin(y) + y \cos(y) + C} \\
+				&= e^{-x} \brackets{ -x \sin(y) + y \cos(y) + C} 
+			\end{aligned}
+		\end{equation*}
+		Prüfen wir die zweite Cauchy-Riemann-Differentialgleichung und bestimmten $v_x$:
+		\begin{equation*}
+			\begin{aligned}
+				v_x &= - e^{-x} \brackets{ -x \sin(y) + y \cos(y) + C} + e^{-x} (- \sin(y)) \\
+				&= -e^{-x} \brackets{ (1-x) \sin(y) + y \cos(y) + C} \\
+				\overset{!}&{=} u_y(x,y) \\
+				&= -e^{-x} \brackets{(1-x) \sin(y) + y \cos(y)}
+			\end{aligned}
+		\end{equation*}
+		Daraus erhalten wir die Konstante $C = 0$ und als Lösung $v(x,y) = e^{-x} \brackets{y\cos(y) - x\sin(y)}$. Auch der Anfangswert $v(0,0) = 1 * (0-0) = 0$ wird erfüllt.
+		Die Probe ergibt
+		\begin{equation*}
+			\begin{aligned}
+				v_x(x,y) 
+				&= -e^{-x} \brackets{ -x \sin(y) + y \cos(y)} - e^{-x} \sin(y)\\
+				&= -e^{-x} \brackets{(1-x) \sin(y) + y \cos(y)} = -u_y(x,y) \\
+				v_y(x,y) &= e^{-x} \brackets{(-x \cos(y) + \cos(y) - y \sin(y))} \\
+				&= e^{-x} \brackets{(1-x) \cos(y) - y \sin(y)} = u_x(x,y)
+			\end{aligned}
+		\end{equation*}
+		also $u_x = v_y$ und $u_y = - v_x$.
+		\item Sei $z = x + \i y$.
+		\begin{equation*}
+			\begin{aligned}
+				f(x,y) &= u(x,y) + \i * v(x,y) \\
+				&= e^{-x} \brackets{x * \cos(y) + y * \sin(y) - \i * x \sin(y) + \i * y \cos(y)} \\
+				&= e^{-x} \brackets{(x + \i y) \cos(y) - \i * (x + \i y) \sin(y)} \\
+				&= e^{-x} * z * \brackets{\cos(-y) + \i \sin(-y)} \\
+				&= z * e^{-x} * e^{- \i y} \\
+				&= z *e^{-z}
+				= f(z)
+			\end{aligned}
+		\end{equation*}
+	\end{enumerate}
+	\begin{task}
+		Sei $\Omega \subseteq \CC$ offen, $\abb{f}{\Omega}{\CC}$ holomorph, $f'$ stetig, $z_0 \in \Omega$, $f'(z_0) \neq 0$. Zeigen Sie: Es gibt offene Umgebungen $U \subseteq \Omega$ von $z_0$ und $V \subseteq \CC$ von $f(z_0)$, sodass $\abb{f}{U}{V}$ bijektiv und die daher existierende Abbildung $\abb{f^{-1}}{V}{U}$ ebenfalls holomorph ist. Es gilt $(f^{-1})'(w) = \frac{1}{f'(f^{-1}(w))}$ für alle $w \in V$. \\
+		\textit{Hinweis:} Betrachten Sie $f = (f_1, f_2)$ als Abbildung von $\R^2$ nach $\R^2$. Deren Jabobi Determinante ist in $z_0 = (x_0, y_0)$ ungleich Null. Anwendung des Satzes über die lokale Invertierbarkeit.
+	\end{task}
+
+	Wir erinnern uns gemäß Hinweis an zwei Sätze aus der Analysis 2:
+	
+	\begin{lemma}[Satz über inverse Funktionen] \label{2lemma: invFkt}
+		Sei $\abb{f}{U \subseteq \K^n}{\K^n}$ mit $\K \in \menge{\R, \CC}$ stetig differenzierbar ($U$ offen), $x_0 \in U$, $f'(x_0)$ regulär. Dann existiert eine offene Umgebung $U_0 \subseteq U$ von $x_0$, sodass mit $V_0 \defeq f(U_0)$ die eingeschränkte Abbildung $\abb{f}{U_0}{V_0}$ Diffeomorphismus\footnote{$f$, $f^{-1}$ stetig differenzierbar} ist (insbesondere ist $V_0$ offene Umgebung von $y_0 \defeq f(x_0)$).
+	\end{lemma}
+	\begin{lemma}[Ableitung der inversen Funktion] \label{2lemma: AbleitunginvFkt}
+		Sei $\abb{f}{U \subseteq \K^n}{\K^n}$ injektiv und differenzierbar ($D$ offen, $\K \in \menge{\R, \CC}$), $f^{-1}$ differenzierbar in $y \in \inn(f(D))$. Dann ist
+		\begin{equation*}
+			(f^{-1})'(y) = f'(f^{-1}(y))^{-1}
+		\end{equation*}
+	\end{lemma}
+
+	Sei $\abb{f = (f_1, f_2)}{\R^2}{\R^2}$ und $z = x + \i y \simeq (x,y)$ sowie $z_0 = x_0 + \i  y_0 \simeq (x_0,y_0)$. Da $f$ holomorph ist in allen $z_0 \in \Omega$, ist $f$ auch reell differenzierbar in $(x_0, y_0)$ mit 
+	\begin{equation*}
+		f'(x_0, y_0) = \begin{pmatrix}
+			\partial_x f_1(x_0, y_0) & \partial_y f_1(x_0, y_0) \\
+			\partial_x f_2(x_0, y_0) & \partial_y f_2(x_0, y_0)
+		\end{pmatrix} 
+		\defqe J
+	\end{equation*}
+	Außerdem gelten die Cauchy-Riemann-Differentialgleichungen $\partial_x f_1(x_0, y_0) = \partial_y f_2(x_0, y_0)$ und $\partial_y f_1(x_0, y_0) = - \partial_x f_2(x_0, y_0)$. Damit besitzt $J$ die Form $J = \left( \begin{smallmatrix} a & -b \\ b & a \end{smallmatrix} \right)$ mit Determinante
+	\begin{equation*}
+		\det(J) = \det\begin{pmatrix} a & -b \\ b & a \end{pmatrix} = a^2 + b^2
+	\end{equation*}
+	Angenommen es gilt $\det(J) = a^2 + b^2 = 0$. Dann ist $a=0$ und $b=0$, d.h. $f'(x_0, y_0) = 0$ im Widerspruch zur Voraussetzung. Somit ist also $f'(z_0) \simeq f'(x_0,y_0) \neq 0$ für alle $z_0 \simeq (x_0, y_0) \in \Omega$.
+	
+	Außerdem ist $f'$ stetig. Nach dem Satz über inverse Funktionen (\cref{2lemma: invFkt}) existiert dann eine offene Umgebung $U \subseteq \R^2$ von $(x_0, y_0)$, sodass mit $V = f(U)$ (und insbesondere $f(x_0,y_0) \in V$) $\abb{f}{U}{V}$ ein Diffeomorphismus ist. Nach dem Satz über die Ableitung der inversen Funktion (\cref{2lemma: AbleitunginvFkt}) gilt dann 
+	\begin{equation*}
+		\begin{aligned}
+			(f^{-1})'(x,y) &= f'(f^{-1}(x,y))^{-1} \\
+			&= 
+			\begin{pmatrix}
+				\partial_x f_1(f^{-1}(x,y)) & \partial_y f_1(f^{-1}(x,y)) \\
+				\partial_x f_2(f^{-1}(x,y)) & \partial_y f_2(f^{-1}(x,y))
+			\end{pmatrix}^{-1} \\
+			&=
+			\frac{1}{\det(J(f^{-1}(x,y)))}
+				\begin{pmatrix}
+				\partial_y f_2(f^{-1}(x,y)) & \partial_x f_2(f^{-1}(x,y)) \\
+				\partial_y f_1(f^{-1}(x,y)) & \partial_x f_1(f^{-1}(x,y))
+			\end{pmatrix}
+			\qquad \forall (x,y) \in V
+		\end{aligned}
+	\end{equation*} 
+	Aufgrund der Cauchy-Riemann-Differentialgleichungen für $f$ ist $\det(J(f^{-1}(x,y))) = \partial_x f_1(f^{-1}(x,y)) * \partial_y f_2(f^{-1}(x,y)) - \partial_x f_2(f^{-1}(x,y)) * \partial_y f_1(f^{-1}(x,y)) \neq 0$ und
+	\begin{equation*}
+		\begin{aligned}
+			\partial_y f_2(f^{-1}(x,y)) &=  \partial_x f_1(f^{-1}(x,y)) \\
+			\partial_y f_1(f^{-1}(x,y)) &= -\partial_x f_2(f^{-1}(x,y))
+		\end{aligned}
+	\end{equation*}
+	auch die Cauchy-Riemann-Differentialgleichungen für $f^{-1}$. Damit ist $f^{-1}$ komplex differenzierbar auf dem entsprechenden $V \subseteq \CC$ mit der Ableitung
+	\begin{equation*}
+		\begin{aligned}
+			(f^{-1})'(w) &= \lim_{z \to w} \frac{f^{-1}(z) - \lim_{z \to w} f^{-1}(w)}{z-w} = \frac{f^{-1}(z) - f^{-1}(w)}{f(f^{-1}(z)) - f(f^{-1}(w))} \\
+			&= \brackets{\lim_{z \to w} \frac{f(f^{-1}(z)) - f(f^{-1}(w))}{f^{-1}(z) - f^{-1}(w)}}^{-1} \\
+			&= \brackets{f'(f^{-1}(w))}^{-1} \qquad \forall w \in V
+		\end{aligned}
+	\end{equation*}
+\end{exercisePage}

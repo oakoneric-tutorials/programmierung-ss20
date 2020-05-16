@@ -1,0 +1,447 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         THEOREME                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesPackage{maththeorems2MathTUD}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for makro handling
+%\RequirePackage{kvoptions}
+\RequirePackage{xkeyval}
+\RequirePackage{xifthen}
+%\RequirePackage{xparse}
+
+\RequirePackage{tikz}
+\usetikzlibrary{calc,arrows}
+\RequirePackage[ntheorem,framemethod=TikZ]{mdframed}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for theorem environments
+\RequirePackage{amsmath,amssymb,amsfonts,mathtools}
+\RequirePackage[amsmath,thmmarks,framed]{ntheorem}
+
+
+\RequirePackage{pgfplots}
+\@ifpackageloaded{tudscrcolor}{}{\RequirePackage[table,dvipsnames]{tudscrcolor}}
+
+\@ifpackageloaded{opensans}{}{\usepackage[scale=1]{opensans}}
+\ifx\osfamily\undefined
+    \newcommand*{\osfamily}{\fontfamily{fos}\selectfont}
+    \DeclareTextFontCommand{\textos}{\osfamily}
+\fi
+
+\RequirePackage{chngcntr}
+
+
+% >> first number or first name in theorems
+% possible values: firstnumber, firstname
+\def\theoremheader@order@val{firstnumber}
+\DeclareOptionX{order}{%
+	%sets accordingly the required ntheoremoptions
+	\let\tempa\@empty
+	\IfEq{#1}{firstnumber}{\def\tempa{change}}{%
+		\IfEq{#1}{firstname}{\def\tempa{nochange}}{%
+			\PackageWarning{mathscript}{Unknown Value for key `order'}
+		}
+	}
+	\edef\theoremheader@order@val{\tempa}
+}
+
+
+
+
+\newcommand{\skiparound}{10pt}
+
+\newcounter{thmcount}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem
+\newenvironment{theorem}[1][]{%
+  \refstepcounter{thmcount}%
+  \ifstrempty{#1}%
+  { \mdfsetup{%
+      frametitle={%
+      \tikz[baseline=(current bounding box.east),outer sep=0pt]
+      \node[anchor=east,rectangle,fill=cddarkblue!90]
+      {\strut \color{white} \osfamily Theorem~\thethmcount};}}
+  }%
+  { \mdfsetup{%
+      frametitle={%
+      \tikz[baseline=(current bounding box.east),outer sep=0pt]
+      \node[anchor=east,rectangle,fill=cddarkblue!90]
+      {\strut \color{white} \osfamily Theorem~\thethmcount~(#1)};}}%
+  }%
+  \mdfsetup{
+    innertopmargin=6pt,
+    linecolor=cddarkblue!90,%
+    linewidth=2pt,
+    backgroundcolor=cdblue!10,
+    topline=true,%
+    frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+  }
+  \leavevmode
+  \begin{mdframed}[]\relax%
+}{
+  \end{mdframed}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\theoremstyle{plain}
+\theoremseparator{}
+\theoremheaderfont{\osfamily \bfseries \upshape}
+\theorembodyfont{}
+   
+\theorempreskip{\skiparound}
+\theorempostskip{\skiparound}
+
+%======================================================
+% DEFINTION
+
+\newmdtheoremenv[%
+	%style=boxedtheorem,%
+	backgroundcolor=cdorange!10,%
+	linecolor=cdorange,%
+	%innertopmargin=\boxskip,%
+	%innerbottommargin=\boxskip,%
+	innerleftmargin=4pt,%
+	outerlinewidth=5pt,%
+	topline=false,%
+	rightline=true,%
+	leftline=false,%
+	bottomline=false,%
+	%innertopmargin=3pt,%
+	%innerbottommargin=3pt,%
+	leftmargin=-4pt,%
+	%rightmargin=-10pt,%
+	%frametitlefont=\osfamily\bfseries,%
+	%skipabove=5pt,%
+	%skipbelow=5pt,%
+	skipabove=\skiparound,%
+	skipbelow=\skiparound,%
+	nobreak,%
+]{definition}[thmcount]{Definition}
+
+
+
+% first name, second numbers
+%\newtheorem{definition}[themcount]{Definition}
+
+%\theoremsymbol{\ensuremath{\square}}
+%\theorembodyfont{}
+%\newtheorem{lemma}[themcount]{Lemma}
+%\newtheorem{satz}[themcount]{Satz}
+%\newtheorem{theorem}[themcount]{Theorem}
+
+%\theoremstyle{margin}
+%\newtheorem{bemerkung}[themcount]{Bemerkung}
+
+
+%======================================================
+% SATZ
+
+\newmdtheoremenv[%
+	%style=boxedtheorem,%
+	backgroundcolor=cdblue!10,%
+	linecolor=cddarkblue!90,%
+	%innertopmargin=\boxskip,%
+	%innerbottommargin=\boxskip,%
+	innerleftmargin=4pt,%
+	outerlinewidth=5pt,%
+	topline=false,%
+	rightline=true,%
+	leftline=false,%
+	bottomline=false,%
+	%innertopmargin=3pt,%
+	%innerbottommargin=3pt,%
+	leftmargin=-4pt,%
+	%rightmargin=-10pt,%
+	%frametitlefont=\osfamily\bfseries,%
+	%skipabove=5pt,%
+	%skipbelow=5pt,%
+	skipabove=\skiparound,%
+	skipbelow=\skiparound,%
+	nobreak,%
+]{satz}[thmcount]{Satz}
+
+%======================================================
+% LEMMA
+
+\newmdtheoremenv[%
+	%style=boxedtheorem,%
+	backgroundcolor=cdindigo!4,%
+	linecolor=cdpurple,%
+	%innertopmargin=\boxskip,%
+	%innerbottommargin=\boxskip,%
+	innerleftmargin=4pt,%
+	outerlinewidth=5pt,%
+	topline=false,%
+	rightline=true,%
+	leftline=false,%
+	bottomline=false,%
+	%innertopmargin=3pt,%
+	%innerbottommargin=3pt,%
+	leftmargin=-4pt,%
+	%rightmargin=-10pt,%
+	%frametitlefont=\osfamily\bfseries,%
+	%skipabove=5pt,%
+	%skipbelow=5pt,%
+	skipabove=\skiparound,%
+	skipbelow=\skiparound,%
+	nobreak,%
+]{lemma}[thmcount]{Lemma}
+
+%======================================================
+% AUSSAGE
+
+\newmdtheoremenv[%
+	%style=boxedtheorem,%
+	backgroundcolor=cdindigo!4,%
+	linecolor=cdpurple,%
+	%innertopmargin=\boxskip,%
+	%innerbottommargin=\boxskip,%
+	innerleftmargin=4pt,%
+	outerlinewidth=5pt,%
+	topline=false,%
+	rightline=true,%
+	leftline=false,%
+	bottomline=false,%
+	%innertopmargin=3pt,%
+	%innerbottommargin=3pt,%
+	leftmargin=-4pt,%
+	%rightmargin=-10pt,%
+	%frametitlefont=\osfamily\bfseries,%
+	%skipabove=5pt,%
+	%skipbelow=5pt,%
+	skipabove=\skiparound,%
+	skipbelow=\skiparound,%
+	nobreak,%
+]{aussage}[thmcount]{Aussage}
+
+%======================================================
+% PROPOSITION
+
+\newmdtheoremenv[%
+	%style=boxedtheorem,%
+	%backgroundcolor=cdindigo!5,%
+	linecolor=cdpurple,%
+	%innertopmargin=\boxskip,%
+	%innerbottommargin=\boxskip,%
+	innerleftmargin=4pt,%
+	outerlinewidth=5pt,%
+	topline=false,%
+	rightline=true,%
+	leftline=false,%
+	bottomline=false,%
+	%innertopmargin=3pt,%
+	%innerbottommargin=3pt,%
+	leftmargin=-4pt,%
+	%rightmargin=-10pt,%
+	%frametitlefont=\osfamily\bfseries,%
+	%skipabove=5pt,%
+	%skipbelow=5pt,%
+	skipabove=\skiparound,%
+	skipbelow=\skiparound,%
+	nobreak,%
+]{proposition}[thmcount]{Proposition}
+
+%======================================================
+% FOLGERUNG
+
+\newmdtheoremenv[%
+	%style=boxedtheorem,%
+	backgroundcolor=cdpurple!5,%
+	linecolor=cdindigo!50,%
+	%innertopmargin=\boxskip,%
+	%innerbottommargin=\boxskip,%
+	innerleftmargin=4pt,%
+	outerlinewidth=5pt,%
+	topline=false,%
+	rightline=true,%
+	leftline=false,%
+	bottomline=false,%
+	%innertopmargin=3pt,%
+	%innerbottommargin=3pt,%
+	leftmargin=-4pt,%
+	%rightmargin=-10pt,%
+	%frametitlefont=\osfamily\bfseries,%
+	%skipabove=5pt,%
+	%skipbelow=5pt,%
+	skipabove=\skiparound,%
+	skipbelow=\skiparound,%
+	nobreak,%
+]{folgerung}[thmcount]{Folgerung}
+
+%======================================================
+% KOROLLAR
+\newmdtheoremenv[%
+	%style=boxedtheorem,%
+	backgroundcolor=cdpurple!5,%
+	linecolor=cdindigo!50,%
+	%innertopmargin=\boxskip,%
+	%innerbottommargin=\boxskip,%
+	innerleftmargin=4pt,%
+	outerlinewidth=5pt,%
+	topline=false,%
+	rightline=true,%
+	leftline=false,%
+	bottomline=false,%
+	%innertopmargin=3pt,%
+	%innerbottommargin=3pt,%
+	leftmargin=-4pt,%
+	%rightmargin=-10pt,%
+	%frametitlefont=\osfamily\bfseries,%
+	%skipabove=5pt,%
+	%skipbelow=5pt,%
+	skipabove=\skiparound,%
+	skipbelow=\skiparound,%
+	nobreak,%
+]{korollar}[thmcount]{Korollar}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%--------------------------------------
+% theorems without frames
+%--------------------------------------
+\theoremstyle{plain}
+\theoremheaderfont{\osfamily \bfseries}
+\theorembodyfont{}
+\theoremseparator{}
+
+\newtheorem{beispiel}[thmcount]{Beispiel}
+\newtheorem{erinnerung}[thmcount]{Erinnerung}
+\newtheorem{wiederholung}[thmcount]{Wiederholung}
+\newtheorem{bemerkung}[thmcount]{Bemerkung}
+\newtheorem{anmerkung}[thmcount]{Anmerkung}
+\newtheorem{algorithmus}[thmcount]{Algorithmus}
+
+%--------------------------------------
+% theorems without numbers but break
+%--------------------------------------
+
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\osfamily \bfseries}
+\theorembodyfont{}
+\theoremseparator{.}
+\theoremindent0cm
+
+\newtheorem{*definition}{Definition}
+\newtheorem{*lemma}{Lemma}
+\newtheorem{*wiederholung}{Wiederholung}
+\newtheorem{*erinnerung}{Erinnerung}
+\newtheorem{*bemerkung}{Bemerkung}
+
+\newtheorem{*beispiel}{Beispiel}
+
+\newtheorem{*algorithmus}{Algorithmus}
+
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\osfamily \bfseries \upshape}
+\theorembodyfont{\itshape}
+\theoremseparator{.}
+\theoremindent0cm
+
+\newtheorem{*anmerkung}{Anmerkung}
+
+%--------------------------------------
+% theorems without numbers and without linebreak
+%--------------------------------------
+\theoremstyle{nonumberplain}
+\theoremseparator{\textbf{.}}
+\theoremheaderfont{\osfamily \bfseries}
+\theorembodyfont{\itshape}
+
+\newtheorem{*bemerkung_inline}{Bemerkung}
+\newtheorem{*hinweis_inline}{Hinweis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         PROOF ENVIRONMENTS                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% >> proof
+\newtheoremstyle{proofstyle}%
+{\item[\hskip\labelsep {\theorem@headerfont ##1}\theorem@separator]}%
+{\item[\hskip\labelsep {\theorem@headerfont ##1}\ (##3)\theorem@separator]}
+
+\theoremstyle{proofstyle}
+\theoremheaderfont{\normalsize\slshape}
+\theorembodyfont{}
+\theoremseparator{.}
+\theorempreskip{5pt}
+\theorempostskip{5pt}
+\theoremsymbol{$\square$}
+\newtheorem{proof}{Beweis}
+
+% >> Equivalences
+\newcommand{\hinrichtung}{\item[\bfseries ($\boldsymbol{\Rightarrow}$)]}
+\newcommand{\rueckrichtung}{\item[\bfseries ($\boldsymbol{\Leftarrow}$)]}
+\newenvironment{proof-equivalence}[1][]{%
+    \ifthenelse{\isempty{#1}}%
+        {\begin{description}}%
+        {\begin{description}[topsep=-\parskip]}%
+}{%
+        \end{description}%
+}%
+\newenvironment{proof_equiv}{\begin{proof}\begin{description}}{\end{description}\end{proof}}
+
+% >> inductions
+\newcommand{\ianfang}[1][]{%
+    \ifthenelse{\isempty{#1}}{%
+        % no parameter
+        \item[\textbf{(IA)}]%
+    }{%
+        %parameter exists
+        \item[\textbf{(IA)}] {#1 :} %\hfill \\%
+    }%
+}
+
+\newcommand{\ivorraussetzung}{\item[\bfseries (IV)]}
+
+\newcommand{\ischritt}[1][]{%
+    \ifthenelse{\isempty{#1}}{%
+        % no parameter
+        \item[\textbf{(IS)}]
+    }{%
+        % parameter exists
+        \item[\textbf{(IS)}] {#1 :} %\\
+    }%
+}
+
+% two optional arg's:
+% #1 = induced variable 
+% #2 = vert. space before (IA): parskip (default) or nopreskip
+\NewDocumentEnvironment{induction}{O{} O{}}{%
+    \ifthenelse{ \isempty{#1} }{}{%
+        Vollständige Induktion nach #1:
+    }%---
+    \ifthenelse{ \equal{#2}{nopreskip} }{%
+        \begin{description}[topsep=-\parskip]
+    }{%
+        \begin{description}
+    }%
+}{%
+    \end{description}%
+}
+
+\newenvironment{proof_induction}[1][]{%
+    \begin{proof}
+        \begin{induction}[#1][nopreskip]%
+}{%
+        \end{induction}
+    \end{proof}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COUNTER
+% including chapter counter in theorem counter
+\counterwithin{thmcount}{chapter}
+%\counterwithin{definition}{chapter}
+%\counterwithin{beispiel}{chapter}
+%\counterwithin{erinnerung}{chapter}
+%\counterwithin{wiederholung}{chapter}
+%\counterwithin{bemerkung}{chapter}
+%\counterwithin{anmerkung}{chapter}
+%\counterwithin{algorithmus}{chapter}%
+
+\ProcessOptionsX

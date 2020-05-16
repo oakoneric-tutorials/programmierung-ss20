@@ -1,0 +1,181 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                          HIGHLIGHTING                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\begriff}[1]{\textbf{#1}}
+\newcommand{\person}[1]{\textsc{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             COUNTER                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{chngcntr}
+
+% automatic reset of section after chapter ended 
+\pretocmd{\chapter}{\setcounter{section}{0}}{}{}
+
+% automatic reset of equation counter in each section
+\pretocmd{\chapter}{\setcounter{equation}{0}}{}{}
+
+%\counterwithin{theorem}{chapter}
+%\counterwithin{definition}{chapter}
+%\counterwithin{satz}{chapter}
+%\counterwithin{lemma}{chapter}
+%\counterwithin{proposition}{chapter}
+%\counterwithin{folgerung}{chapter}
+%\counterwithin{korollar}{chapter}
+%\counterwithin{beispiel}{chapter}
+%\counterwithin{erinnerung}{chapter}
+%\counterwithin{wiederholung}{chapter}
+%\counterwithin{bemerkung}{chapter}
+%\counterwithin{anmerkung}{chapter}
+%\counterwithin{algorithmus}{chapter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                          ENUMERATIONS                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+
+\renewcommand{\labelitemi}{\raisebox{2pt}{\scalebox{.5}{$\blacksquare$}}}
+\renewcommand{\labelitemii}{$\vartriangleright$}
+\renewcommand{\labelitemiii}{--}
+% Variantionen des Dreiecks als Aufzählungszeichen $\blacktriangleright$ / $\vartriangleright$ / $\triangleright$
+
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\renewcommand{\labelenumii}{\alph{enumii}.}
+\renewcommand{\labelenumiii}{\roman{enumiii}.}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         HEADER & FOOTER                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\rightinfo}{Vorlesung ''Funktionentheorie`` bei Prof. Dr. Siegmund im Sommersemester 2020}
+
+\usepackage{tikz}       % needed for right info
+\usetikzlibrary{calc}
+
+\usepackage{fancyhdr} 	% customize header / footer
+% Add new page-style (just footer), patch \chapter command to use this page style
+
+\fancypagestyle{myStyle}{%
+    \fancyhf{} %
+    \fancyfoot[C]{\thepage} %
+    \renewcommand{\headrulewidth}{0pt}     % Line at the header invisible
+    \renewcommand{\footrulewidth}{0pt}     % Line at the footer visible
+    \fancyhead[C]{\textcolor{gray}\leftmark} %
+    \fancyhead[R]{%
+        \begin{tikzpicture}[overlay,remember picture]
+        \node [
+        fill=none,  % Farbe des Randstreifens
+        text=gray,  % Textfarbe
+        font=\osfamily\normalsize,  % Einstellungen für die Schrift
+        inner xsep=\footskip,       % Abstand des Textes von unten
+        % maximale Textbreite = Papierhöhe - 2*Abstand des Textes von unten:
+        text width={\dimexpr\paperheight-2\footskip\relax},
+        align=center,
+        minimum height=7mm,% Breite des Randstreifens
+        anchor=south west,
+        rotate=90
+        ]
+        at ($(current page.south east)+(-10mm,0mm)$)
+        {\rightinfo};
+        \end{tikzpicture}%
+     }
+}
+
+\fancypagestyle{rightinfo}{%
+    \fancyhf{} %
+    \fancyfoot[C]{\thepage} %
+    \renewcommand{\headrulewidth}{0pt}     % Line at the header invisible
+    \renewcommand{\footrulewidth}{0pt}     % Line at the footer visible
+    \fancyhead[R]{%
+        \begin{tikzpicture}[overlay,remember picture]
+        \node [
+        fill=none,  % Farbe des Randstreifens
+        text=gray,  % Textfarbe
+        font=\sffamily\normalsize,  % Einstellungen für die Schrift
+        inner xsep=\footskip,       % Abstand des Textes von unten
+        % maximale Textbreite = Papierhöhe - 2*Abstand des Textes von unten:
+        text width={\dimexpr\paperheight-2\footskip\relax},
+        align=center,
+        minimum height=7mm,% Breite des Randstreifens
+        anchor=south west,
+        rotate=90
+        ]
+        at ($(current page.south east)+(-10mm,0mm)$)
+        {\rightinfo};
+        \end{tikzpicture}%
+     }
+}
+
+%% changes pagestyle on first page of each chapter; instead of empty page the normal footer is printed
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{rightinfo}}{}{}
+
+\pagestyle{myStyle}
+\pagenumbering{arabic}
+
+%% remember chapter-title in \leftmark and \rightmark
+%\renewcommand{\chaptermark}[1]{%
+%    \markboth{\chaptername
+%        \ \thechapter:\ #1}{}}
+%
+%% remember section title in \leftmark
+%\renewcommand{\sectionmark}[1]{%
+%    \markright{\thesection.\ #1}{}}
+%
+%%change header:
+%\renewcommand{\headrulewidth}{0.75pt}
+%\renewcommand{\footrulewidth}{0.3pt}
+%\lhead{\rightmark}%left: section-number. section-title
+%\rhead{\leftmark}%right: chapter chapternumber: chapter-title
+
+% remove page number from part{}-pages
+%\let\sv@endpart\@endpart
+%\def\@endpart{\thispagestyle{empty}\sv@endpart}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        TABLE OF CONTENTS                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tocloft}
+
+\renewcommand{\cfttoctitlefont}{\titlefont\Huge\bfseries}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                            LISTINGS                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           REFERENCES                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[unicode,bookmarks=true]{hyperref}
+\hypersetup{
+    % pdfborder={0 0 0}			% no boxed around links
+    pdfborderstyle={/S/U/W 1},	% underlining insteas of boxes
+    linkbordercolor=cdblue,
+    urlbordercolor=cdblue
+%	colorlinks,
+%	citecolor=black,
+%	filecolor=cddarkblue!80,
+%	linkcolor=black,
+%	urlcolor=cddarkblue!80
+}
+
+\RequirePackage{cleveref}
+\crefname{theorem}{Theorem}{Theoreme}
+\crefname{satz}{Satz}{Sätze}
+\crefname{lemma}{Lemma}{Lemmata}
+\crefname{aussage}{Aussage}{Aussagen}
+\crefname{proposition}{Proposition}{Propositionen}
+\crefname{folgerung}{Folgerung}{Folgerungen}
+\crefname{korollar}{Korollar}{Korollare}
+\crefname{definition}{Definition}{Definitionen}
+\crefname{bemerkung}{Bemerkung}{Bemerkungen}
+\crefname{beispiel}{Beispiel}{Beispiele}
+\crefname{erinnerung}{Erinnerung}{Erinnerungen}
+\crefname{algorithmus}{Algorithmus}{Algorithmen}
+
+\RequirePackage{bookmark}		% pdf-bookmarks

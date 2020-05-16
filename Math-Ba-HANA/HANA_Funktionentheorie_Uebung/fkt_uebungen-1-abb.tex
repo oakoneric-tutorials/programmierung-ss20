@@ -1,0 +1,189 @@
+\documentclass[margin=5mm]{standalone}
+\usepackage{tudscrcolor} 
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween} 
+\pgfplotsset{
+  compat=1.10,% mit writeLaTeX bisher noch nicht möglich
+  flaeche/.style={draw=none,fill=black,fill opacity=0.2},
+  every axis/.append style={
+  	axis x line=middle,    % put the x axis in the middle
+  	axis y line=middle,    % put the y axis in the middle
+  	axis line style={->}, % arrows on the axis
+  	xlabel={$\Re(z)$},          % default put x on x-axis
+  	ylabel={$\Im(z)$},          % default put y on y-axis
+  	enlargelimits=0.05,
+  	grid,
+  	domain=-5:5,
+  	ymin = -5,
+  	ymax = 5,
+  	xmin = -5,
+  	xmax = 5,
+  }
+}
+
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+
+
+
+\begin{document} 
+	
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (a)
+
+\begin{tikzpicture} 
+\begin{axis}[
+	xmin = -5,
+	xmax = 5,
+	ymin = -7,
+	ymax = 3,	
+	ytick={ -6.28, -4.71, -3.14, -1.57, 1.57, 3.14, 4.71, 6.28 },
+	yticklabels={ $-2\pi$, $-\frac{3\pi}{2}$, $-\pi$, $-\frac{\pi}{2}$, $\frac{\pi}{2}$, $\pi$, $\frac{3\pi}{2}$, $2\pi$ },
+	scaled ticks=false,
+	domain=-10:10,
+	axis equal
+]
+	\addplot[draw=none, fill=cdblue, fill opacity=0.5]{-2*3.14} \closedcycle;
+	\addplot[cddarkblue,line width=2pt,]{-2*3.14};
+	\addplot[cddarkblue,line width=2pt,]{0};
+\end{axis} 
+\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (a): $0 < \Re(\mathrm{i} z) < 2\pi$};
+\end{tikzpicture} 
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (b)
+
+\begin{tikzpicture} 
+\begin{axis}[%
+	axis equal,
+	xmin =-4,
+	xmax = 6,
+	ymin =-3,
+	ymax = 6
+]
+	\node[label={0:{$z_1$}},circle,fill,inner sep=1.5pt, cdpurple] at (axis cs:0.5,0.5) {};
+	\node[label={0:{$z_2$}},circle,fill,inner sep=1.5pt, cdpurple] at (axis cs:2.5,2.5) {};
+	\addplot[cddarkblue,line width=2pt,]{-x + 3};
+\end{axis} 
+\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (b): $|z-z_1| = |z-z_2|$};
+\end{tikzpicture} 
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (c)
+	
+\begin{tikzpicture} 
+\begin{axis}[
+  samples at={-8.0, -7.9, -7.8, -7.7, -7.6, -7.5, -7.4, -7.3, -7.2, -7.1, -7.0, -6.9, -6.8, -6.7, -6.6, -6.5, -6.4, -6.3, -6.2, -6.1, -6.0, -5.9, -5.8, -5.7, -5.6, -5.5, -5.4, -5.3, -5.2, -5.1, -5.0 , -4.945 , -4.89 , -4.835 , -4.78 , -4.725 , -4.67 , -4.615 , -4.56 , -4.505 , -4.45 , -4.395 , -4.34 , -4.285 , -4.23 , -4.175 , -4.12 , -4.0649999999999995 , -4.01 , -3.955 , -3.9 , -3.8449999999999998 , -3.79 , -3.7350000000000003 , -3.6799999999999997 , -3.625 , -3.5700000000000003 , -3.5149999999999997 , -3.46 , -3.4050000000000002 , -3.35 , -3.295 , -3.24 , -3.185 , -3.13 , -3.075 , -3.02 , -2.965 , -2.91 , -2.855 , -2.8 , -2.745 , -2.69 , -2.635 , -2.58 , -2.525 , -2.47 , -2.415 , -2.36 , -2.305 , -2.25 , -2.195 , -2.14 , -2.085 , -2.03 , -1.975 , -1.92 , -1.8649999999999998 , -1.81 , -1.755 , -1.7000000000000002 , -1.645 , -1.5899999999999999 , -1.5350000000000001 , -1.48 , -1.4249999999999998 , -1.37 , -1.315 , -1.2599999999999998 , -1.205 , -1.15 , -1.0950000000000002 , -1.04 , -0.9850000000000003 , -0.9299999999999997 , -0.875 , -0.8200000000000003 , -0.7649999999999997 , -0.71 , -0.6550000000000002 , -0.5999999999999996 , -0.5449999999999999 , -0.4900000000000002 , -0.4349999999999996 , -0.3799999999999999 , -0.3250000000000002 , -0.2699999999999996 , -0.21499999999999986 , -0.16000000000000014 , -0.10499999999999954 , -0.04999999999999982 , 0.0 , 0.005 , 0.01 , 0.015 , 0.02 , 0.025 , 0.03 , 0.035 , 0.04 , 0.045 , 0.05 , 0.055 , 0.06 , 0.065 , 0.07 , 0.075 , 0.08 , 0.085 , 0.09 , 0.095 , 0.1 , 0.105 , 0.11 , 0.115 , 0.12 , 0.125 , 0.13 , 0.135 , 0.14 , 0.145 , 0.15 , 0.155 , 0.16 , 0.165 , 0.17 , 0.17500000000000002 , 0.18 , 0.185 , 0.19 , 0.195 , 0.2 , 0.20500000000000002 , 0.21 , 0.215 , 0.22 , 0.225 , 0.23 , 0.23500000000000001 , 0.24 , 0.245 , 0.25 , 0.255 , 0.26 , 0.265 , 0.27 , 0.275 , 0.28 , 0.28500000000000003 , 0.29 , 0.295 , 0.3 , 0.305 , 0.31 , 0.315 , 0.32 , 0.325 , 0.33 , 0.335 , 0.34 , 0.34500000000000003 , 0.35000000000000003 , 0.355 , 0.36 , 0.365 , 0.37 , 0.375 , 0.38 , 0.385 , 0.39 , 0.395 , 0.4 , 0.405 , 0.41000000000000003 , 0.41500000000000004 , 0.42 , 0.425 , 0.43 , 0.435 , 0.44 , 0.445 , 0.45 , 0.455 , 0.46 , 0.465 , 0.47000000000000003 , 0.47500000000000003 , 0.48 , 0.485 , 0.49 , 0.495 , 0.5},
+  xmax = 1.5,
+  axis equal,  
+  ]
+  \addplot[draw=none, fill=cdblue, fill opacity=0.5]{sqrt(1-2*x)} \closedcycle;
+  \addplot[cddarkblue, smooth, line width=2pt,]{sqrt(1-2*x)};
+  \addplot[draw=none, fill=cdblue, fill opacity=0.5]{-sqrt(1-2*x)} \closedcycle;
+  \addplot[cddarkblue,smooth, line width=2pt,]{-sqrt(1-2*x)};
+\end{axis} 
+\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (c): $|z| + \Re(z) < 1$};
+\end{tikzpicture} 
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (d)
+
+\begin{tikzpicture} 
+\begin{axis}[%
+	xmin = -1.5,
+	xmax =  1.5,
+	ymin = -1.5,
+	ymax =  1.5,
+	axis equal
+]
+	\addplot [domain=0:360,samples=50, variable=\x]({cos(x)}, {sin(x)});
+	
+%	\node[label={0:{$z_0$}},circle,fill,inner sep=1.5pt, cddarkblue] at (axis cs:0:1cm) {};
+%	\node[data cs=polar,red, inner sep=1.5pt] at (axis xs: 1,{0});
+%	\node[label={0:{$z_2$}},circle,fill,inner sep=1.5pt, cdpurple] at (axis cs:2.5,2.5) {};
+	\addplot[cddarkblue,line width=1pt, mark=*] coordinates {(1.0, 0.0)
+		( 0.3090,  0.9510)
+		(-0.8090,  0.5877)
+		(-0.8090, -0.5877)
+		( 0.3090, -0.9510)
+		(1.0, 0.0)};
+	\node[label={-20:{$z_0$}}, draw=none] at (axis cs:1,0) {};
+	\node[label={ 20:{$z_1$}}, draw=none] at (axis cs:0.3090,  0.9510) {};
+	\node[label={160:{$z_2$}}, draw=none] at (axis cs:-0.8090,  0.5877) {};
+	\node[label={200:{$z_3$}}, draw=none] at (axis cs:-0.8090, -0.5877) {};
+	\node[label={270:{$z_4$}}, draw=none] at (axis cs:0.3090, -0.9510) {};
+\end{axis} 
+\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (d): $z^5 = 1$};
+\end{tikzpicture} 
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (e)
+
+\begin{tikzpicture} 
+	\begin{axis}[%
+		xmin = -3,
+		xmax =  10,
+		ymin = -2,
+		ymax =  5,
+		axis equal
+	]
+	
+		\addplot [domain=0:3.14, smooth,, samples=100, variable=\x, cddarkblue, line width=2pt]({3 + 5 * cos(deg(x)))}, {-1 + 5 * sin(deg(x)))});
+	
+	\end{axis} 
+	\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (e): $z = 3 - \mathrm{i} + 5e^{\mathrm{i}t} \enskip (0 \le t \le \pi)$};
+\end{tikzpicture} 
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teil (f)
+
+\begin{tikzpicture} 
+\begin{axis}[%
+	xmin = -30,
+	xmax =  30,
+	ymin = -30,
+	ymax =  30,
+	axis equal
+]
+\addplot [domain=0:25, smooth,, samples=100, variable=\x, cddarkblue, line width=2pt]({rad(deg(x) * cos(deg(x)))}, {rad(deg(x) * sin(deg(x)))});
+
+\end{axis} 
+\node[above,font=\large\bfseries] at (current bounding box.north) {Teil (f): $z = t e^{\mathrm{i}t} \enskip (t \ge 0)$};
+\end{tikzpicture} 
+
+\end{document}
