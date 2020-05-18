@@ -299,14 +299,14 @@
 		& (\lambda h . h \ ((\lambda x . \underbrace{h \ (x \ x)}_{\GV = \emptyset}) \ \underbrace{(\lambda x . h \ (x \ x))}_{\FV= \menge{h}})) \ (+ \ 1 \ 5)
 		\\
 		\Rightarrow_\beta \quad
-		& (\lambda h . hh \ ((\lambda x . \underbrace{h \ (x \ x)}_{\GV = \emptyset}) \ \underbrace{(\lambda x . h \ (x \ x))}_{\FV= \menge{h}})) \ (+ \ 1 \ 5)
+		& (\lambda h . h \ ( h \ ((\lambda x . \underbrace{h \ (x \ x)}_{\GV = \emptyset}) \ \underbrace{(\lambda x . h \ (x \ x))}_{\FV= \menge{h}}))) \ (+ \ 1 \ 5)
 		\\
 		\longrightarrow \quad
 		&\text{endlose Rekursion, bei der $h$ durch $(+ \ 1 \ 5 )$ noch} \\
 		&\text{reduziert werden könnte}
 		\\
 		\Rightarrow_\beta \quad
-		& (+ \ 1 \ 5) \ (+ \ 1 \ 5) \ ((\lambda x . h \ (x \ x)) \ (\lambda x . h \ (x \ x)))	
+		& (+ \ 1 \ 5) \ ( (+ \ 1 \ 5) \ ((\lambda x . (+ \ 1 \ 5 ) \ (x \ x)) \ (\lambda x . (+ \ 1 \ 5 ) \ (x \ x))))	
 	\end{align*}
 \end{frame}
 
