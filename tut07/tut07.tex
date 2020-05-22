@@ -1,0 +1,361 @@
+\documentclass{beamer}
+\usepackage{../tut-slides}
+\usepackage{../mathoperatorsAuD}
+
+\usepackage{csquotes}
+\usepackage{cancel}
+
+\usepackage{amsmath,amssymb}
+
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tabu}
+\newcommand*\head{\rowfont{\bfseries}}
+\newcommand*{\tw}{\rowfont{\ttfamily}}
+
+\renewcommand{\tabularxcolumn}[1]{>{\hspace{0pt}}m{#1}}
+
+\usepackage{listings}
+\lstset{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Haskell,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+\usepackage{textgreek}
+
+\DeclareMathOperator{\GV}{GV}
+\DeclareMathOperator{\FV}{FV}
+
+\renewcommand{\emph}[1]{\textbf{#1}}
+\newcommand{\coloremph}[1]{\textcolor{cdpurple}{#1}}
+\newcommand{\col}[1]{\textcolor{cdpurple}{\boldsymbol{#1}}}
+\newcommand{\coll}[1]{\textcolor{cddarkgreen}{\boldsymbol{#1}}}
+\newcommand{\colll}[1]{\textcolor{cdorange}{\boldsymbol{#1}}}
+%\newcommand{\step}[2][]{\ensuremath{\overset{{#1} (\text{#2})}{=}}}
+%\newcommand*{\astep}[2][]{\ensuremath{\overset{{#1} (\text{#2})}&{=}}}
+
+\newcommand{\num}[1]{\ensuremath{\langle #1 \rangle}}
+
+\begin{document}	
+	\title{Programmierung}
+	\subtitle{Übung 6: $\lambda$-Kalkül (Teil 2)}
+	\author{Eric Kunze}
+	\email{eric.kunze@mailbox.tu-dresden.de}
+%	\city{TU Dresden}
+	\date{}
+%	\institute{Lehrstuhl für Grundlagen der Programmierung}
+%	\titlegraphic{\includegraphics[width=2cm]{../TUD-white.pdf}}
+	
+	\maketitle
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile] \frametitle{Inhalt}
+	\begin{enumerate}
+		\item Funktionale Programmierung
+		\begin{enumerate}
+			\item Einführung in Haskell: Listen
+			\item Algebraische Datentypen
+			\item Funktionen höherer Ordnung
+			\item Typpolymorphie \& Unifikation
+			\item Beweis von Programmeigenschaften
+			\item \textbf{$\lambda$ -- Kalkül}
+		\end{enumerate}
+		\item Logikprogrammierung
+		\item Implementierung einer imperativen Programmiersprache
+		\item Verifikation von Programmeigenschaften
+		\item H${}_\text{0}$ -- ein einfacher Kern von Haskell
+	\end{enumerate}
+\end{frame}
+
+
+\section{Der $\lambda$-Kalkül}
+
+\begin{frame}\frametitle{Der $\lambda$-Kalkül}
+	\begin{tabbing}
+		\textbf{Atome.} $\qquad \quad \enskip$ \= $x,y$ \\
+		\textbf{Abstraktion.} \> $(\lambda x.t)$ \hspace{1cm} \textcolor{cdgray}{($f(x) = t$, anonyme Funktion)} \\
+		\textbf{Applikation.} \> $(t_1 \enskip  t_2)$
+	\end{tabbing}
+	
+	\textbf{Verabredungen:}
+	\begin{itemize}
+		\item Applikation ist \textit{linksassoziativ}: $((t_1 \, t_2) \, t_3) = t_1 \, t_2 \, t_3 \enskip \text{für alle } t_1, t_2, t_3 \in \lambda(\Sigma)$
+		\item mehrfache Abstraktion: $(\lambda x_1 . (\lambda x_2 . (\lambda x_3 . t)))) = (\lambda x_1 x_2 x_3 . t) \enskip \text{für alle } t \in \lambda(\Sigma)$
+		\item Applikation vor Abstraktion:
+		\begin{align*}
+			(\lambda x. xy) 
+			&= (\lambda x . (xy)) \\
+			&\neq ((\lambda x.x) y)
+		\end{align*}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame} \frametitle{$\alpha$-Konversion \& $\beta$-Reduktion}
+	\begin{block}{\textbeta--Reduktion}
+		Seien $s,t \in \lambda(\Sigma)$ gültige $\lambda$-Terme und es gilt $\GV(t) \cap \FV(s) = \emptyset$. 
+		\begin{equation*}
+			(\lambda x . t) \ s \quad \longrightarrow_\beta \quad t[x / s]
+		\end{equation*}
+	\end{block}
+	
+	\begin{block}{\textalpha --Konversion}
+		Sei $t \in \lambda(\Sigma)$ und $z \notin \GV(t) \cup \FV(t)$.
+		\begin{equation*}
+		(\lambda x . t) \quad \longrightarrow_\alpha \quad \lambda z . t[x / z]
+		\end{equation*}
+	\end{block}
+\end{frame}
+
+\begin{frame} \frametitle{Church-Numerals}
+	Dadurch, dass wir im Folgenden keine Symbole mehr zulassen (d.h. $\Sigma = \emptyset$), benötigen wir eine alternative Charakterisierung dieser.
+	Zuerst beschäftigen uns die natürlichen Zahlen.
+	
+	\textbf{Darstellung der natürlichen Zahlen:} \textit{Church-Numerals} 
+	\begin{align*}
+		\num{0} &= (\lambda xy \ . \ y) \\ 
+		\num{1} &= (\lambda xy \ . \ xy) \\
+		\num{2} &= (\lambda xy \ . \ x(xy)) \\
+		&\vdots \\
+		\num{n} &= (\lambda xy \ . \ \underbrace{x (x \dots (x}_n y ) \dots ))
+	\end{align*}
+\end{frame}
+
+
+\begin{frame} \frametitle{Fixpunktkombinator und Rekursion}
+	\begin{itemize}
+		\item Ein $t \in \Sigma(\lambda)$ heißt \textbf{geschlossener Term}, falls $FV(t) = \emptyset$. Ein geschlossender Term heißt auch \textbf{Kombinator}.
+		\item \textbf{Fixpunktkombinator.} $\num{Y} = \Bigl( \lambda z . \ \bigl( \lambda u . z (uu) \bigr) \ \bigl( \lambda u. z (uu) \bigr) \Bigr) \in \lambda(\emptyset)$
+		\item Der Fixpunktkombinator ermöglicht Rekursion.
+		\item weitere definierte $\lambda$-Terme (siehe Skript S. 198f.):
+		\begin{align*}
+			\num{true} &= (\lambda xy. x) & \num{false} &= (\lambda xy. y) \\
+			\num{succ} &= (\lambda z . (\lambda xy . x (zxy))) &  \num{pred}\num{0} &\Rightarrow^\ast \num{0} \\
+			\num{succ}\num{n} &\Rightarrow^\ast \num{n+1} & 
+			\num{pred}\num{n} &\Rightarrow^\ast \num{n-1} \\
+		\end{align*}
+		\begin{equation*}
+			\num{ite} \ s \ s_1 \ s_2 \Rightarrow^\ast \begin{cases}
+			s_1 & \text{wenn } s \Rightarrow^\ast \num{true} \\
+			s_2 & \text{wenn } s \Rightarrow^\ast \num{false}
+			\end{cases}
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+
+\section{Übungsblatt 7 \\ \textit{\normalsize Aufgabe 1}}
+
+
+\begin{frame} \frametitle{Aufgabe 1 -- Teil (a)}
+	\begin{align*}
+		&(\lambda f \underbrace{x . f \ f \ x}_{\GV = \menge{x}}) \ (\underbrace{\lambda y . x}_{\FV = \menge{x}}) \ z	\\
+		\Rightarrow_\alpha \quad
+		& (\lambda f \underbrace{x_1 . f \ f \ x_1}_{\GV = \menge{x_1}}) \ (\underbrace{\lambda y . x}_{\FV = \menge{x}}) \ z
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda x_1 . (\lambda y . \underbrace{x}_{\GV = \emptyset}) \ (\underbrace{\lambda y . x}_{\FV = \menge{x}}) \ x_1) \ z
+		\\
+		\Rightarrow_\beta \quad
+		& (\lambda x_1 . \underbrace{x x_1}_{\GV = \emptyset}) \ \underbrace{z}_{\FV = \menge{z}}
+		\\
+		\Rightarrow_\beta \quad
+		& xz
+		\\
+	\end{align*}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 1 -- Teil (b)}
+	\tiny
+	\begin{equation*}
+		\num{F} = \Biggl( \lambda f xyz \ . \ \num{ite} \ \Bigl(\num{iszero} \ (\num{sub} x y )\Bigr) \ \Bigl( \num{add} y z \Bigr) \ \Bigl( \num{succ} \ ( f \ (\num{pred} x) \ (\num{succ} y) \ ( \num{mult} \num{2} z )) \Bigr) \Biggr)
+	\end{equation*}
+	
+	\normalsize
+	
+	\textbf{Nebenrechnung:} Zeige die Wirkung des Fixpunktkombinators.
+	\begin{align*}
+		\num{Y} \num{F}
+		= \enskip &\Bigl( \lambda z . \ \bigl( \lambda u . z (uu) \bigr) \ \bigl( \lambda u. z (uu) \bigr) \Bigr) \ \num{F} \\
+		\Rightarrow^{\beta} \quad &\Bigl( \lambda u . \num{F} (uu) \Bigr) \ \Bigl( \lambda u. \num{F} (uu) \Bigr) \qquad =: \num{Y_F} \\
+		\Rightarrow^{\beta} \quad &\num{F} \num{Y_F}
+	\end{align*}
+\end{frame}
+%
+\begin{frame} \frametitle{Aufgabe 1 -- Teil (b)}
+	\footnotesize
+	\begin{align*}
+		\num{Y} \num{F} \num{6} \num{5} \num{3} &\Rightarrow^\ast \num{F} \num{Y_F} \num{6} \num{5} \num{3} \\
+		&\Rightarrow^\ast \num{ite} \ 
+		(\underbrace{\num{iszero} \ (\num{sub}\num{6}\num{5})}_{\Rightarrow^\ast \num{false}}) \ 
+		( \dots ) \\
+		& \phantom{\Rightarrow^\ast \num{ite}} \ (\num{succ} (\num{Y_F}(\underbrace{\num{pred}\num{6}}_{\Rightarrow^\ast \num{5}})(\underbrace{\num{succ}\num{5}}_{\Rightarrow^\ast \num{6}})(\underbrace{\num{mult}\num{2}\num{3}}_{\Rightarrow^\ast \num{6}}))) \\
+		&\Rightarrow^\ast \num{succ} \  ( \ \num{Y_F}\num{5}\num{6}\num{6} \ ) \\
+		&\Rightarrow^\ast \num{succ} \ ( \ \num{F} \num{Y_F} \num{5}\num{6}\num{6} \ ) \\
+		&\Rightarrow^\ast \num{succ} \ ( \ \num{ite} \  (\underbrace{\num{iszero}(\num{sub}\num{5}\num{6})}_{\Rightarrow^\ast \num{true}}) \ (\underbrace{\num{add}\num{6}\num{6}}_{\Rightarrow^\ast \num{12}})  \ (\dots) \ ) \\
+		&\Rightarrow^\ast \num{succ} \ \num{12} \\
+		&\Rightarrow^\ast \num{13}
+	\end{align*}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 1 -- Teil (c)}
+	\small
+	\begin{alignat*}{3}
+		\num{G} = \enskip & \Biggl( \lambda g xy \ . \ \Bigl( &&\num{ite} \ && \bigl( \num{iszero} \ x \bigr) \\
+		&&&&& \bigl( \num{mult} \ \num{2} \ (\num{succ} y) \ \bigr) \\
+		&&&&& \Bigl( 
+			\begin{alignedat}[t]{1}
+			\num{ite} \ &(\num{iszero} \ y) \\
+			& \bigl( \num{mult} \ \num{2} \ (\num{succ} x) \bigr) \\
+			& \bigl( \num{add} \ \num{4} \enskip g \ (\num{pred} x \ \num{pred} y)  \ \bigr) \\				
+		\end{alignedat} \\
+		&&&&& \Bigr) \\
+		&&& \Bigr) \\
+		& \Biggr)
+	\end{alignat*}
+\end{frame}
+
+
+\section{Übungsblatt 7 \\ \textit{\normalsize Aufgabe 2}}
+
+\begin{frame} \frametitle{Aufgabe 2 -- Teil (a)}
+	\small
+	\begin{equation*}
+		g \colon \mathbb{N} \times \mathbb{N} \to \mathbb{N} \quad \text{ mit } \quad g(x,y) := \begin{cases}
+		x * x & \text{für } y=0 \\
+		g(2*x,y-1) & \text{für } y \ge 1 
+		\end{cases}
+	\end{equation*}
+	
+	\medskip
+	
+	\begin{alignat*}{3}
+		\num{G} = \enskip & \Biggl( \lambda g xy \ . \ \biggl( &&\num{ite} \ && \Bigl( \num{iszero} \ y \Bigr) \\
+		&&&&& \Bigl( \num{mult} \ x \ x \ \Bigr) \\
+		&&&&& \Bigl( g \ \bigl( \num{mult} \ \num{2} \ x \bigr) \ \bigl( \num{pred} \ y \bigr) \Bigr) \\
+		&&& \biggr) \\
+		& \Biggr)
+	\end{alignat*}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 2 -- Teil (b)}
+	\footnotesize
+	\begin{equation*}
+		\num{G} = \Biggl( \lambda \ g xy \ . \ \num{ite} \ \Bigl(\num{iszero} \ y \Bigr) \ \Bigl( \num{mult} \ x \ x \Bigr) \ \Bigl( g \ \bigl( \num{mult} \ \num{2} \ x \bigr) \ \bigl(\num{pred} \ y) \bigr) \Bigr) \Biggr)
+	\end{equation*}
+	
+	\bigskip 
+	\normalsize
+	
+	\textbf{Nebenrechnung:} Zeige die Wirkung des Fixpunktkombinators.
+	\begin{align*}
+		\num{Y} \num{G}
+		= \enskip &\Bigl( \lambda z . \ \bigl( \lambda u . z (uu) \bigr) \ \bigl( \lambda u. z (uu) \bigr) \Bigr) \ \num{G} \\
+		\Rightarrow^{\beta} \quad &\Bigl( \lambda u . \num{G} (uu) \Bigr) \ \Bigl( \lambda u. \num{G} (uu) \Bigr) \qquad =: \num{Y_G} \\
+		\Rightarrow^{\beta} \quad &\num{G} \num{Y_G}
+	\end{align*}
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 2 -- Teil (b)}
+	\scriptsize
+	\begin{alignat*}{2}
+	&\num{Y} \num{G} \num{1} \num{3} \\
+	\Rightarrow^\ast &\num{G} \num{Y_G} \num{1} \num{3} \\
+	\Rightarrow^\ast 
+	&\num{ite} \ 
+	\Bigl( \underbrace{\num{iszero} \ \num{3}}_{\Rightarrow^\ast \num{false}} \Bigr) \ \Bigl( \dots \Bigr) \ \Bigl( \num{Y_G} \ \bigl( \underbrace{\num{mult} \ \num{2} \ \num{1}}_{\Rightarrow^\ast \num{2}} \bigr) \ \bigl(\underbrace{\num{pred} \ \num{3}}_{\Rightarrow^\ast \num{2}} \bigr) 
+	&&\Rightarrow^\ast 
+	\num{G} \ \num{Y_G} \ \num{2} \ \num{2} \\
+	%
+	\Rightarrow^\ast 
+	&\num{ite} \ 
+	\Bigl( \underbrace{\num{iszero} \ \num{2}}_{\Rightarrow^\ast \num{false}} \Bigr) \ \Bigl( \dots \Bigr) \ \Bigl( \num{Y_G} \ \bigl( \underbrace{\num{mult} \ \num{2} \ \num{2}}_{\Rightarrow^\ast \num{4}} \bigr) \ \bigl(\underbrace{\num{pred} \ \num{2}}_{\Rightarrow^\ast \num{1}} \bigr) \Bigr)
+	&&\Rightarrow^\ast 
+	\num{G} \ \num{Y_G} \ \num{4} \ \num{1} \\
+	%
+	\Rightarrow^\ast 
+	&\num{ite} \ 
+	\Bigl( \underbrace{\num{iszero} \ \num{1}}_{\Rightarrow^\ast \num{false}} \Bigr) \ \Bigl( \dots \Bigr) \ \Bigl( \num{Y_G} \ \bigl( \underbrace{\num{mult} \ \num{2} \ \num{4}}_{\Rightarrow^\ast \num{8}} \bigr) \ \bigl(\underbrace{\num{pred} \ \num{1}}_{\Rightarrow^\ast \num{0}} \bigr) \Bigr)
+	&&\Rightarrow^\ast
+	\num{G} \ \num{Y_G} \ \num{8} \ \num{0} \\
+	%
+	\Rightarrow^\ast
+	&\num{ite} \ 
+	\Bigl( \underbrace{\num{iszero} \ \num{0}}_{\Rightarrow^\ast \num{true}} \Bigr) \ \Bigl( \underbrace{\num{mult} \ \num{8} \ \num{8}}_{\Rightarrow^\ast \num{64}} \Bigr) \ \Bigl( \dots \Bigr)
+	%
+	&&\Rightarrow^\ast \num{64}
+	\end{alignat*}
+\end{frame}	
+
+
+
+\begin{frame} \frametitle{Ende}
+	\centering
+	\textbf{Fragen?}
+\end{frame}
+
+
+\section{Übungsblatt 7 \\ \textit{\normalsize Zusatzaufgabe 1}}
+
+\begin{frame} \frametitle{Zusatzaufgabe 1}
+	\scriptsize
+	\begin{align*}
+		\num{pow} \num{2} = \enskip &\Bigl( \lambda \col{n}fz \ . \ \col{n} \ ( \colll{\lambda gx . g (gx)}) \ f z \Bigr) \, \col{\Bigl( \lambda xy \ .  \ x(xy)) \Bigr)} \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ \Bigl( \lambda \col{x}y \ .  \ \col{x}(\col{x}y)) \Bigr) \ \col{\Bigl( \lambda gx . g (gx) \Bigr)} \ f \ z \Bigr) \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ \biggl( \lambda y \ . \  \Bigl( \lambda \col{g}x . \col{g} (\col{g}x) \Bigr) \, \col{\Bigl( (\lambda gx . g (gx) ) \ y \Bigr)} \biggr) \  f \ z \Bigr) \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ \biggl( \lambda y \ . \  \Bigl( \coll{\lambda x} . \Bigl( (\lambda gx . g (gx) ) \ y \Bigr) \, \Bigl( \bigl( (\lambda gx . g (gx) ) \ y \bigr) \ x \Bigr) \, \Bigr) \,  \biggr) \  f \ z \Bigr) \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ \biggl( \lambda y \coll{x} \ . \Bigl( (\lambda \col{g}x . \col{g} (\col{g}x) ) \ \col{y} \Bigr) \, \Bigl( \bigl( (\lambda \col{g}x . \col{g} (\col{g}x) ) \ \col{y} \bigr) \ x \Bigr) \,  \biggr) \  f \ z \Bigr) \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ \biggl( \lambda y x \ . \Bigl( \lambda x . y (yx)  \Bigr) \, \Bigl( (\lambda \col{x} . y (y\col{x}) ) \ \col{x} \Bigr) \,  \biggr) \  f \ z \Bigr) \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ \biggl( \lambda y x \ . \Bigl( \lambda \col{x} . y (y\col{x})  \Bigr) \, \col{\Bigl( y (yx) \Bigr)} \,  \biggr) \  f \ z \Bigr) \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ \biggl( \lambda \col{y} x \ . \col{y} \ \Bigl(\col{y} \ \bigl( \col{y} \ (\col{y}x) \bigr)\Big) \  \biggr) \  \col{f} \ z \Bigr) \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ \biggl( \lambda \col{x} \ . f \ \Bigl(f \ \bigl( f \ (f \col{x}) \bigr)\Big) \  \biggr) \ \col{z} \Bigr) \\
+		%
+		\Rightarrow^{\beta} \enskip &\Bigl( \lambda fz \ . \ f \ (f \ ( f \ (f z) \ ) \ ) \  )  \Bigr) = \num{4} 
+	\end{align*}
+\end{frame}
+%
+\begin{frame} \frametitle{Zusatzaufgabe 1}
+	\textbf{Teil (b)} 
+	\begin{equation*} 
+		f(n) = s^n 
+	\end{equation*}
+	
+	\bigskip
+	
+	\textbf{Teil (c)}
+	\begin{equation*} 
+		g(n,m) = m^n 
+	\end{equation*}
+	
+	\begin{equation*} 
+		\num{pow'} = \Bigl( \lambda n \colll{m} f z . n \colll{m} f z \Big) 
+	\end{equation*}
+\end{frame}
+
+\end{document}
+
