@@ -1,0 +1,318 @@
+% This work is licensed under the Creative Commons
+% Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy
+% of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or
+% send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+% (c) Eric Kunze, 2019
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template for lecture notes and exercises at TU Dresden.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[ngerman, a4paper, 11pt]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage[onehalfspacing]{setspace} % increase row-space
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{lmodern}
+\usepackage{ulem} 
+
+\usepackage{fancyhdr} 	% customize header / footer
+
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+%\usepackage{blkarray}
+\usepackage{latexsym, marvosym, wasysym, stmaryrd}
+\usepackage{bbm} 		% unitary matrix
+
+
+% further support for different equation setting
+\usepackage{cancel}
+\usepackage{xfrac}		% sfrac -> fractions e.g. 3/4
+\usepackage{diagbox}
+
+\usepackage{../mathoperatorsAuD}
+
+\usepackage[table,dvipsnames]{tudscrcolor}
+\usepackage{tabularx} 	% tabularx-environment (explicitly set width of columns)
+\usepackage{multirow}
+\usepackage{booktabs}	% improved rules
+
+
+\newcommand{\begriff}[1]{\textbf{#1}}
+\newcommand{\person}[1]{\textsc{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             COUNTER                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{chngcntr}
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+
+\pretocmd{\chapter}{\setcounter{section}{0}}{}{}
+\pretocmd{\chapter}{\setcounter{equation}{0}}{}{}
+
+\renewcommand{\labelitemi}{\raisebox{2pt}{\scalebox{.4}{$\blacksquare$}}}
+\renewcommand{\labelitemii}{$\vartriangleright$}
+\renewcommand{\labelitemiii}{--}
+% Variantionen des Dreiecks als Aufzählungszeichen $\blacktriangleright$ / $\vartriangleright$ / $\triangleright$
+
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\renewcommand{\labelenumii}{\alph{enumii}.}
+\renewcommand{\labelenumiii}{\roman{enumiii}.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}   % change title headings look
+\usepackage{chngcntr}   % modify counters
+\usepackage{relsize}    % relative font size (smaller[i], larger[i], ...)
+
+\titleformat{\section}[hang]{\bfseries\LARGE\centering}{\thesection}{8pt}{}
+%\titleformat*{\section}{\bfseries\titlefont\sectionsize}
+\titleformat*{\subsection}{\sffamily\itshape\large\centering}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{listings}
+\lstset{
+	basicstyle=\small\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style 
+	language=Prolog,                 % the language of the code
+	numbers=none,                    % where to put the line-numbers; possible: (none, left, right)
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+\lstdefinestyle{noframe}{
+	basicstyle=\normalsize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style 
+	language=Prolog,                 % the language of the code
+	numbers=none,                    % where to put the line-numbers; possible: (none, left, right)
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+\lstdefinestyle{frame}{
+	basicstyle=\normalsize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Prolog,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREM ENVIRONMENTS // MATH
+
+\usepackage{ntheorem}
+
+\DeclareMathSymbol{*}{\mathbin}{symbols}{"01}
+
+\counterwithin{equation}{section}
+\newcounter{themcount}
+\counterwithin{themcount}{section}
+
+\newcommand{\skiparound}{10pt}
+\theorempreskip{\skiparound}
+\theorempostskip{\skiparound}
+
+\theoremstyle{nonumberplain}
+\theoremseparator{.}
+\theorembodyfont{}
+
+\newtheorem{aufgabe}{Aufgabe}
+\theorembodyfont{\itshape}
+\newtheorem{bemerkung}[themcount]{Bemerkung}
+
+\usepackage[
+	type={CC},
+	modifier={by-nc-sa},
+	version={4.0},
+]{doclicense}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           REFERENCES                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[unicode,bookmarks=true]{hyperref}
+\hypersetup{
+	% pdfborder={0 0 0}			% no boxed around links
+	pdfborderstyle={/S/U/W 1},	% underlining insteas of boxes
+	linkbordercolor=cdblue,
+	urlbordercolor=cdblue
+}
+
+\usepackage{cleveref}
+\crefname{bemerkung}{Bemerkung}{Bemerkungen}
+
+\usepackage{bookmark}		% pdf-bookmarks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                      ADDITIONAL COMMANDS                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*\ruleline[1]{\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-.8ex}{#1}\hspace{1ex}\hrulefill}}}
+
+\usepackage[edges]{forest}
+%\usepackage[default]{opensans}
+
+\begin{document}
+	\begin{center}
+		{\bfseries \sffamily \huge Division in Prolog} 
+		
+		\ruleline{\sffamily \Large Übungsblatt 8}
+		
+		{\scshape Eric Kunze --- \today}
+	\end{center}
+	\medskip
+	
+	{ \footnotesize \doclicenseThis }
+	
+	\begin{center}
+		\small \slshape Keine Garantie auf Vollständigkeit und/oder Korrektheit!
+	\end{center}
+
+\section*{Aufgabe 2}	
+	
+\begin{aufgabe}
+	Natürliche Zahlen stellen wir in Prolog${}^-$ als Terme über dem einstelligen Funktionssymbol \texttt{s}
+	und dem nullstelligen Funktionssymbol \texttt{0} dar:
+	\begin{lstlisting}
+		nat (0).
+		nat(s(X)) :- nat(X).
+	\end{lstlisting}
+	Dabei kürzen wir wie in der Vorlesung den Term für die natürliche Zahl \texttt{n} mit \texttt{<n>} ab, z.B.
+	\texttt{s(s(s(0))) = <3>}. Weiterhin wurde das Prädikat \texttt{sum} besprochen:
+	\begin{lstlisting}
+		sum(0, Y, Y) :- nat(Y).
+		sum(s(X), Y, s(S)) :- sum(X, Y, S).
+	\end{lstlisting}
+	\begin{enumerate}[label=(\alph*)]
+		\item Geben Sie ein Prädikat \texttt{even} an, das für alle geraden natürlichen Zahlen gilt und für alle
+		ungeraden natürlichen Zahlen nicht.
+		\item Geben Sie eine zweistellige Relation \texttt{div2} an, die für jede natürliche Zahl \texttt{n} das Paar
+		($\texttt{<n>}, \texttt{<}\lfloor \frac{\texttt{n}}{\texttt{2}} \rfloor \texttt{>}$) enthält und sonst nichts.
+		\item Geben Sie eine dreistellige Relation \texttt{div} an, die für jedes Paar von natürlichen Zahlen \texttt{n}
+		und \texttt{m}, wobei $\texttt{m} \neq \texttt{0}$, das Tripel $(\texttt{<n>}, \texttt{<m>}, \texttt{<}\lfloor \frac{\texttt{n}}{\texttt{m}} \rfloor \texttt{>}$) enthält und sonst nichts. Nutzen Sie dafür die dreistellige Relation \texttt{sum} aus der Vorlesung.
+		
+		\textsl{Hinweis:} Definieren Sie zunächst eine zweistellige Relation \texttt{lt}, die \texttt{<} modelliert.
+	\end{enumerate}
+\end{aufgabe}
+
+
+\subsection*{Teilaufgabe (a)}
+
+Die Geradheit einer natürlichen Zahl bleibt unverändert, wenn ich $2$ addiere oder subtrahiere, d.h. beispielsweise
+\begin{align*}
+	1 \text{ ungerade } &\follows 3 \text{ ungerade } \follows \dots \\
+	0 \text{ gerade } &\follows 2 \text{ gerade } \follows \dots \\
+\end{align*}
+Genau dies wollen wir nun ausnutzen und insbesondere die zweite Zeile für das Prädikat \texttt{even} nutzen. Wenn eine Zahl \texttt{N} gerade ist, dass ist auch \texttt{N + 2} gerade. Nun können wir also notieren \texttt{even(s(s(N))) :- even(N).}. Damit erhalten wir eine schöne Reduktion des Problems: das \enquote{Argument} von \texttt{even} wird immer kleiner. Nun merkt der Haskell-Kenner schon was fehlt: ein \enquote{Basisfall}. Den finden wir hier ganz einfach mit der kleinsten natürlichen, geraden Zahl: die Null. Also fügen wir noch den Fakt \texttt{even(0).} hinzu und sind fertig.
+\begin{lstlisting}
+	even(0).
+	even(s(s(N))) :- even(N).
+\end{lstlisting}
+
+
+\subsection*{Teilaufgabe (b)}
+
+Wir betrachten die Division durch $2$ und machen folgende Beobachtung, die uns zum Ziel einer Reduktion führen soll:
+\begin{equation*}
+	\frac{N}{2} = Q \equivalent \frac{N-2}{2} = Q - 1
+\end{equation*}
+Wenn ich also von Zähler zwei abziehe, dann verringert sich das Ergebnis um $1$. Nun wandeln wir die Subtraktion noch in eine Addition um und erhalten mit
+\begin{equation*}
+	\frac{N+2}{2} = Q +1 \equivalent \frac{N}{2} = Q 
+\end{equation*}
+quasi die definierende Aussage für unsere Prolog-Relation.
+Nun haben wir noch ein Problem: die Abrundung. Uns fehlt aber genauso noch ein Basisfall -- suchen wir ihn doch. Und wie so oft nehmen wir doch einfach mal die Null und überlegen, was ich für die Division $\frac 0 2$ erhalte. Natürlich $\frac 0 2 = 0$ und wir können den Fakt \texttt{div2(0,0).} hinzufügen. Aber wir können durch die Reduktion um $2$, wie wir sie uns überlegt haben auch in den Fall laufen, dass wir nicht in der Null rauskommen, sondern in der Eins. Aber was ist denn $\lfloor \frac 1 2 \rfloor$ ? Richtig, ebenso Null. Also kommt noch der Fakt \texttt{div2(s(0),0).} hinzu und wir erhalten insgesamt:
+\begin{lstlisting}
+	div2(0, 0).
+	div2(s(0), 0). 
+	div2(s(s(N)), s(Q)) :- div(N, Q).
+\end{lstlisting}
+Damit reduzieren wir also gemäß der Regel immer weiter den Zähler um zwei und das Ergebnis um eins, am Ende landen wir, sofern die richtigen Zahlen eingegeben wurden, bei einem der beiden Fakten. 
+
+\pagebreak
+
+\subsection*{Teilaufgabe (c)}
+
+Wir folgen dem Hinweis und überlegen uns die $<$--Relation. Dafür nutzen wir folgende Idee:
+\begin{equation*}
+	N < M \equivalent N + 1 < M + 1
+\end{equation*}
+Reduzieren wir so eine Anfrage immer weiter, sollten wir am Ende in der ersten Komponente eine Null erhalten. Würde die zweite Komponente eher Null werden, würde das ja heißen, die zweite Komponente wäre die kleinere, aber das widerspricht ja gerade $N<M$. Also erhalten wir:
+\begin{lstlisting}
+	lt(0, s(M))   :- nat(M).  
+	lt(s(N),s(M)) :- lt(N,M).
+\end{lstlisting}
+
+So jetzt können wir uns mal überlegen, wann denn bei der Division immer Null rauskommt: Fall 1 - wenn der Zähler Null ist. Die einzige Einschränkung ist dann noch, dass der Nenner nicht Null sein darf, das können wir mit $0<\text{ Nenner}$ abfangen. Also:
+\begin{lstlisting}
+	div(0,M,0) :- lt(0,M). 
+\end{lstlisting}
+Da wir wieder Abrunden sollen, haben wir noch einen zweiten Fall, bei dem immer Null rauskommt. Nämlich wenn der Zähler kleiner als der Nenner ist, dann ist das Ergebnis (im Reellen) $0,\dots$ und das wird abgerundet zu Null. Also:
+\begin{lstlisting}
+	div(N,M,0) :- lt(N,M).
+\end{lstlisting}
+So jetzt der allgemeine, komplizierte Fall: Wir versuchen mal die Idee von \texttt{div2} zu verallgemeinern: Dort haben wir durch \texttt{2} dividiert und dementsprechend vom Zähler immer zwei abgezogen um das Ergebnis um \texttt{1} zu verringern. 
+Jetzt dividieren wir nicht mehr durch \texttt{2} sondern durch ein beliebiges \texttt{M}. Also müssen wir nicht mehr \texttt{2} im Zähler subtrahieren, sondern \texttt{M}. 
+\begin{align*}
+	\frac{N}{M} = Q &\equivalent \frac{N-M}{M} = Q - 1 \\
+	\frac{N+M}{M} = Q +1 &\equivalent \frac{N}{M} = Q 
+\end{align*}
+Nennen wir die Differenz mal \texttt{V}, also $\texttt{N}-\texttt{M}=\texttt{V}$ oder als Summe geschrieben (da wir das Prädikat \texttt{sum} schon haben): $\texttt{M}+\texttt{V}=\texttt{N}$. Dann haben wir bei \texttt{div2} mit dem um zwei verringerten Ergebnis weiter dividiert, also müssen wir nun mit dem um \texttt{M} verringerten Ergebnis weiter dividieren: das ist aber gerade das \texttt{V}. Teilen wir also weiter $\frac{\texttt{V}}{\texttt{M}}$, dann erhalten wir das um eins verringerte Ergebnis. Vorher war das Ergebnis \texttt{s(Q)} -- um eins verringert also \texttt{Q}. Natürlich sollte der Nenner auch hier immer positiv sein, also \texttt{0 < M}. Und dann erhalten wir schließlich:
+\begin{lstlisting}
+	div(N,M,s(Q)) :- lt(0,M), sum(M,V,N), div(V,M,Q).
+\end{lstlisting}
+
+\pagebreak
+
+Alles zusammen sieht dann also so aus:
+
+\begin{lstlisting}[style=frame]
+	nat(0).
+	nat(s(X)) :- nat(X).
+	
+	sum(0, Y, Y) :- nat(Y).
+	sum(s(X), Y, s(S)) :- sum(X, Y, S).
+	
+	even(0).
+	even(s(s(N))) :- even(N).
+	
+	div2(0, 0).
+	div2(s(0), 0).
+	div2(s(s(N)), s(M)) :- div2(N, M).
+	
+	lt(0, s(M)) :- nat(M).
+	lt(s(N), s(M)) :- lt(N, M).
+	
+	div(0, M, 0) :- lt(0, M).
+	div(N, M, 0) :- lt(N, M).
+	div(N, M, s(Q)) :- lt(0, M), sum(M, V, N), div(V, M, Q).
+\end{lstlisting}
+
+\end{document}
