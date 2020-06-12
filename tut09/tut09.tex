@@ -1,0 +1,292 @@
+\documentclass{beamer}
+\usepackage{../tut-slides}
+\usepackage{../mathoperatorsAuD}
+
+\usepackage{csquotes}
+\usepackage{cancel}
+
+\usepackage{amsmath,amssymb}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,automata, matrix, trees}
+\usetikzlibrary{calc,positioning,backgrounds,arrows.meta}
+\usepackage{forest}
+
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tabu}
+
+\renewcommand{\tabularxcolumn}[1]{>{\hspace{0pt}}m{#1}}
+
+\usepackage{listings}
+\lstset{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Prolog,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+\lstdefinestyle{refutation}{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\color{cdgray},    	     % comment style
+	escapeinside={(*@}{@*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=Prolog,                 % the language of the code
+	numbers=none,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+
+\usepackage{textgreek}
+
+
+\renewcommand{\emph}[1]{\textbf{#1}}
+\newcommand{\coloremph}[1]{\textcolor{cdpurple}{#1}}
+\newcommand{\col}[1]{\textcolor{cdpurple}{\boldsymbol{#1}}}
+\newcommand{\coll}[1]{\textcolor{cddarkgreen}{\boldsymbol{#1}}}
+\newcommand{\colll}[1]{\textcolor{cdorange}{\boldsymbol{#1}}}
+%\newcommand{\step}[2][]{\ensuremath{\overset{{#1} (\text{#2})}{=}}}
+%\newcommand*{\astep}[2][]{\ensuremath{\overset{{#1} (\text{#2})}&{=}}}
+
+\newcommand{\num}[1]{\ensuremath{\langle #1 \rangle}}
+
+\begin{document}	
+	\title{Programmierung}
+	\subtitle{Übung 9: Logikprogrammierung mit Prolog${}^-$}
+	\author{Eric Kunze}
+	\email{eric.kunze@mailbox.tu-dresden.de}
+%	\city{TU Dresden}
+	\date{}
+%	\institute{Lehrstuhl für Grundlagen der Programmierung}
+%	\titlegraphic{\includegraphics[width=2cm]{../TUD-white.pdf}}
+	
+	\maketitle
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile] \frametitle{Inhalt}
+	\begin{enumerate}
+		\item Funktionale Programmierung
+		\begin{enumerate}
+			\item Einführung in Haskell: Listen
+			\item Algebraische Datentypen
+			\item Funktionen höherer Ordnung
+			\item Typpolymorphie \& Unifikation
+			\item Beweis von Programmeigenschaften
+			\item \textlambda--Kalkül
+		\end{enumerate}
+		\item \textbf{Logikprogrammierung}
+		\item Implementierung einer imperativen Programmiersprache
+		\item Verifikation von Programmeigenschaften
+		\item H${}_\text{0}$ -- ein einfacher Kern von Haskell
+	\end{enumerate}
+\end{frame}
+
+
+\section{Logikprogrammierung und Prolog${}^-$}
+
+\begin{frame} \frametitle{Einführung in Prolog}
+	\small
+	\begin{itemize}
+		\item Französisch: programmation en logique \\
+		(deutsch: Programmieren in Logik)
+		\item \emph{Online-Editor \& Interpreter:} \url{swish.swi-prolog.org}
+		\item Prolog-Programme bestehen aus \emph{Fakten} und \emph{Regeln}.
+		\bigskip
+		\item Statements werden mit \emph{\texttt{.}} abgeschlossen.
+		\item Variablen beginnen mit Großbuchstaben.
+		\bigskip
+		\item \emph{UND}-Operator. \hspace{.2cm} \texttt{,}
+		\item \emph{ODER}-Operator.\hspace{.2cm} \texttt{;}
+	\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Aufgabe 1}
+
+
+\begin{frame}[fragile] \frametitle{Aufgabe 1 -- Teil (a)}
+	
+	\textbf{Ziel:} binäre Relation \texttt{sublist} mit $(\ell_1 , \ell_2) \in \texttt{sublist} \Leftrightarrow \ell_1 \subseteq \ell_2$ \\
+	$\to$ $\ell_1$ soll \textit{Teilliste} von $\ell_2$ sein
+	
+	\begin{lstlisting}
+nat (0).
+nat(s(X)) :- nat(X).
+
+listnat ([]).
+listnat ([X|XS]) :- nat(X), listnat(XS).
+
+	\end{lstlisting}
+	\pause
+	\begin{lstlisting}[firstnumber=6]
+sublist(Xs   , [Y|Ys]) :- nat(Y), sublist(Xs, Ys). 
+sublist(Xs   , Ys )    :- prefix(Xs, Ys). 
+
+prefix([]    , Ys )    :- listnat(Ys). 
+prefix([X|Xs], [X|Ys]) :- nat(X), prefix(Xs, Ys).
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Aufgabe 1 -- Teil (b)}
+	\textbf{Belegung 1:}
+	
+	\begin{lstlisting}[style=refutation, basicstyle=\ttfamily\scriptsize]
+          ?-  sublist ([<4>|Xs], [<5>, <4>, <3>]).
+          ?-  nat(<5>), sublist ([<4>|Xs], [<4>, <3>]). % 6
+          ?-* nat(0), sublist ([<4>|Xs], [<4>, <3>]).   % 2
+          ?-  sublist ([<4>|Xs], [<4>, <3>]).           % 1
+          ?-  prefix ([<4>|Xs], [<4>, <3>]).            % 7
+          ?-  nat(<4>), prefix(Xs , [<3>]).             % 10
+          ?-* nat(0), prefix(Xs , [<3>]).               % 2
+          ?-  prefix(Xs , [<3>]).                       % 1
+{Xs = []} ?-  listnat ([<3>]).                          % 9
+          ?-  nat(<3>), listnat ([]).                   % 5
+          ?-* nat(0), listnat ([]).                     % 2
+          ?-  listnat ([]).                             % 1
+          ?-  .                                         % 4
+	\end{lstlisting}
+	Somit also \texttt{Xs = []}.
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Aufgabe 1 -- Teil (b)}
+	\textbf{Belegung 2:}
+	
+	\begin{lstlisting}[style=refutation, basicstyle=\ttfamily\scriptsize]
+               ?-  sublist ([<4>|Xs], [<5>, <4>, <3>]).
+               ?-  nat(<5>), sublist ([<4>|Xs], [<4>, <3>]). 
+                                                        % 6
+               ?-* nat(0), sublist ([<4>|Xs], [<4>, <3>]).  
+                                                        % 2
+               ?-  sublist ([<4>|Xs], [<4>, <3>]).      % 1
+               ?-  prefix ([<4>|Xs], [<4>, <3>]).       % 7
+               ?-  nat(<4>), prefix(Xs , [<3>]).        % 10
+               ?-* nat(0), prefix(Xs , [<3>]).          % 2
+               ?-  prefix(Xs , [<3>]).                  % 1
+{Xs=[<3>|Xs1]} ?-  nat(<3>), prefix(Xs1 , []).          % 10
+               ?-* nat(0), prefix(Xs1 , []).            % 2
+               ?-  prefix(Xs1 , []).                    % 1
+{Xs1 = []}     ?-  listnat ([]).                        % 9
+               ?-  .                                    % 4
+	\end{lstlisting}
+	
+	Somit also \texttt{Xs = [<3>|Xs1] = [<3>]}.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Aufgabe 2}
+
+\begin{frame}[fragile] \frametitle{Aufgabe 2}
+	Wir wollen einen binären Termbaum auswerten. 
+	\begin{lstlisting}
+nat (0).
+nat(s(X)) :- nat(X).
+sum(0, Y, Y) :- nat(Y).
+sum(s(X), Y, s(S)) :- sum(X, Y, S).
+	\end{lstlisting}
+	
+	\textbf{Beispiel:} 
+	
+	\begin{forest}
+		[\texttt{minus} [\texttt{<4>}] [\texttt{plus} [\texttt{<2>}] [\texttt{<1>}]]]
+	\end{forest}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Aufgabe 2}
+	Wir wollen einen binären Termbaum auswerten. 
+	\begin{lstlisting}
+nat (0).
+nat(s(X)) :- nat(X).
+sum(0, Y, Y) :- nat(Y).
+sum(s(X), Y, s(S)) :- sum(X, Y, S).
+	\end{lstlisting}
+	
+	\begin{lstlisting}[firstnumber=5, basicstyle=\ttfamily\tiny]
+eval( X         , X ) :-  nat(X). 
+eval( plus (L,R), X ) :-  eval(L, LE), eval(R, RE), sum(LE, RE,  X). 
+eval( minus(L,R), X ) :-  eval(L, LE), eval(R, RE), sum(RE,  X, LE).
+	\end{lstlisting}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Aufgabe 3}
+
+\begin{frame}[fragile] \frametitle{Aufgabe 3 -- Teil (a)}
+	\begin{lstlisting}
+subt( X  , X         ). 
+subt( S1 , s(_ , T2) ) :- subt(S1,T2).
+subt( S1 , s(T1, _ ) ) :- subt(S1,T1).
+	\end{lstlisting}
+	
+	
+	\begin{lstlisting}[style=refutation, basicstyle=\ttfamily\scriptsize]
+                        ?-  subt(s(X,Y), s(s(a,b), s(b,a))). 
+{X = s(a,b), Y=s(b,a)}  ?-  .                       % 1  
+
+                        ?-  subt(s(X,Y), s(s(a,b), s(b,a))).
+                        ?-  subt(s(X,Y), s(b,a)).   % 2
+{X = b, Y=a}            ?-  .                       % 1
+
+                        ?-  subt(s(X,Y), s(s(a,b), s(b,a))).
+                        ?-  subt(s(X,Y), s(a,b)).   % 3
+{X = a, Y=b }           ?-  .                       % 1
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Aufgabe 3 -- Teil (b)}
+	\begin{lstlisting}
+subt( X  , X         ). 
+subt( S1 , s(_ , T2) ) :- subt(S1,T2).
+subt( S1 , s(T1, _ ) ) :- subt(S1,T1).
+	\end{lstlisting}
+
+
+\begin{lstlisting}[style=refutation, basicstyle=\ttfamily\scriptsize]
+                  ?-  subt(s(a,a), X). 
+{X = s(a,a)}      ?-  .                  % 1
+                                         (*@\centering$\Rightarrow$@*) X = s(a,a))
+                  ?-  subt(s(a,a), X). 
+{X = s(_ , X1)}   ?-  subt(s(a,a), X1).  % 2 
+{X1 = s(a,a)}     ?-  .                  % 1 
+                                         (*@\centering$\Rightarrow$@*) X = s(a,s(a,a))
+
+                  ?-  subt(s(a,a), X). 
+{X = s(X2, _)}    ?-  subt(s(a,a), X2).  % 3 
+{X2 = s(a,a) }    ?-  .                  % 1 
+                                         (*@\centering$\Rightarrow$@*) X = s(s(a,a),c)
+\end{lstlisting}
+\end{frame}
+
+\end{document}
+
