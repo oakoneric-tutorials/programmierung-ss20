@@ -250,10 +250,10 @@ int main( ) {
 			\textcolor{cdgray!50}{\tiny 1.3.3} & WRITE 3; 
 		\end{tabular}
 	\end{minipage}
-	\pause
-	\begin{minipage}[t]{\dimexpr0.5\linewidth-\fboxrule-\fboxsep}
+	\pause \hfill
+	\begin{minipage}[t]{\dimexpr0.4\linewidth-\fboxrule-\fboxsep}
 		\textbf{Linearisierte Adressen:} \\
-		
+		\vspace{-8pt}
 		\begin{lstlisting}[style=am0]
 READ 1;
 READ 2;
@@ -305,7 +305,7 @@ WRITE 3;
 #include <stdio.h> 
 
 int main() { 
-	x1, x2;
+	int x1, x2;
 	scanf("%i", &x1); 
 	scanf("%i", &x2); 
 	while (x1 > 0){
@@ -327,6 +327,46 @@ int main() {
 	
 	Übersetzen Sie das Programm mittels $\trans$ in $AM_0$-Code mit linearen Adressen. Geben Sie nur das Endergebnis der Übersetzung (keine Zwischenschritte) an!
 \end{frame}
+
+\begin{frame}[fragile] \frametitle{Aufgabe 2 -- Teil (a)}
+	\begin{minipage}{\dimexpr0.25\linewidth-\fboxrule-\fboxsep}
+		\begin{lstlisting}[firstnumber=1]
+READ 1;
+READ 2;
+LOAD 1;
+LIT 0;
+GT;
+		\end{lstlisting}
+	\end{minipage}
+	\begin{minipage}{\dimexpr0.25\linewidth-\fboxrule-\fboxsep}
+		\begin{lstlisting}[firstnumber=6]
+JMC 20;
+LOAD 2;
+LOAD 1;
+SUB;
+STORE 1;
+		\end{lstlisting}
+	\end{minipage}
+	\begin{minipage}{\dimexpr0.25\linewidth-\fboxrule-\fboxsep}
+		\begin{lstlisting}[firstnumber=11]
+LOAD 2;
+LOAD 1;
+GT;
+JMC 19;
+LOAD 2;
+		\end{lstlisting}
+	\end{minipage}
+	\begin{minipage}{\dimexpr0.25\linewidth-\fboxrule-\fboxsep}
+		\begin{lstlisting}[firstnumber=16]
+LIT 2;
+DIV;
+STORE 2;
+JMP 3;
+WRITE 1;
+		\end{lstlisting}
+	\end{minipage}
+\end{frame}
+
 
 \begin{frame}[fragile] \frametitle{Aufgabe 2 -- Teil (b)}
 	\begin{minipage}{\dimexpr0.25\linewidth-\fboxrule-\fboxsep}
@@ -361,6 +401,29 @@ WRITE 1;
 	\bigskip 
 	
 	Erstellen Sie ein Ablaufprotokoll für dieses Programmfragment, bis die $AM_0$ terminiert. Die Startkonfiguration ist $(7, \epsilon, [1/3, 2/1], \epsilon, \epsilon)$.
+\end{frame}
+
+\begin{frame} \frametitle{Aufgabe 2 -- Teil (b)}
+	\emph{Ablauf der abstrakten Maschine:} 
+	\small
+	\begin{center}
+		\begin{tabular}{rrcrclcrcrl}
+			& BZ &,& DK &,& HS &,& Inp &,& Out & \\
+			( & 7 &,& $\epsilon$ &,& [1/3, 2/1] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 8 &,& 3 &,& [1/3, 2/1] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 9 &,& 1:3 &,& [1/3, 2/1] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 10 &,& 2:1:3 &,& [1/3, 2/1] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 11 &,& 2:3 &,& [1/3, 2/1] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 12 &,& 5 &,& [1/3, 2/1] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 13 &,& $\epsilon$ &,& [1/3, 2/5] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 3 &,& $\epsilon$ &,& [1/3, 2/5] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 4 &,& 5 &,& [1/3, 2/5] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 5 &,& 5:5 &,& [1/3, 2/5] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 6 &,& 0 &,& [1/3, 2/5] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 14 &,& $\epsilon$ &,& [1/3, 2/5] &,& $\epsilon$ &,& $\epsilon$ & ) \\
+			( & 15 &,& $\epsilon$ &,& [1/3, 2/5] &,& $\epsilon$ &,& 3 & ) \\
+		\end{tabular}
+	\end{center}
 \end{frame}
 
 %\begin{frame}<handout:0> \frametitle{Aufgabe 2 -- Teil (b)}
