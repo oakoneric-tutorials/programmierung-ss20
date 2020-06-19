@@ -1,0 +1,28 @@
+\documentclass[margin=5pt]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,automata, matrix, trees}
+\usetikzlibrary{calc,positioning,backgrounds,arrows.meta}
+\usepackage[default]{opensans}
+\begin{document}
+%	\sffamily
+	\begin{tikzpicture}[scale=1]
+		\foreach \i in {0,...,4} {
+			\draw[draw=black] (0,-\i) rectangle ++(3,-1) node[pos=.5] (h\i) {$h.\i$};
+			\draw[draw=black] (7,-\i) rectangle ++(3,-1) node[pos=.5] (d\i) {$d.\i$};
+		}
+		\node[below=of h4](HSText){Hauptspeicher};
+		\node[below=of d4](DKText){Datenkeller};
+		\node[above right=of h2](HS){};
+		\node[above left=of d2](DK){};
+		\node[below right=of h2](HS2){};
+		\node[below left=of d2](DK2){};
+		\draw[->] (HS) -- (DK);
+		\draw[->] (DK2) -- (HS2);
+		
+		\foreach \i in {0,1,2,3} {
+			\draw[] (\i,2) rectangle ++(1,1) node[pos=.5] (w\i) {};
+			\draw[] (\i+5,2) rectangle ++(1,1) node[pos=.5] (w\i) {};
+		}
+	\end{tikzpicture}
+\end{document}
