@@ -1,0 +1,118 @@
+\documentclass[ngerman,a4paper, 12pt]{article}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{chngcntr}
+
+\usepackage{fancyhdr} 	% customize header / footer
+\usepackage{titlesec} 	% customize titles
+\usepackage{tabularx} 	% tabularx-environment (explicitly set width of columns)
+\usepackage{tabu}
+\usepackage{longtable} 	% Tabellen mit Seitenumbrüchen
+\usepackage{multirow}
+\usepackage{booktabs}	% improved rules
+\usepackage{colortbl} 
+
+\usepackage[scale=1]{opensans}
+\newcommand*{\osfamily}{\fontfamily{fos}\selectfont}
+\DeclareTextFontCommand{\textos}{\osfamily}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% math related packages
+% basic ams-math and enhancments
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+\usepackage{blkarray}
+% add some font-related stuff
+\usepackage{lmodern}
+\usepackage{latexsym}
+\usepackage{marvosym} 	% lightning (contradiction)
+\usepackage{stmaryrd} 	% Lightning symbol
+\usepackage{bbm} 		% unitary matrix
+\usepackage{wasysym}	% add some symbols
+
+% further support for different equation setting
+\usepackage{xfrac}		% sfrac -> fractions e.g. 3/4
+
+
+\usepackage[amsthm,thmmarks,hyperref]{ntheorem}
+\usepackage[ntheorem,framemethod=TikZ]{mdframed}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% graphics-related packages
+\usepackage[table,dvipsnames]{tudscrcolor} 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% text-related packages
+% increase line spacing
+\usepackage[onehalfspacing]{setspace} % increase row-space
+\usepackage{ulem} 		% better underlines
+
+% enumeration
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+
+% source code
+\usepackage{listings}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                          HYPERLINKS                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{bookmark}		% pdf-bookmarks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titleformat{\section}{\normalfont\sffamily\Large\bfseries}{\thesection}{1em}{}
+\newcommand*\head{\rowfont{\bfseries}}
+
+\newcommand{\menge}[1]{\left\{ #1 \right\}}
+
+\begin{document}
+	\pagestyle{empty}
+	
+	\section*{Befehlssematik der abstrakten Maschine AM${}_{\text{1}}$}
+	
+	\textbf{Adressberechnung} \\
+	Sei $b \in \menge{\text{global}, \text{lokal}}$ und $r$ der aktuelle REF, dann berechnet sich die Adresse zu
+	\begin{equation*}
+	adr(r,b,o) = \begin{cases}
+	r+o & \text{wenn } b = \text{lokal} \\
+	o & \text{wenn } b = \text{global}
+	\end{cases}
+	\end{equation*}
+	
+	\renewcommand*{\arraystretch}{1.6}
+	\noindent
+	\begin{tabu}{p{2.5cm} | p{\dimexpr\linewidth-2.5cm}}
+		\toprule
+		\head Befehl & Auswirkungen  \\ 
+		\midrule \midrule
+		LOAD($b$,$o$) & Lädt den Inhalt von Adresse $adr(r,b,o)$ auf den Datenkeller, inkrementiere Befehlszähler \\
+		STORE($b$,$o$) & Speichere oberstes Datenkellerelement an $adr(r,b,o)$, inkrementiere Befehlszähler \\
+		WRITE($b$,$o$) & Schreibe Inhalt an Adresse $adr(r,b,o)$ auf das
+		Ausgabeband, inkrementiere Befehlszähler \\
+		READ($b$,$o$) & Lies oberstes Element vom Eingabeband, speichere
+		an Adresse $adr(r,b,o)$, inkrementiere Befehlszähler \\
+		LOADI($o$) & Ermittle Wert ($=b$) an Adresse $r+o$, Lade Inhalt
+		von Adresse $b$ auf Datenkeller, inkrementiere Befehlszähler \\
+		STOREI($o$) & Ermittle Wert ($=b$) an Adresse $r+o$, nimm
+		oberstes Datenkellerelement, speichere dieses an
+		Adresse $b$, inkrementiere Befehlszähler \\
+		WRITEI($o$) & Ermittle Wert ($=b$) an Adresse $r+o$, schreibe den
+		Inhalt an Adresse $b$ auf Ausgabeband, inkrementiere Befehlszähler \\
+		READI($o$) & Ermittle Wert ($=b$) an Adresse $r+o$, lies das oberste
+		Element vom Eingabeband, speichere es an Adresse $b$ , inkrementiere Befehlszähler \\
+		LOADA($b$,$o$) & Lege $adr(r,b,o)$ auf Datenkeller, inkrementiere Befehlszähler \\			
+		PUSH & oberstes Element vom Datenkeller auf Laufzeitkeller, Befehlszähler inkrementieren \\
+		CALL $adr$ & Befehlszählerwert inkrementieren und auf LZK legen, Befehlszähler auf $adr$ setzen, REF auf LZK legen, REF auf Länge des LZK ändern \\
+		INIT $n$ & $n$-mal $0$ auf den Laufzeitkeller legen \\
+		RET $n$ & im LZK alles nach REF-Zeiger löschen, oberstes Element des LZK als REF setzen, oberstes Element des LZK als Befehlszähler setzen, $n$ Elemente von LZK löschen \\
+		\bottomrule
+	\end{tabu}
+\end{document}
