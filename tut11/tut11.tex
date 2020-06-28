@@ -379,6 +379,14 @@ void main () {...}
 \begin{frame} \frametitle{Aufgabe 2 -- Teil (a)}
 	\textbf{Lösung.}
 	
+	\begin{align*}
+		tab_{\texttt{g}} = [ \enskip &\texttt{f}/(proc, 1), \texttt{g}/(proc, 2),\\
+		&\texttt{x}/(var, global, 1), \texttt{y}/(var, global, 2), \\
+		&\texttt{a}/(var, lokal, -3), \texttt{b}(var-ref, -2), \texttt{c}/(var, lokal, 1) \enskip]
+	\end{align*}
+	
+	\pause
+	
 	\begin{tabular}{>{\ttfamily}r >{\ttfamily}l >{\ttfamily}l >{\ttfamily}l >{\ttfamily}l >{\ttfamily}l}
 		& LIT 3; STORE(lokal,1); \\
 		& LOAD(lokal,1); LOADI (-2); EQ; JMC 2.2.1; \\
