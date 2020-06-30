@@ -1,0 +1,26 @@
+\documentclass[margin=5pt, tikz]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage[default]{opensans}
+\usepackage{tudscrcolor}
+\usepackage{sfmath}
+
+
+\begin{document}
+	\color{cddarkblue}
+	\begin{tikzpicture}
+			\draw[ultra thick] (0,0) rectangle ++(8,1) node[pos=.5, align=center, text width=8cm] (impl) {$(z = (x - x1) * y) \land (x1 \ge 0) \land (x1 > 0)$\\ $\Rightarrow (z+y = (x - (x1 - 1)) * y) \land (x1 - 1 \ge 0)$};
+			
+			\draw[ultra thick, rounded corners=14pt] (9,-.5) rectangle ++(8,2) node[pos=.5, align=center, text width=8cm] (stat) {$\Big\{(z+y = (x-(x1-1)) * y) \land (x1 - 1 \ge 0) \Big\}$ \\
+			\texttt{x1 = x1 - 1} \\
+			$\Big\{(z+y = (x-x1) * y) \land (x1 \ge 0) \Big\}$};
+		
+			\draw[ultra thick, rounded corners=14pt] (1,-3) rectangle ++(15,1) node[pos=.5, align=center, text width=15cm] (erg) {$\Big\{ (z = (x - x1) * y) \land (x1 \ge 0) \land (x1 > 0) \Big\}$ 
+			\texttt{x1 = x1 - 1}
+			$\Big\{(z+y = (x-x1) * y) \land (x1 \ge 0) \Big\}$};
+		
+			\draw[->, thick, >={Triangle[length=0pt 2*5,width=0pt 8]}] (4,0) -- (7,-2);
+			\draw[->, thick, >={Triangle[length=0pt 2*5,width=0pt 8]}] (13,-.5) -- (9,-2) node[midway, left=9pt]{(SV)};
+	\end{tikzpicture}
+\end{document}

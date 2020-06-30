@@ -1,0 +1,158 @@
+\documentclass[ngerman,a4paper, 11pt]{article}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{parskip}
+\usepackage{chngcntr}
+\usepackage{eufrak}
+\usepackage{zref-base}
+\usepackage{etoolbox}
+\usepackage{xparse}	% better macros
+\usepackage{calc}
+\usepackage{xstring}
+\usepackage{xkeyval}
+\usepackage{xifthen}
+
+\usepackage{fancyhdr} 	% customize header / footer
+\usepackage{titlesec} 	% customize titles
+\usepackage{tabularx} 	% tabularx-environment (explicitly set width of columns)
+\usepackage{tabu}
+\usepackage{longtable} 	% Tabellen mit Seitenumbrüchen
+\usepackage{multirow}
+\usepackage{booktabs}	% improved rules
+\usepackage{colortbl} 
+
+\usepackage{tocloft}	% customize toc
+
+\usepackage[scale=1]{opensans}
+\newcommand*{\osfamily}{\fontfamily{fos}\selectfont}
+\DeclareTextFontCommand{\textos}{\osfamily}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% math related packages
+% basic ams-math and enhancments
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+\usepackage{blkarray}
+% add some font-related stuff
+\usepackage{lmodern}
+\usepackage{latexsym}
+\usepackage{marvosym} 	% lightning (contradiction)
+\usepackage{stmaryrd} 	% Lightning symbol
+\usepackage{bbm} 		% unitary matrix
+\usepackage{wasysym}	% add some symbols
+% \usepackage[bb=boondox]{mathalfa} %special zero using \mathbb{0}
+\usepackage{systeme}	% easy typesetting systems of equations
+\usepackage{witharrows} % arrows from one equation to another
+
+% further support for different equation setting
+\usepackage{cancel}
+\usepackage{xfrac}		% sfrac -> fractions e.g. 3/4
+\usepackage{nicefrac}
+\usepackage{units}		% units and fractions
+\usepackage{diagbox}
+
+\usepackage[amsthm,thmmarks,hyperref]{ntheorem}
+\usepackage[ntheorem,framemethod=TikZ]{mdframed}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% graphics-related packages
+\usepackage[table,dvipsnames]{tudscrcolor} 
+%\usepackage[table,dvipsnames]{xcolor}
+% official colours in cooperate design TUD
+% (done) define colours -- use official tud colours
+% main colours:
+% cddarkblue, cdblue, cdgray, cdindigo, cdpurple, cddarkgreen, cdgreen, cdorange
+
+
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage[font=small,labelfont=bf]{caption} % for captions of non-floated figures
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10} % in my packages used compat=1.15
+\usepgfplotslibrary{fillbetween}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{patterns,arrows,calc,decorations.pathmorphing,backgrounds, positioning,fit,petri,decorations.fractals}
+\usetikzlibrary{matrix}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% text-related packages
+% increase line spacing
+\usepackage[onehalfspacing]{setspace} % increase row-space
+\usepackage{ulem} 		% better underlines
+\usepackage{marginnote}	% notes at the edge
+
+% enumeration
+\usepackage{enumerate}
+\usepackage[inline]{enumitem} 		%customize label
+
+% source code
+\usepackage{listings}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                          HYPERLINKS                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% (done) set hyperlink options correctly
+\usepackage[unicode,bookmarks=true]{hyperref}
+\hypersetup{
+	% pdfborder={0 0 0}			% no boxed around links
+	pdfborderstyle={/S/U/W 1},	% underlining insteas of boxes
+	linkbordercolor=cdblue,
+	urlbordercolor=cdblue
+	%	colorlinks,
+	%	citecolor=black,
+	%	filecolor=cddarkblue!80,
+	%	linkcolor=black,
+	%	urlcolor=cddarkblue!80
+}
+
+\usepackage{cleveref}
+\usepackage{bookmark}		% pdf-bookmarks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareMathSymbol{*}{\mathbin}{symbols}{"01}
+
+\titleformat{\section}{\normalfont\sffamily\LARGE\bfseries}{\thesection}{1em}{}
+\newcommand*\head{\rowfont{\bfseries}}
+
+\newcommand{\menge}[1]{\left\{ #1 \right\}}
+
+\begin{document}
+	\pagestyle{empty}
+	
+	\section*{Übungsblatt 12 -- Aufgabe 1}
+	
+	Im Hoare-Kalkül haben wir es mit solchen Verifikationsformeln der Form
+	\begin{equation*}
+		\{P\} \ \mathbf{A} \ \{Q\}
+	\end{equation*}
+	zu tun. In unserem Fall können wir das einmal beispielhaft ansehen, zum Beispiel
+	\begin{equation*}
+		\{(x \ge 0) \land (x = x1) \land (z = 0) \land (y \ge 0)\} \ \texttt{while (x1>0) \{x1=x1-1; z=z+y;\}} \ \{(z = y * x)\}
+	\end{equation*}
+	Machen wir uns noch einmal kurz klar, was da eigentlich steht: In der linken geschweiften Klammern stehen die Vorbedingungen, in der rechten hinter dem Schleifenausdruck steht die Nachbedingung. Wie du richtig erkannt hast, ist $z = y*x$ genau die Nachbedingung. Die Vorbedingung sind dabei die Anfangsbedingung, die wir wissen, bevor wir in die Schleife gehen. Wichtig ist hier aber, dass du dir klar machst, dass die Vor- und Nachbedingung logische Formeln sind, d.h. bestimmte Forderungen an unsere Variablen. Führen wir dann die \texttt{while}-Schleife aus, dann gilt danach $z = y*x$. Das ist in dem Moment bereits eine Aussage, die laut dieser Verifikationsformel schon gilt, d.h. wir könnten auch irgendetwas beliebiges in die Nachbedingung schreiben. Das wird dann aber wahrscheinlich unmöglich zu beweisen. Steht also das $y$ in der Nachbedingung $z = y*x$, so heißt das, dass die Schleife (oder im Allgemeinen das Programmstück in der Mitte) genau den Zusammenhang $z = y*x$ herstellt. 
+	
+	Ich erläutere dir vielleicht auch noch einmal das ganz konkrete Beispiel: Wir legen fest, dass $x \ge 0$, $x=x1$ und $z=0$ sowie $y \ge 0$ gilt. Ohne dass wir wissen, was das folgende Programmstück mit diesen Variablen machen wird. Nun führen wir ebendieses Stück aus, d.h. wir gehen in die Schleife. Wenn man sich den Schleifenrumpf anschaut, dann steht da im Wesentlichen die Definition der Multiplikation:
+	\begin{equation*}
+		a*b = \underbrace{a + a + \dots + a}_{b \text{ viele Summanden}} \quad \text{ bzw } \quad z = y * x1 = \underbrace{y + y + \dots + y}_{x1 \text{ viele Summanden}}
+	\end{equation*}
+	Und genau das liefert uns dann die Nachbedingung, was also heißt, dass die Schleife die Variablen gerade so verändert hat, dass danach der Zusammenhang $z = y*x$ gilt. 
+	
+	Schlussendlich noch die Antwort auf deine Frage: \\ 
+	Aber warum wird in der Schleife schon mit $y$ gerechnet? Ist $y$ eine beliebige Zahl?
+	
+	Mit $y$ Darf durchaus bereits in der Schleife gerechnet werden, weil du in der Nachbedingung nur Aussagen darüber triffst, was nach der Schleife gilt. In unserem Beispiel muss $y$ sogar in der Schleife vorkommen, weil sonst könnten wir nie so eine Multiplikation hinbekommen. 
+	
+	Das $y$ selbst ist erst einmal beliebig. Es sollte natürlich die Vorbedingung erfüllen, d.h. $y \ge 0$. Aber ansonsten ist $y$ wirklich als Variable beliebig.
+	
+	
+\end{document}
