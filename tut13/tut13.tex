@@ -1,0 +1,331 @@
+\documentclass{beamer}
+\usepackage{../tut-slides}
+\usepackage{../mathoperatorsAuD}
+
+\usepackage{csquotes}
+\usepackage{cancel}
+
+\usepackage{amsmath,amssymb}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,automata, matrix, trees}
+\usetikzlibrary{calc,positioning,backgrounds,arrows.meta}
+\usetikzlibrary{patterns,snakes}
+\usepackage{forest}
+
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tabu}
+\newcommand*\head{\rowfont{\bfseries}}
+\newcommand*{\tw}{\rowfont{\ttfamily}}
+
+\renewcommand{\tabularxcolumn}[1]{>{\hspace{0pt}}m{#1}}
+
+\usepackage{listings}
+\lstset{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\itshape,    	     % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={}, 
+	language=C,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+\lstdefinestyle{am0}{ 
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	commentstyle=\color{cdgray},    	     % comment style
+	escapeinside={(*@}{@*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=none,
+	keywordstyle=\bfseries,       % keyword style
+	morekeywords={READ,LOAD,GT,JMC,STORE,JMP,WRITE}, 
+%	language=AM0,                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible: (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\ttfamily\color{cdgray!50}, % the style that is used for the line-numbers
+	rulecolor=\color{cddarkblue}, 
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+
+\usepackage{textgreek}
+
+
+\renewcommand{\emph}[1]{\textbf{#1}}
+\newcommand{\coloremph}[1]{\textcolor{cdpurple}{#1}}
+\newcommand{\col}[1]{\textcolor{cdpurple}{\boldsymbol{#1}}}
+\newcommand{\coll}[1]{\textcolor{cddarkgreen}{\boldsymbol{#1}}}
+\newcommand{\colll}[1]{\textcolor{cdorange}{\boldsymbol{#1}}}
+%\newcommand{\step}[2][]{\ensuremath{\overset{{#1} (\text{#2})}{=}}}
+%\newcommand*{\astep}[2][]{\ensuremath{\overset{{#1} (\text{#2})}&{=}}}
+
+\newcommand{\num}[1]{\ensuremath{\langle #1 \rangle}}
+
+\undef\trans
+\DeclareMathOperator{\trans}{trans}
+
+\newcommand{\logand}{ \ \land \ }
+
+\begin{document}	
+	\title{Programmierung}
+	\subtitle{Übung 13: H${}_{\text{0}}$ -- ein einfacher Kern von Haskell}
+	\author{Eric Kunze}
+	\email{eric.kunze@mailbox.tu-dresden.de}
+%	\city{TU Dresden}
+	\date{}
+%	\institute{Lehrstuhl für Grundlagen der Programmierung}
+%	\titlegraphic{\includegraphics[width=2cm]{../TUD-white.pdf}}
+	
+	\maketitle
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile] \frametitle{Inhalt}
+	\begin{enumerate}
+		\item Funktionale Programmierung
+		\begin{enumerate}
+			\item Einführung in Haskell: Listen
+			\item Algebraische Datentypen
+			\item Funktionen höherer Ordnung
+			\item Typpolymorphie \& Unifikation
+			\item Beweis von Programmeigenschaften
+			\item \textlambda--Kalkül
+		\end{enumerate}
+		\item Logikprogrammierung
+		\item Implementierung einer imperativen Programmiersprache
+		\begin{enumerate}
+			\item Implementierung von C${}_\text{0}$
+			\item Implementierung von C${}_\text{1}$
+		\end{enumerate}
+		\item Verifikation von Programmeigenschaften
+		\item \textbf{H${}_\text{0}$ -- ein einfacher Kern von Haskell}
+	\end{enumerate}
+\end{frame}
+
+
+\section{H${}_\text{0}$ -- ein einfacher Kern von Haskell}
+
+\begin{frame} \frametitle{H${}_\text{0}$}
+	\begin{itemize}
+		\item \textbf{Ziel:} verstehe den Zusammenhang H${}_\text{0}$ $\leftrightarrow$ AM${}_\text{0}$ $\leftrightarrow$ C${}_\text{0}$
+		\item H${}_\text{0}$: \textit{tail recursive} Funktionen --- rechte Seite enthält
+		\begin{itemize}
+			\item keinen Funktionsaufruf
+			\item einen Funktionsaufruf an der äußersten Stelle (nicht verschachtelt)
+			\item eine Fallunterscheidung, deren Zweige wie oben aufgebaut sind
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{H${}_\text{0}$ $\leftrightarrow$ AM${}_\text{0}$}
+	H${}_\text{0}$ ist klein genug, dass es auf der AM${}_\text{0}$ laufen kann:
+	\begin{itemize}
+		\item Befehle bleiben die gleichen
+		\item baumstrukturierte Adressen beginnen mit Funktionsbezeichner (z.B. $f.1.3$)
+		
+		\medskip
+		\item Übersetzung von rechten Seiten \texttt{... = \textit{exp}}: 
+		\begin{itemize}
+			\item Übersetze \texttt{exp}
+			\item \texttt{STORE 1} \hspace{2em} (ja -- immer die \texttt{1})
+			\item \texttt{WRITE 1}
+			\item \texttt{JMP 0}
+		\end{itemize}
+
+		\medskip
+		\item Übersetzung von Funktionsaufrufen \texttt{... = f x1 x2 x3}:
+		\begin{itemize}
+			\item \texttt{LOAD x1; LOAD x2; LOAD x3}
+			\item \texttt{STORE x3; STORE x2; STORE x1} {\footnotesize(umgekehrte Reihenfolge!)}
+			\item \texttt{JMP f}
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{H${}_\text{0}$ $\leftrightarrow$ C${}_\text{0}$}
+	H${}_\text{0}$ (funktional) und C${}_\text{0}$ (imperativ) sind gleich stark -- wir können Programme jeweils ineinander äquivalent übersetzen!
+	
+	Standardisierung: 
+	\begin{itemize}
+		\item keine Konstanten
+		\item Es gibt $m$ Variablen \texttt{x1, ..., xm} ($m \ge 1$)
+		\item Wir lesen $k$ Variablen \texttt{x1, ..., xk} ein ($0 \le k \le m$)
+		\item Es gibt genau eine Schreibanweisung direkt vor \texttt{return}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{C${}_\text{0}$ $\to$ H${}_\text{0}$}
+	\begin{itemize}
+		\item jedes Statement (in C${}_\text{0}$) erhält einen \textit{Ablaufpunkt}
+		\item jeder Ablaufpunkt \texttt{i} wird durch eine Funktion \texttt{fi} (in H${}_\text{0}$) repräsentiert, die \textit{alle} Programmvariablen als Argumente hat
+		\item Funktionswerte beschreiben Veränderungen im Programmablauf
+	\end{itemize}
+
+	(einfaches) \textbf{Beispiel:} 
+	\begin{itemize}
+		\item zwei Variablen \texttt{x1} und \texttt{x2}
+		\item betrachte Zuweisung \texttt{x2 = x1 * x1} in C${}_\text{0}$
+		\item Übersetzung zu \texttt{f x1 x2 = x1 (x1 * x1)}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame} \frametitle{H${}_\text{0}$ $\to$ C${}_\text{0}$}
+	Ein H${}_\text{0}$-Programm kann in C${}_\text{0}$ mittels \textit{einer} \texttt{while}-Schleife dargestellt werden. Dazu verwenden wir drei Hilfsvariablen:
+	\begin{itemize}
+		\item \texttt{flag} steuert den Ablauf der \texttt{while}-Schleife, d.h. wenn das H${}_\text{0}$-Programm terminiert, wird \texttt{flag} falsch
+		\item \texttt{function} steuert in einer geschachtelten \texttt{if-then-else}-Anweisung, welche Funktion ausgeführt wird
+		\item \texttt{result} speichert den Rückgabewert der Funktion
+	\end{itemize}
+\end{frame}
+
+
+\section{Übungsblatt 13 \\ \textit{Aufgabe 1}}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (a)}
+	\begin{equation*}
+		f \colon \N \to \N \quad \mit \quad f(n) = \sum_{i=1}^{n} \prod_{j=1}^{i} j
+	\end{equation*}
+	\pause	
+	\begin{lstlisting}[language=Haskell]
+module Main where
+
+--    i     sum     j    prod
+f :: Int -> Int -> Int -> Int -> Int
+f x1 x2 x3 x4
+	= if x3 > 1
+	  then f x1 x2 (x3 - 1) (x3 * x4)
+	  else if x1 > 0
+	       then f (x1 - 1) (x2 + x4) (x1 - 1) 1
+	       else x2
+
+main = do x1 <- readLn
+       print (f x1 0 x1 1)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (b) \hfill H${}_\text{0}$ $\to$ AM${}_\text{0}$}
+	
+	\textbf{Gegeben:}
+	\begin{lstlisting}[language=Haskell]
+f :: Int -> Int
+f x1 = if x1 < 42
+       then x1
+       else if x1 > 42
+            then f (x1 `div` 2)
+            else 42
+
+	\end{lstlisting}
+	
+	\textbf{Gesucht:} äquivalentes AM${}_\text{0}$--Programm
+	\pause
+	\begin{lstlisting}[style=am0, numbers=none]
+f:     LOAD 1; LIT 42; LT; JMC f.3;
+       LOAD 1; STORE 1; WRITE 1; JMP 0;
+f.3:   LOAD 1; LIT 42; GT; JMC f.2.3;
+       LOAD 1; LIT 2; DIV; STORE 1; JMP f;
+f.2.3: LIT 42; STORE 1; WRITE 1; JMP 0;
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 1 -- Teil (c) \hfill H${}_\text{0}$ $\to$ C${}_\text{0}$}
+	
+	\textbf{Gegeben:}
+	\begin{lstlisting}
+f1  x1 = if ((x1 `mod` 2) == 0) then f11 x1
+         else f12 x1
+f11 x1 = f2 (x1 `div` 2)
+f12 x1 = f2 (x1 - 1)
+f2  x1 = f3 (2 * x1)
+	\end{lstlisting}
+	
+	\textbf{Gesucht:} äquivalentes C${}_\text{0}$--Programm
+	\pause
+	\begin{lstlisting}[language=C]
+if ((x1 % 2) == 0)
+	x1 = x1 / 2;
+else
+	x1 = x1 - 1;
+x1 = 2 * x1;
+	\end{lstlisting}
+\end{frame}
+
+
+
+
+
+\section{Übungsblatt 13 \\ \itshape Aufgabe 2}
+
+\begin{frame}[t, fragile] \frametitle{Aufgabe 2 -- Teil (a) \hfill H${}_\text{0}$ $\to$ AM${}_\text{0}$}
+	\textbf{Gegeben:}
+	\begin{lstlisting}
+h :: Int -> Int -> Int -> Int
+h x1 x2 x3 = if x3 > x1
+             then (x2 - 1)
+             else h x2 (x1 - x3) x2
+	\end{lstlisting}
+	
+	\textbf{Gesucht:} äquivalentes AM${}_\text{0}$--Programm
+	\pause
+	\begin{lstlisting}[style=am0]
+h:   LOAD 3; LOAD 1; GT; JMC h.3;
+     LOAD 2; LIT 1; SUB; STORE 1; WRITE 1; JMP 0;
+h.3: LOAD 2; LOAD 1; LOAD 3; SUB; LOAD 2;
+     STORE 3; STORE 2; STORE 1; JMP h;
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Aufgabe 2 -- Teil (b) \hfill H${}_\text{0}$ $\to$ C${}_\text{0}$}
+	\textbf{Lösung:}
+	
+	\begin{minipage}[t]{\dimexpr0.5\linewidth-\fboxrule-\fboxsep}
+		\begin{lstlisting}[numbers=none]
+A:    scanf("%d", &x1);
+      x1 = 3 + x1;
+      x2 = 5;
+      flag = 1;
+      
+B:    x2 == x1
+
+C:    result = 30;
+      flag = 0;
+      
+D:    result = x2;
+      flag = 0;
+		\end{lstlisting}
+	\end{minipage}
+	\begin{minipage}[t]{\dimexpr0.5\linewidth-\fboxrule-\fboxsep}
+		\begin{lstlisting}[numbers=none]
+E:    function == 2
+
+F:    if (10 <= x2) {
+            x1 = x1 - x2;
+            x2 = x2 - 1;
+      } else {
+            x1 = x1 + x2;
+            x2 = 10;
+            function = 1;
+      }
+		\end{lstlisting}
+	\end{minipage}
+
+
+\end{frame}
+
+\end{document}
+
